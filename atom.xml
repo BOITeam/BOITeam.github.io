@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>BOITeam&#39;s Blog</title>
+  <title>BOI Team</title>
   
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="https://boiteam.github.io/"/>
   <updated>2020-03-01T06:24:02.891Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>https://boiteam.github.io/</id>
   
   <author>
-    <name>BOITeam</name>
+    <name>BOI Team</name>
     
   </author>
   
@@ -18,8 +18,8 @@
   
   <entry>
     <title>V&amp;N招新赛web部分题解</title>
-    <link href="http://yoursite.com/2020/02/29/V/"/>
-    <id>http://yoursite.com/2020/02/29/V/</id>
+    <link href="https://boiteam.github.io/2020/02/29/V/"/>
+    <id>https://boiteam.github.io/2020/02/29/V/</id>
     <published>2020-02-29T10:33:07.000Z</published>
     <updated>2020-03-01T06:24:02.891Z</updated>
     
@@ -27,37 +27,8 @@
     
     <summary type="html">
     
-      V&amp;N招新赛部分web题解
-
-HappyCTFd
-考点：ctfd漏洞
-
-参考链接https://www.colabug.com/2020/0204/6940556/漏洞的相关分析，上文写的很详细，这里就不再介绍。
-
-解题步骤：
-
- 1. 先注册一个admin的账号，通过在admin前面加空格来绕过重复限制。
- 2. 生成忘记密码的链接。
- 3. 更改自己用户名为非admin.
- 4. 点击更改密码的链接，改后登录
-
-
-
-下载，后就得到flag.
-
-CHECKIN
-考点：python反弹shell proc目录
-
-访问就可以得到源码，右键源代码看到的代码自动有换行
-
-1
-2
-3
-4
-5
-6
-7
-
+      &lt;p&gt;V&amp;amp;N招新赛部分web题解&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
     
     </summary>
     
