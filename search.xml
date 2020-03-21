@@ -10,7 +10,7 @@
         <category>Libc</category>
       </categories>
       <tags>
-        <tag>logic</tag>
+        <tag>Pwn_logic</tag>
       </tags>
   </entry>
   <entry>
@@ -23,7 +23,7 @@
         <category>Libc</category>
       </categories>
       <tags>
-        <tag>unlink</tag>
+        <tag>Pwn_unlink</tag>
       </tags>
   </entry>
   <entry>
@@ -37,7 +37,7 @@
         <category>Libc</category>
       </categories>
       <tags>
-        <tag>seccomp</tag>
+        <tag>Pwn_seccomp</tag>
       </tags>
   </entry>
   <entry>
@@ -52,7 +52,7 @@
         <category>Libc</category>
       </categories>
       <tags>
-        <tag>reverse</tag>
+        <tag>Pwn_reverse</tag>
       </tags>
   </entry>
   <entry>
@@ -65,7 +65,7 @@
         <category>Libc</category>
       </categories>
       <tags>
-        <tag>file_struct</tag>
+        <tag>Pwn_file_struct</tag>
       </tags>
   </entry>
   <entry>
