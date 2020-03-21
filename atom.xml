@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://boiteam.github.io/"/>
-  <updated>2020-03-21T09:34:57.181Z</updated>
+  <updated>2020-03-21T12:42:15.445Z</updated>
   <id>https://boiteam.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://boiteam.github.io/2020/03/20/2020_GXZCTF_cyclegraph/"/>
     <id>https://boiteam.github.io/2020/03/20/2020_GXZCTF_cyclegraph/</id>
     <published>2020-03-19T16:00:00.000Z</published>
-    <updated>2020-03-21T09:34:57.181Z</updated>
+    <updated>2020-03-21T12:42:15.445Z</updated>
     
     <content type="html"><![CDATA[<p><strong>第一层考点：dump内存</strong></p><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">dword_403370 = 0;</span><br><span class="line">v1 = &amp;unk_403384;</span><br><span class="line">byte_403374 = 48;</span><br><span class="line">v2 = 0;</span><br><span class="line">dword_403378 = (int)&amp;unk_403380;</span><br><span class="line">do</span><br><span class="line">&#123;</span><br><span class="line">  v3 = dword_402178[v2];</span><br><span class="line">  ++v2;</span><br><span class="line">  *(v1 - 1) = v3;</span><br><span class="line">  *v1 = (char *)&amp;unk_403380 + 12 * dword_402274[v2];</span><br><span class="line">  v1[1] = (char *)&amp;unk_403380 + 12 * dword_4021F4[v2];</span><br><span class="line">  v1 += 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>在OD中执行完后dump出403348内存的值<br><strong>第二层考点：OD下断</strong><br>核心算法</p><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">v4 = dword_403370;</span><br><span class="line">v5 = byte_403374;</span><br><span class="line">v6 = 5;</span><br><span class="line">v7 = dword_403378;</span><br><span class="line">do</span><br><span class="line">&#123;</span><br><span class="line">  v11 = *(&amp;v12 + v6);</span><br><span class="line"> <span class="built_in"> if </span>( *(_DWORD *)v7 + v5 == v11 )</span><br><span class="line">  &#123;</span><br><span class="line">    v7 = *(_DWORD *)(v7 + 4);</span><br><span class="line">  &#125;</span><br><span class="line">  else</span><br><span class="line">  &#123;</span><br><span class="line">   <span class="built_in"> if </span>( v5 - *(_DWORD *)v7 != v11 )</span><br><span class="line">    &#123;</span><br><span class="line">      sub_401020(<span class="string">"This is not flag~\n"</span>, v10);</span><br><span class="line">     <span class="keyword"> system</span>(<span class="string">"pause"</span>);</span><br><span class="line">      exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">    v7 = *(_DWORD *)(v7 + 8);</span><br><span class="line">  &#125;</span><br><span class="line">  v5 = *(&amp;v12 + v6);</span><br><span class="line">  ++v4;</span><br><span class="line">  ++v6;</span><br><span class="line">  byte_403374 = v5;</span><br><span class="line">  dword_403378 = v7;</span><br><span class="line">  dword_403370 = v4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>最后v7要为0x4034f4。根据dump出的数据在两处if处下断,人工逆运算便可得出flag<br>flag{d8b0bc97a6c0ba27}</p>]]></content>
     
@@ -32,6 +32,8 @@
     
     </summary>
     
+    
+      <category term="Re" scheme="https://boiteam.github.io/categories/Re/"/>
     
     
       <category term="下断点调试" scheme="https://boiteam.github.io/tags/%E4%B8%8B%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95/"/>
