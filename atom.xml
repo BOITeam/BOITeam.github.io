@@ -532,7 +532,7 @@
     <link href="https://boiteam.github.io/2020/03/09/2020_GXZCTF_%E7%AE%80%E5%8D%95misc/"/>
     <id>https://boiteam.github.io/2020/03/09/2020_GXZCTF_%E7%AE%80%E5%8D%95misc/</id>
     <published>2020-03-09T01:52:20.000Z</published>
-    <updated>2020-03-21T11:55:22.001Z</updated>
+    <updated>2020-03-21T12:18:36.074Z</updated>
     
     <content type="html"><![CDATA[<p>photo.jpg隐写了一个压缩包，解开有一个ctf.txt文档</p><p>./.–./../-.././–/../-.-./…/../-/..-/.-/-/../—/-./—/..-./..-/-./../…-/./.-./…/../-/-.–/.–/.-/.-.</p><p>摩斯电码解密得压缩包密码：EPIDEMICSITUATIONOFUNIVERSITYWAR</p><p>压缩包解开得flag.txt：VGgxc19pc19GbGFHX3lvdV9hUkVfcmlnSFQ=</p><p>BASE64解密得flag:Th1s_is_FlaG_you_aRE_rigHT</p>]]></content>
     
@@ -544,12 +544,12 @@
     </summary>
     
     
-      <category term="MISC" scheme="https://boiteam.github.io/categories/MISC/"/>
+      <category term="Misc" scheme="https://boiteam.github.io/categories/Misc/"/>
     
     
-      <category term="MISC_隐写" scheme="https://boiteam.github.io/tags/MISC-%E9%9A%90%E5%86%99/"/>
+      <category term="Misc_隐写" scheme="https://boiteam.github.io/tags/Misc-%E9%9A%90%E5%86%99/"/>
     
-      <category term="MISC_密码学" scheme="https://boiteam.github.io/tags/MISC-%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+      <category term="Misc_密码学" scheme="https://boiteam.github.io/tags/Misc-%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
     
   </entry>
   
