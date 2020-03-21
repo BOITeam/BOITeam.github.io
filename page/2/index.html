@@ -188,6 +188,113 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_crypto-lancet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="BOI Team">
+      <meta itemprop="description" content="Because Of Interest">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BOI Team">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/09/2020_GXZYCTF_crypto-lancet/" class="post-title-link" itemprop="url">2020 GXZYCTF lancet</a>
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-09 09:52:20" itemprop="dateCreated datePublished" datetime="2020-03-09T09:52:20+08:00">2020-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-21 17:14:15" itemprop="dateModified" datetime="2020-03-21T17:14:15+08:00">2020-03-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ul>
+<li>访问服务器可得e、n，每次访问的值是随机的。服务器上可选加密或者解密两种方式。正常解法应该是构造（c*2）^e % n，返回值除以2便是m。</li>
+<li>但是由于服务器返回的解密结果不全，经验证仅为结果的最后一位。</li>
+<li>通过其返回结果可判断，由于n为奇数，flag最后字符为’}’因此m也为奇数。m乘以任意一个偶数模n肯定为奇数，除非m&gt;n</li>
+<li>因此构造（c<em>（2^i））^e % n 爆破出i，即恰好当（c</em>（2^i））^e % n的返回值为偶数时可得n 约等于m*i</li>
+<li>通过上述方法爆破i可求出flag</li>
+<li>由于比赛时该题没做出来，后来复现时服务器关闭了，现放VN脚本<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> base64 <span class="keyword">import</span> b64encode <span class="keyword">as</span> enc</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> decimal</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">oracle</span><span class="params">(c)</span>:</span></span><br><span class="line">    fuck = enc(long_to_bytes(c))</span><br><span class="line">    l = len(fuck)</span><br><span class="line">    r.recvuntil(<span class="string">'want here'</span>)</span><br><span class="line">    r.sendline(<span class="string">'2'</span>)</span><br><span class="line">    r.recvuntil(<span class="string">'send how long you want to decrypt'</span>)</span><br><span class="line">    r.send(str(l))</span><br><span class="line">    r.recvuntil(<span class="string">'send the message in base64 encode'</span>)</span><br><span class="line">    r.send(fuck)</span><br><span class="line">    res = r.recvline()</span><br><span class="line">    res = r.recvline()</span><br><span class="line">    log.info(res)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'res:1'</span> <span class="keyword">in</span> res:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="string">'res:0'</span> <span class="keyword">in</span> res:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">partial</span><span class="params">(n,e,c)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> c_of_2</span><br><span class="line">    k = n.bit_length()</span><br><span class="line">    decimal.getcontext().prec = k</span><br><span class="line">    lower = decimal.Decimal(<span class="number">0</span>)</span><br><span class="line">    upper = decimal.Decimal(n)</span><br><span class="line">    c_of_2 = pow(<span class="number">2</span>, e, n)</span><br><span class="line">    c = (c * c_of_2) % n</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(k):</span><br><span class="line">        possible_plaintext = (lower + upper) / <span class="number">2</span></span><br><span class="line">        flag = oracle(c)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> flag:</span><br><span class="line">            upper = possible_plaintext</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            lower = possible_plaintext</span><br><span class="line">        c = (c * c_of_2) % n</span><br><span class="line">        <span class="keyword">print</span> i, flag, int(upper - lower)</span><br><span class="line">    <span class="keyword">return</span> int(upper)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">'121.37.174.33'</span>,<span class="number">9999</span>)</span><br><span class="line">r.recvuntil(<span class="string">'n:'</span>)</span><br><span class="line">n = r.recvuntil(<span class="string">'\ne:'</span>,drop=<span class="literal">True</span>)</span><br><span class="line">n = int(n)</span><br><span class="line">r.recvuntil(<span class="string">'flag:'</span>)</span><br><span class="line">c = r.recvuntil(<span class="string">'\nyou'</span>,drop=<span class="literal">True</span>)</span><br><span class="line">c = int(c)</span><br><span class="line">log.success(hex(n))</span><br><span class="line">log.success(hex(c))</span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(partial(n,e,c))</span><br></pre></td></tr></table></figure></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/09/2020_GXZYCTF_crypto-lancet/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_fmkq/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1091,103 +1198,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/09/2020_GXZCTF_%E7%AE%80%E5%8D%95misc/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/header.png">
-      <meta itemprop="name" content="BOI Team">
-      <meta itemprop="description" content="Because Of Interest">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BOI Team">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/09/2020_GXZCTF_%E7%AE%80%E5%8D%95misc/" class="post-title-link" itemprop="url">2020 GXZYCTF 简单misc</a>
-        </h1>
-
-        <div class="post-meta">
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-09 09:52:20" itemprop="dateCreated datePublished" datetime="2020-03-09T09:52:20+08:00">2020-03-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-21 20:18:36" itemprop="dateModified" datetime="2020-03-21T20:18:36+08:00">2020-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Misc/" itemprop="url" rel="index"><span itemprop="name">Misc</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>263</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>photo.jpg隐写了一个压缩包，解开有一个ctf.txt文档</p>
-<p>./.–./../-.././–/../-.-./…/../-/..-/.-/-/../—/-./—/..-./..-/-./../…-/./.-./…/../-/-.–/.–/.-/.-.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/09/2020_GXZCTF_%E7%AE%80%E5%8D%95misc/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1260,7 +1270,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -1386,7 +1396,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">36k</span>
+    <span title="站点总字数">48k</span>
 </div>
 
         
