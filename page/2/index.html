@@ -188,6 +188,107 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_fmkq/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="BOI Team">
+      <meta itemprop="description" content="Because Of Interest">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BOI Team">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/09/2020_GXZYCTF_fmkq/" class="post-title-link" itemprop="url">2020 GXZYCTF fmkq</a>
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-09 09:52:20" itemprop="dateCreated datePublished" datetime="2020-03-09T09:52:20+08:00">2020-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-21 19:26:26" itemprop="dateModified" datetime="2020-03-21T19:26:26+08:00">2020-03-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>访问直接给了题目源码👇</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"> <span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php">error_reporting(<span class="number">0</span>);</span></span><br><span class="line"><span class="php"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'head'</span>])&amp;&amp;<span class="keyword">isset</span>($_GET[<span class="string">'url'</span>]))&#123;</span></span><br><span class="line"><span class="php">    $begin = <span class="string">"The number you want: "</span>;</span></span><br><span class="line"><span class="php">    extract($_GET);</span></span><br><span class="line"><span class="php">    <span class="keyword">if</span>($head == <span class="string">''</span>)&#123;</span></span><br><span class="line"><span class="php">        <span class="keyword">die</span>(<span class="string">'Where is your head?'</span>);</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"><span class="php">    <span class="keyword">if</span>(preg_match(<span class="string">'/[A-Za-z0-9]/i'</span>,$head))&#123;</span></span><br><span class="line">        die('Head can\'t be like this!');</span><br><span class="line">    &#125;</span><br><span class="line">    if(preg_match('/log/i',$url))&#123;</span><br><span class="line">        die('No No No');</span><br><span class="line">    &#125;</span><br><span class="line">    if(preg_match('/gopher:|file:|phar:|php:|zip:|dict:|imap:|ftp:/i',$url))&#123;</span><br><span class="line"><span class="php">        <span class="keyword">die</span>(<span class="string">'Don\'t use strange protocol!'</span>);</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"><span class="php">    $funcname = $head.<span class="string">'curl_init'</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="php">    $ch = $funcname();</span></span><br><span class="line"><span class="php">    <span class="keyword">if</span>($ch)&#123;</span></span><br><span class="line"><span class="php">        curl_setopt($ch, CURLOPT_URL, $url);</span></span><br><span class="line"><span class="php">        curl_setopt($ch, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span></span><br><span class="line"><span class="php">        $output = curl_exec($ch);</span></span><br><span class="line"><span class="php">        curl_close($ch);</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"><span class="php">    <span class="keyword">else</span>&#123;</span></span><br><span class="line"><span class="php">        $output = <span class="string">'rua'</span>;</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"><span class="php">    <span class="keyword">echo</span> sprintf($begin.<span class="string">'%d'</span>,$output);</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"><span class="keyword">else</span>&#123;</span></span><br><span class="line"><span class="php">    show_source(<span class="keyword">__FILE__</span>);</span></span><br><span class="line"><span class="php">&#125;</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/09/2020_GXZYCTF_fmkq/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_eazytrick_gzmtu/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -404,7 +505,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/09/2020_GXZYCTF_happyvacation/" class="post-title-link" itemprop="url">2020_GXZYCTF_happyvacation</a>
+            <a href="/2020/03/09/2020_GXZYCTF_happyvacation/" class="post-title-link" itemprop="url">2020 GXZYCTF happyvacation</a>
         </h1>
 
         <div class="post-meta">
@@ -422,7 +523,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-21 19:12:13" itemprop="dateModified" datetime="2020-03-21T19:12:13+08:00">2020-03-21</time>
+                <time title="修改时间：2020-03-21 20:10:51" itemprop="dateModified" datetime="2020-03-21T20:10:51+08:00">2020-03-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -994,7 +1095,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2019/03/17/2020_GXZCTF_%E9%9A%90%E8%97%8F%E7%9A%84%E4%BF%A1%E6%81%AF/">
+    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/09/2020_GXZCTF_%E7%AE%80%E5%8D%95misc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/header.png">
@@ -1008,7 +1109,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/03/17/2020_GXZCTF_%E9%9A%90%E8%97%8F%E7%9A%84%E4%BF%A1%E6%81%AF/" class="post-title-link" itemprop="url">2020 GXZYCTF 隐藏的信息</a>
+            <a href="/2020/03/09/2020_GXZCTF_%E7%AE%80%E5%8D%95misc/" class="post-title-link" itemprop="url">2020 GXZYCTF 简单misc</a>
         </h1>
 
         <div class="post-meta">
@@ -1019,14 +1120,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-03-17 13:54:17" itemprop="dateCreated datePublished" datetime="2019-03-17T13:54:17+08:00">2019-03-17</time>
+              <time title="创建时间：2020-03-09 09:52:20" itemprop="dateCreated datePublished" datetime="2020-03-09T09:52:20+08:00">2020-03-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-21 18:50:21" itemprop="dateModified" datetime="2020-03-21T18:50:21+08:00">2020-03-21</time>
+                <time title="修改时间：2020-03-21 19:55:22" itemprop="dateModified" datetime="2020-03-21T19:55:22+08:00">2020-03-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1034,7 +1135,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Misc/" itemprop="url" rel="index"><span itemprop="name">Misc</span></a>
+                  <a href="/categories/MISC/" itemprop="url" rel="index"><span itemprop="name">MISC</span></a>
                 </span>
             </span>
 
@@ -1044,7 +1145,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>81</span>
+              <span>263</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -1063,11 +1164,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>二维码补全fff</p>
-<p><img src="/2019/03/17/2020_GXZCTF_%E9%9A%90%E8%97%8F%E7%9A%84%E4%BF%A1%E6%81%AF/clip_image002.gif" alt="IMG_256"></p>
+          <p>photo.jpg隐写了一个压缩包，解开有一个ctf.txt文档</p>
+<p>./.–./../-.././–/../-.-./…/../-/..-/.-/-/../—/-./—/..-./..-/-./../…-/./.-./…/../-/-.–/.–/.-/.-.</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/03/17/2020_GXZCTF_%E9%9A%90%E8%97%8F%E7%9A%84%E4%BF%A1%E6%81%AF/#more" rel="contents">
+              <a class="btn" href="/2020/03/09/2020_GXZCTF_%E7%AE%80%E5%8D%95misc/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1091,7 +1192,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1159,20 +1260,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
