@@ -277,7 +277,7 @@
     <link href="https://boiteam.github.io/2020/03/17/2020_GXZCTF_%E6%AD%A6%E6%B1%89%E5%8A%A0%E6%B2%B9/"/>
     <id>https://boiteam.github.io/2020/03/17/2020_GXZCTF_%E6%AD%A6%E6%B1%89%E5%8A%A0%E6%B2%B9/</id>
     <published>2020-03-17T05:54:17.000Z</published>
-    <updated>2020-03-21T12:26:55.713Z</updated>
+    <updated>2020-03-21T13:04:53.518Z</updated>
     
     <content type="html"><![CDATA[<p>binwalk分析一下</p><p><img src="/2020/03/17/2020_GXZCTF_%E6%AD%A6%E6%B1%89%E5%8A%A0%E6%B2%B9/image-20200321202605726.png" alt="image-20200321202605726"></p><p>存在图片和一个rar压缩包，提取压缩包，里面是一个flag.exe的执行文件，打开后尝试输入发现，每输入六行就会返回一串字符串，猜测应该是需要输入特定的六个字符会返回flag；</p><p>使用steghide工具对图片进行分析</p><p><img src="/2020/03/17/2020_GXZCTF_%E6%AD%A6%E6%B1%89%E5%8A%A0%E6%B2%B9/clip_image004.jpg" alt="IMG_256"></p><p>发现确实存在隐藏信息，但是需要密码，爆破~！</p><p>密码是“ctf”</p><p>得到flag.txt</p><p><img src="/2020/03/17/2020_GXZCTF_%E6%AD%A6%E6%B1%89%E5%8A%A0%E6%B2%B9/clip_image006-1584793461286.jpg" alt="IMG_256"></p><p>打开flag.exe</p><p>输入“ ‘ 武 汉 加 油 ! ”得到flag</p><p><img src="/2020/03/17/2020_GXZCTF_%E6%AD%A6%E6%B1%89%E5%8A%A0%E6%B2%B9/clip_image008.jpg" alt="IMG_257"></p>]]></content>
     
@@ -292,7 +292,7 @@
       <category term="Misc" scheme="https://boiteam.github.io/categories/Misc/"/>
     
     
-      <category term="-Misc_代码分析" scheme="https://boiteam.github.io/tags/Misc-%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/"/>
+      <category term="Misc_代码分析" scheme="https://boiteam.github.io/tags/Misc-%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/"/>
     
   </entry>
   
