@@ -23,15 +23,15 @@
     var CONFIG = {"hostname":"boiteam.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="第一层考点：dump内存 dword_403370 &#x3D; 0; v1 &#x3D; &amp;unk_403384; byte_403374 &#x3D; 48; v2 &#x3D; 0; dword_403378 &#x3D; (int)&amp;unk_403380; do { v3 &#x3D; dword_402178[v2]; ++v2; (v1 - 1) &#x3D; v3; *v1 &#x3D; (char *)&amp;unk_403380 + 12 * dword_4022">
+  <meta name="description" content="第一层考点：dump内存 1234567891011121314dword_403370 &#x3D; 0;v1 &#x3D; &amp;unk_403384;byte_403374 &#x3D; 48;v2 &#x3D; 0;dword_403378 &#x3D; (int)&amp;unk_403380;do&amp;#123;  v3 &#x3D; dword_402178[v2];  ++v2;  *(v1 - 1) &#x3D; v3;  *v1 &#x3D; (char">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2020 GXZYCTF cyclegraph">
 <meta property="og:url" content="https://boiteam.github.io/2020/03/20/2020_GXZCTF_cyclegraph/index.html">
 <meta property="og:site_name" content="BOI Team">
-<meta property="og:description" content="第一层考点：dump内存 dword_403370 &#x3D; 0; v1 &#x3D; &amp;unk_403384; byte_403374 &#x3D; 48; v2 &#x3D; 0; dword_403378 &#x3D; (int)&amp;unk_403380; do { v3 &#x3D; dword_402178[v2]; ++v2; (v1 - 1) &#x3D; v3; *v1 &#x3D; (char *)&amp;unk_403380 + 12 * dword_4022">
+<meta property="og:description" content="第一层考点：dump内存 1234567891011121314dword_403370 &#x3D; 0;v1 &#x3D; &amp;unk_403384;byte_403374 &#x3D; 48;v2 &#x3D; 0;dword_403378 &#x3D; (int)&amp;unk_403380;do&amp;#123;  v3 &#x3D; dword_402178[v2];  ++v2;  *(v1 - 1) &#x3D; v3;  *v1 &#x3D; (char">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-21T09:17:55.103Z">
+<meta property="article:modified_time" content="2020-03-21T09:34:57.181Z">
 <meta property="article:author" content="BOI Team">
 <meta property="article:tag" content="下断点调试">
 <meta name="twitter:card" content="summary">
@@ -222,7 +222,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-21 17:17:55" itemprop="dateModified" datetime="2020-03-21T17:17:55+08:00">2020-03-21</time>
+                <time title="修改时间：2020-03-21 17:34:57" itemprop="dateModified" datetime="2020-03-21T17:34:57+08:00">2020-03-21</time>
               </span>
 
           
@@ -238,7 +238,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>649</span>
+              <span>771</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -257,7 +257,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><strong>第一层考点：dump内存</strong><br>  dword_403370 = 0;<br>  v1 = &unk_403384;<br>  byte_403374 = 48;<br>  v2 = 0;<br>  dword_403378 = (int)&unk_403380;<br>  do<br>  {<br>    v3 = dword_402178[v2];<br>    ++v2;<br>    <em>(v1 - 1) = v3;<br>    *v1 = (char *)&amp;unk_403380 + 12 * dword_402274[v2];<br>    v1[1] = (char *)&amp;unk_403380 + 12 * dword_4021F4[v2];<br>    v1 += 3;<br>  }<br>在OD中执行完后dump出403348内存的值<br>*</em>第二层考点：OD下断**<br>核心算法<br>  v4 = dword_403370;<br>  v5 = byte_403374;<br>  v6 = 5;<br>  v7 = dword_403378;<br>  do<br>  {<br>    v11 = *(&amp;v12 + v6);<br>    if ( *(_DWORD *)v7 + v5 == v11 )<br>    {<br>      v7 = *(_DWORD *)(v7 + 4);<br>    }<br>    else<br>    {<br>      if ( v5 - *(_DWORD *)v7 != v11 )<br>      {<br>        sub_401020(“This is not flag~\n”, v10);<br>        system(“pause”);<br>        exit(1);<br>      }<br>      v7 = *(_DWORD *)(v7 + 8);<br>    }<br>    v5 = *(&amp;v12 + v6);<br>    ++v4;<br>    ++v6;<br>    byte_403374 = v5;<br>    dword_403378 = v7;<br>    dword_403370 = v4;<br>  }<br>最后v7要为0x4034f4。根据dump出的数据在两处if处下断,人工逆运算便可得出flag<br>flag{d8b0bc97a6c0ba27}</p>
+        <p><strong>第一层考点：dump内存</strong></p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">dword_403370 = 0;</span><br><span class="line">v1 = &amp;unk_403384;</span><br><span class="line">byte_403374 = 48;</span><br><span class="line">v2 = 0;</span><br><span class="line">dword_403378 = (int)&amp;unk_403380;</span><br><span class="line">do</span><br><span class="line">&#123;</span><br><span class="line">  v3 = dword_402178[v2];</span><br><span class="line">  ++v2;</span><br><span class="line">  *(v1 - 1) = v3;</span><br><span class="line">  *v1 = (char *)&amp;unk_403380 + 12 * dword_402274[v2];</span><br><span class="line">  v1[1] = (char *)&amp;unk_403380 + 12 * dword_4021F4[v2];</span><br><span class="line">  v1 += 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在OD中执行完后dump出403348内存的值<br><strong>第二层考点：OD下断</strong><br>核心算法</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">v4 = dword_403370;</span><br><span class="line">v5 = byte_403374;</span><br><span class="line">v6 = 5;</span><br><span class="line">v7 = dword_403378;</span><br><span class="line">do</span><br><span class="line">&#123;</span><br><span class="line">  v11 = *(&amp;v12 + v6);</span><br><span class="line"> <span class="built_in"> if </span>( *(_DWORD *)v7 + v5 == v11 )</span><br><span class="line">  &#123;</span><br><span class="line">    v7 = *(_DWORD *)(v7 + 4);</span><br><span class="line">  &#125;</span><br><span class="line">  else</span><br><span class="line">  &#123;</span><br><span class="line">   <span class="built_in"> if </span>( v5 - *(_DWORD *)v7 != v11 )</span><br><span class="line">    &#123;</span><br><span class="line">      sub_401020(<span class="string">"This is not flag~\n"</span>, v10);</span><br><span class="line">     <span class="keyword"> system</span>(<span class="string">"pause"</span>);</span><br><span class="line">      exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">    v7 = *(_DWORD *)(v7 + 8);</span><br><span class="line">  &#125;</span><br><span class="line">  v5 = *(&amp;v12 + v6);</span><br><span class="line">  ++v4;</span><br><span class="line">  ++v6;</span><br><span class="line">  byte_403374 = v5;</span><br><span class="line">  dword_403378 = v7;</span><br><span class="line">  dword_403370 = v4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后v7要为0x4034f4。根据dump出的数据在两处if处下断,人工逆运算便可得出flag<br>flag{d8b0bc97a6c0ba27}</p>
 
     </div>
 
@@ -293,12 +297,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/03/20/2020_GXZCTF_%E5%A4%A9%E6%B4%A5%E5%9E%93/" rel="prev" title="2020 GXZYCTF 天津垓">
-      <i class="fa fa-chevron-left"></i> 2020 GXZYCTF 天津垓
+    <a href="/2020/03/20/2020_GXZCTF_fxck!/" rel="prev" title="2020 高校战“疫”CTF !ftcx">
+      <i class="fa fa-chevron-left"></i> 2020 高校战“疫”CTF !ftcx
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/03/21/2020_GXZCTF_fxck!/" rel="next" title="2020_GXZCTF_fxck!">
-      2020_GXZCTF_fxck! <i class="fa fa-chevron-right"></i>
+    <a href="/2020/03/21/2020_GXZCTF_easyparse/" rel="next" title="2020_GXZCTF_easyparse">
+      2020_GXZCTF_easyparse <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -500,7 +504,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">35k</span>
+    <span title="站点总字数">36k</span>
 </div>
 
         
