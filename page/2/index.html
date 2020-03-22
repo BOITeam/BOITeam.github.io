@@ -657,8 +657,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>题目很简单，逻辑捋清楚就行了，</p>
-<a id="more"></a>
+          题目很简单，逻辑捋清楚就行了，
+
+从client出发，先后向kdc的getTGT和getTicket发包校验，校验通过则发包到cmd执行，执行没有回显，主要在getTicket中的判断限制了cmd的内容，不过认真分析一下kdc源码，可以发现data变量是可控的，控制前一数据包中的timestamp使得int(time.time()) - data[‘timestamp’] > 60就可以了，所以修改client app.py
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/03/09/2020_GXZYCTF_dooog/#more" rel="contents">
