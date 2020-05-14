@@ -79,9 +79,9 @@
   <entry>
     <title>2020 网鼎杯 joker</title>
     <url>/2020/05/11/jokerwp/</url>
-    <content><![CDATA[<p>这是一个SMC代码加密题，关键代码都被加密了，因此写个解密脚本对代码patch一下<br><strong>第一层考点：SMC解密</strong><br>![1589270828569](joker wp/1589270828569.png)                 </p>
+    <content><![CDATA[<p>这是一个SMC代码加密题，关键代码都被加密了，因此写个解密脚本对代码patch一下<br><strong>第一层考点：SMC解密</strong><br><img src="/2020/05/11/jokerwp/1589270828569.png" alt="1589270828569">                 </p>
 <p>找到关键代码后就很简单了，就是一个简单的异或运算</p>
-<p>![1589270879386](joker wp/1589270879386.png)</p>
+<p><img src="/2020/05/11/jokerwp/1589270879386.png" alt="1589270879386"></p>
 <p>这里只解出了flag{d07abccf8a410c，后五位估计是题目问题，给了5个字符的密钥什么事情都没做，就有一个比较，完全靠猜，因为最后一位肯定是“}”所以用异或运算算出一个密钥再逆异或得到b37a}</p>
 ]]></content>
       <categories>
