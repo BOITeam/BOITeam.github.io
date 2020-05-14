@@ -13,7 +13,7 @@
 ]]></content>
       <categories>
         <category>Web</category>
-        <category>Php</category>
+        <category>PHP</category>
       </categories>
       <tags>
         <tag>Web_php反序列化</tag>
@@ -469,7 +469,7 @@ $file_path .= &quot;_&quot;.hash_file(&quot;sha256&quot;,$_FILES[&apos;up_file&a
 ]]></content>
       <categories>
         <category>Web</category>
-        <category>php</category>
+        <category>PHP</category>
       </categories>
       <tags>
         <tag>Web_SSRF</tag>
@@ -486,7 +486,7 @@ $file_path .= &quot;_&quot;.hash_file(&quot;sha256&quot;,$_FILES[&apos;up_file&a
 ]]></content>
       <categories>
         <category>Web</category>
-        <category>php</category>
+        <category>PHP</category>
       </categories>
       <tags>
         <tag>Web_XXE</tag>
@@ -508,7 +508,7 @@ $file_path .= &quot;_&quot;.hash_file(&quot;sha256&quot;,$_FILES[&apos;up_file&a
 ]]></content>
       <categories>
         <category>Web</category>
-        <category>php</category>
+        <category>PHP</category>
       </categories>
       <tags>
         <tag>Web_二次注入</tag>
